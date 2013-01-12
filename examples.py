@@ -2,6 +2,7 @@
 # Copyright (C) 2013  Johannes Dewender
 # This example is free. You can redistribute and/or modify it at will.
 
+# this will load Libdiscid
 import discid
 
 device = "/dev/cdrom" 
