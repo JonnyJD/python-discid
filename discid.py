@@ -31,8 +31,16 @@ def __find_library():
         else:
             return "libdiscid.so.0"
 
-def __open_library(lib_name):
-    return cdll.LoadLibrary(lib_name)
+def __open_library(lib_name=None):
+    if lib_name is None:
+        _lib_name = __find_library()
+    else:
+        _lib_name = lib_name
+    assert _lib_name is not None
+    try:
+        return cdll.LoadLibrary(_lib_name)
+    except OSError as e:
+        raise ImportError(e)
 
 _lib_name = __find_library()
 _lib = __open_library(_lib_name)
