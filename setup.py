@@ -6,7 +6,7 @@ from discid import _version
 setup(name="discid",
         version=_version,
         description="Python binding of Libdiscid",
-        long_description=open("README.md").read(),
+        long_description=open("README.rst").read(),
         author="Johannes Dewender",
         author_email="brainz@JonnyJD.net",
         url="https://github.com/JonnyJD/python-discid",
