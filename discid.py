@@ -1,15 +1,35 @@
 import os
+import sys
 from ctypes import *
 from ctypes.util import find_library
 
 
 def __find_library():
-    if os.name == "posix":
-        return find_library("discid")
-    elif os.name == "nt":
-        return "discid.dll"
+    windows_names = ["discid.dll", "libdiscid.dll", "libdiscid-0.dll"]
+
+    lib_file = find_library("discid")
+
+    if lib_file is None and sys.platform == "win32":
+        for lib_name in windows_names:
+            if lib_file is None:
+                lib_file = find_library(lib_name)
+
+    if lib_file is not None:
+        return lib_file
     else:
-        return "libdiscid.so.0"
+        if sys.platform.startswith == "linux":
+            return "libdiscid.so.0"
+        elif sys.platform == "darwin":
+            return "libdiscid.0.dylib"
+        elif sys.platform == "cygwin":
+            return "cygdiscid-0.dll"
+        elif sys.platform == "win32":
+            for lib_name in windows_names:
+                if os.path.isfile(lib_name):
+                    return lib_name
+            return "discid.dll"
+        else:
+            return "libdiscid.so.0"
 
 def __open_library(lib_name):
     return cdll.LoadLibrary(lib_name)
