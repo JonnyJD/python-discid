@@ -16,11 +16,11 @@ all relevant data storage and calculation to Libdiscid.
 On the other hand it gives a pythonic API
 and uses an object and exceptions.
 
-For more information on the Libdiscid see
-[libdiscid](http://musicbrainz.org/doc/libdiscid)
+For more information on Libdiscid see
+[libdiscid](http://musicbrainz.org/doc/libdiscid).
 
 For more information about the calculation of these disc ids see
-[Disc ID Calculation](http://musicbrainz.org/doc/Disc_ID_Calculation)
+[Disc ID Calculation](http://musicbrainz.org/doc/Disc_ID_Calculation).
 
 
 ### Usage
@@ -32,9 +32,9 @@ For more information about the calculation of these disc ids see
         disc.read("/dev/cdrom")
         print disc.get_id()
 
-See the examples.py file for more examples.
+See also examples.py.
 
 ### License
 
 This module is released under the GNU Lesser General Public License Version 3.
-See COPYING.lesser for details.
+See COPYING.LESSER for details.
