@@ -1,0 +1,40 @@
+## Libdiscid Python bindings
+
+This module implements Python bindings for MusicBrainz Libdiscid.
+
+Libdiscid's main purpose is the calculation of an
+identifier of audio discs (disc id)
+to use for the MusicBrainz database.
+
+That identifier is calculated from the TOC of the disc,
+similar to the freeDB CDDB identifier.
+Libdiscid can calculate MusicBranz Disc IDs and 
+freeDB Disc IDs.
+
+This module is a very close binding that offloads
+all relevant data storage and calculation to Libdiscid.
+On the other hand it gives a pythonic API
+and uses an object and exceptions.
+
+For more information on the Libdiscid see
+[libdiscid](http://musicbrainz.org/doc/libdiscid)
+
+For more information about the calculation of these disc ids see
+[Disc ID Calculation](http://musicbrainz.org/doc/Disc_ID_Calculation)
+
+
+### Usage
+
+    # this will load Libdiscid
+    from discid import DiscId
+
+    with DiscId() as disc:
+        disc.read("/dev/cdrom")
+        print disc.get_id()
+
+See the examples.py file for more examples.
+
+### License
+
+This module is released under the GNU Lesser General Public License Version 3.
+See COPYING.lesser for details.
