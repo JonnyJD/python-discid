@@ -1,7 +1,7 @@
 ## Libdiscid Python bindings
 
 Python-discid implements Python bindings for MusicBrainz Libdiscid.
-This module works with Python > 2.6, including Python 3.
+This module works with Python &gt;= 2.6, including Python 3.
 
 Libdiscid's main purpose is the calculation of an
 identifier of audio discs (disc id)
