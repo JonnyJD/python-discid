@@ -46,6 +46,10 @@ _lib_name = __find_library()
 _lib = __open_library(_lib_name)
 
 
+class DiscError(IOError):
+    pass
+
+
 class DiscId(object):
     def __init__(self):
         self.__handle = c_void_p(_lib.discid_new())
@@ -69,7 +73,7 @@ class DiscId(object):
         c_return = c_bool(_lib.discid_read(self.__handle, c_device))
         self.__success = c_return.value
         if not self.__success:
-            raise IOError(self.__get_error_msg())
+            raise DiscError(self.__get_error_msg())
         return self.__success
 
     def get_id(self):
