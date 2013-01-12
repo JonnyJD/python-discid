@@ -58,16 +58,26 @@ class DiscId(object):
         else:
             return ""
 
+    def __get_error_msg(self):
+        c_error = c_char_p(_lib.discid_get_error_msg(self.__handle))
+        return c_error.value
+
+
     def read(self, device=None):
         c_device = c_char_p(device)
         # return defined as c_int, but used like c_bool
         c_return = c_bool(_lib.discid_read(self.__handle, c_device))
         self.__success = c_return.value
-        return c_return.value
+        if not self.__success:
+            raise IOError(self.__get_error_msg())
+        return self.__success
 
     def get_id(self):
-        c_return = c_char_p(_lib.discid_get_id(self.__handle))
-        return c_return.value
+        if self.__success:
+            c_return = c_char_p(_lib.discid_get_id(self.__handle))
+            return c_return.value
+        else:
+            return None
 
     def free(self):
         _lib.discid_free(self.__handle)
