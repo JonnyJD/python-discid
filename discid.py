@@ -19,6 +19,8 @@ from ctypes import *
 from ctypes.util import find_library
 
 
+_version = "0.1.0"
+
 def __find_library():
     windows_names = ["discid.dll", "libdiscid.dll", "libdiscid-0.dll"]
 

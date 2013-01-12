@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # Copyright (C) 2013  Johannes Dewender
 # This example is free. You can redistribute and/or modify it at will.
 
