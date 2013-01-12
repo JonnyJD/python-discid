@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # Copyright (C) 2013  Johannes Dewender
 # This example is free. You can redistribute and/or modify it at will.
 
@@ -9,12 +9,12 @@ device = "/dev/cdrom"
 def recommended_example():
     with discid.DiscId() as disc:
         disc.read(device)
-        print disc.get_id()
+        print(disc.get_id())
 
 def other_example():
     disc = discid.DiscId()
     disc.read(device)
-    print disc.get_id()
+    print(disc.get_id())
     disc.free()
 
 recommended_example()

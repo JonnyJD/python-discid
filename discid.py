@@ -61,6 +61,19 @@ _lib_name = __find_library()
 _lib = __open_library(_lib_name)
 
 
+def _encode(string):
+    try:
+        return string.encode()
+    except AttributeError:
+        # already byte string (Python 3)
+        return string
+    # UnicodeDecodeError (Python 2) is NOT catched
+    # device names should be ascii
+
+def _decode(byte_string):
+    return byte_string.decode()
+
+
 class DiscError(IOError):
     pass
 
@@ -79,11 +92,11 @@ class DiscId(object):
 
     def __get_error_msg(self):
         c_error = c_char_p(_lib.discid_get_error_msg(self.__handle))
-        return c_error.value
+        return _decode(c_error.value)
 
 
     def read(self, device=None):
-        c_device = c_char_p(device)
+        c_device = c_char_p(_encode(device))
         # return defined as c_int, but used like c_bool
         c_return = c_bool(_lib.discid_read(self.__handle, c_device))
         self.__success = c_return.value
@@ -94,7 +107,7 @@ class DiscId(object):
     def get_id(self):
         if self.__success:
             c_return = c_char_p(_lib.discid_get_id(self.__handle))
-            return c_return.value
+            return _decode(c_return.value)
         else:
             return None
 
