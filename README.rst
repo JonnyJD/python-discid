@@ -41,5 +41,17 @@ License
 This module is released under the GNU Lesser General Public License
 Version 3. See COPYING.LESSER for details.
 
+Known Issues
+~~~~~~~~~~~~
+
+- The API is incomplete.
+  I will complete it when the base API is decided and stable.
+- The Documentation missing.
+  It will be created when the base API works.
+
+For other things you can submit tickets at `Github`_.
+The API is still subject to change.
+
 .. _libdiscid: http://musicbrainz.org/doc/libdiscid
 .. _Disc ID Calculation: http://musicbrainz.org/doc/Disc_ID_Calculation
+.. _Github: https://github.com/JonnyJD/python-discid
