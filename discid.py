@@ -76,6 +76,10 @@ def _decode(byte_string):
     return byte_string.decode()
 
 
+def get_default_device():
+    c_device = c_char_p(_lib.discid_get_default_device())
+    return _decode(c_device.value)
+
 class DiscError(IOError):
     pass
 
@@ -98,6 +102,7 @@ class DiscId(object):
 
 
     def read(self, device=None):
+        # device = None will use the default device (internally)
         c_device = c_char_p(_encode(device))
         # return defined as c_int, but used like c_bool
         c_return = c_bool(_lib.discid_read(self.__handle, c_device))

@@ -5,17 +5,16 @@
 # this will load Libdiscid
 import discid
 
-device = "/dev/cdrom" 
-
 def recommended_example():
     with discid.DiscId() as disc:
-        disc.read(device)
-        #print "id: %s" % disc.get_id() # Python 2
-        print("id: %s" % disc.get_id()) # Python 3
+        disc.read()       # use default device
+        print("id: %s" % disc.get_id())
+        print("used %s as device" % discid.get_default_device())
 
 def other_example():
     disc = discid.DiscId()
-    disc.read(device)
+    device = discid.get_default_device()
+    disc.read("/dev/cdrom")
     #print "id: %s" % disc.get_id() # Python 2
     print("id: %s" % disc.get_id()) # Python 3
     disc.free()
