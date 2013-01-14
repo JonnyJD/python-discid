@@ -88,6 +88,7 @@ def __get_default_device():
     device = _lib.discid_get_default_device()
     return _decode(device)
 
+#: default cd drive
 DEFAULT_DEVICE = __get_default_device()
 
 class DiscError(IOError):
