@@ -76,15 +76,18 @@ def _decode(byte_string):
     return byte_string.decode()
 
 
+_lib.discid_get_default_device.restype = c_char_p
 def get_default_device():
-    c_device = c_char_p(_lib.discid_get_default_device())
-    return _decode(c_device.value)
+    device = _lib.discid_get_default_device()
+    return _decode(device)
 
 class DiscError(IOError):
     pass
 
 
 class DiscId(object):
+
+    _lib.discid_new.restype = c_void_p
     def __init__(self):
         self.__handle = c_void_p(_lib.discid_new())
         self.__success = False
@@ -96,28 +99,33 @@ class DiscId(object):
         else:
             return ""
 
+    _lib.discid_get_error_msg.argtypes = (c_void_p, )
+    _lib.discid_get_error_msg.resype = c_char_p
     def __get_error_msg(self):
-        c_error = c_char_p(_lib.discid_get_error_msg(self.__handle))
-        return _decode(c_error.value)
+        error = _lib.discid_get_error_msg(self.__handle)
+        return _decode(error)
 
 
+    _lib.discid_read.argtypes = (c_void_p, c_char_p)
+    _lib.discid_read.restype = c_int
     def read(self, device=None):
         # device = None will use the default device (internally)
-        c_device = c_char_p(_encode(device))
-        # return defined as c_int, but used like c_bool
-        c_return = c_bool(_lib.discid_read(self.__handle, c_device))
-        self.__success = c_return.value
+        result = _lib.discid_read(self.__handle, _encode(device)) == 1
+        self.__success = result
         if not self.__success:
             raise DiscError(self.__get_error_msg())
         return self.__success
 
+    _lib.discid_get_id.argtypes = (c_void_p, )
+    _lib.discid_get_id.restype = c_char_p
     def get_id(self):
         if self.__success:
-            c_return = c_char_p(_lib.discid_get_id(self.__handle))
-            return _decode(c_return.value)
+            result = _lib.discid_get_id(self.__handle)
+            return _decode(result)
         else:
             return None
 
+    _lib.discid_free.argtypes = (c_void_p, )
     def free(self):
         _lib.discid_free(self.__handle)
         self.__handle = None
