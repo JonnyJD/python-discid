@@ -20,11 +20,12 @@ from ctypes.util import find_library
 
 
 _version = "0.2.0-beta"
+_base_name = "discid"
 
-def __find_library():
-    windows_names = ["discid.dll", "libdiscid.dll", "libdiscid-0.dll"]
+def __find_library(name):
+    windows_names = ["%s.dll" % name, "lib%s.dll" % name, "lib%s-0.dll" % name]
 
-    lib_file = find_library("discid")
+    lib_file = find_library(name)
 
     if lib_file is None and sys.platform == "win32":
         for lib_name in windows_names:
@@ -35,18 +36,18 @@ def __find_library():
         return lib_file
     else:
         if sys.platform.startswith == "linux":
-            return "libdiscid.so.0"
+            return "lib%s.so.0" % name
         elif sys.platform == "darwin":
-            return "libdiscid.0.dylib"
+            return "lib%s.0.dylib" % name
         elif sys.platform == "cygwin":
-            return "cygdiscid-0.dll"
+            return "cyg%name-0.dll" % name
         elif sys.platform == "win32":
             for lib_name in windows_names:
                 if os.path.isfile(lib_name):
                     return lib_name
-            return "discid.dll"
+            return "%s.dll" % name
         else:
-            return "libdiscid.so.0"
+            return "lib%s.so.0" % name
 
 def __open_library(lib_name=None):
     if lib_name is None:
@@ -59,7 +60,7 @@ def __open_library(lib_name=None):
     except OSError as e:
         raise ImportError(e)
 
-_lib_name = __find_library()
+_lib_name = __find_library(_base_name)
 _lib = __open_library(_lib_name)
 
 
