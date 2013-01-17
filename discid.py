@@ -79,9 +79,11 @@ def _decode(byte_string):
 
 _lib.discid_get_default_device.argtypes = ()
 _lib.discid_get_default_device.restype = c_char_p
-def get_default_device():
+def __get_default_device():
     device = _lib.discid_get_default_device()
     return _decode(device)
+
+DEFAULT_DEVICE = __get_default_device()
 
 class DiscError(IOError):
     pass

@@ -9,11 +9,11 @@ def recommended_example():
     with discid.DiscId() as disc:
         disc.read()       # use default device
         print("id: %s" % disc.id)
-        print("used %s as device" % discid.get_default_device())
+        print("used %s as device" % discid.DEFAULT_DEVICE)
 
 def other_example():
     disc = discid.DiscId()
-    device = discid.get_default_device()
+    device = discid.DEFAULT_DEVICE()
     disc.read("/dev/cdrom")
     #print "id: %s" % disc.id # Python 2
     print("id: %s" % disc.id) # Python 3

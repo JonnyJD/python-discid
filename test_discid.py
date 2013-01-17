@@ -5,7 +5,7 @@
 import sys
 import discid
 
-device = discid.get_default_device()
+device = discid.DEFAULT_DEVICE
 print("default device: %s" % device)
 if device is None or len(device) == 0:
     sys.exit("error: device not set")
