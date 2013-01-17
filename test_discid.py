@@ -10,6 +10,12 @@ print("default device: %s" % device)
 if device is None or len(device) == 0:
     sys.exit("error: device not set")
 
+disc = discid.DiscId()
+if disc is None:
+    sys.exit("error: disc object not created")
+
+disc.free()
+
 print("All tests successfull")
 
 

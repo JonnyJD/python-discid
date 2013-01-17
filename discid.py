@@ -77,6 +77,7 @@ def _decode(byte_string):
     return byte_string.decode()
 
 
+_lib.discid_get_default_device.argtypes = ()
 _lib.discid_get_default_device.restype = c_char_p
 def get_default_device():
     device = _lib.discid_get_default_device()
@@ -88,6 +89,7 @@ class DiscError(IOError):
 
 class DiscId(object):
 
+    _lib.discid_new.argtypes = ()
     _lib.discid_new.restype = c_void_p
     def __init__(self):
         self.__handle = c_void_p(_lib.discid_new())
@@ -127,6 +129,7 @@ class DiscId(object):
             return None
 
     _lib.discid_free.argtypes = (c_void_p, )
+    _lib.discid_free.restype = None
     def free(self):
         _lib.discid_free(self.__handle)
         self.__handle = None
