@@ -121,12 +121,14 @@ class DiscId(object):
 
     _lib.discid_get_id.argtypes = (c_void_p, )
     _lib.discid_get_id.restype = c_char_p
-    def get_id(self):
+    def __get_id(self):
         if self.__success:
             result = _lib.discid_get_id(self.__handle)
             return _decode(result)
         else:
             return None
+
+    id = property(__get_id, None, None, "MusicBrainz DiscId")
 
     _lib.discid_free.argtypes = (c_void_p, )
     _lib.discid_free.restype = None
