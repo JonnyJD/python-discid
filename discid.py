@@ -12,10 +12,15 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Python binding of Libdiscid
+
+Libdiscid is a library to calculate MusicBrainz DiscIds
+"""
 
 import os
 import sys
-from ctypes import *
+import ctypes
+from ctypes import c_int, c_void_p, c_char_p
 from ctypes.util import find_library
 
 
@@ -56,7 +61,7 @@ def __open_library(lib_name=None):
         _lib_name = lib_name
     assert _lib_name is not None
     try:
-        return cdll.LoadLibrary(_lib_name)
+        return ctypes.cdll.LoadLibrary(_lib_name)
     except OSError as e:
         raise ImportError(e)
 
