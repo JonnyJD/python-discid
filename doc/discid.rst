@@ -6,6 +6,7 @@ discid Module
 
 
 .. autodata:: DEFAULT_DEVICE
+   :novalue:
 
 .. autoclass:: DiscId
    :members:

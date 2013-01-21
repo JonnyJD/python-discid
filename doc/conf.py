@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath('..'))       # for the code
 
 # -- General configuration -----------------------------------------------------
 
-extensions = ['sphinx.ext.autodoc']
+extensions = ['sphinx.ext.autodoc', 'ext.data_doc']
 source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = ['_build']
