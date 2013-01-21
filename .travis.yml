@@ -9,4 +9,4 @@ before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq libdiscid0
 install: python setup.py build
-script: ./test_discid.py
+script: python setup.py test
