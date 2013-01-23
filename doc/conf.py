@@ -64,3 +64,11 @@ texinfo_documents = [
 
 texinfo_domain_indices = False
 
+# -- Mock libdiscid loading ----------------------------------------------------
+
+class Mock(object):
+    def __call__(self, *args): return Mock()
+    def __getattr__(cls, name): return Mock()
+
+import ctypes
+ctypes.cdll.LoadLibrary = Mock()
