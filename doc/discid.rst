@@ -1,5 +1,5 @@
-discid Module
-=============
+discid API
+==========
 
 .. automodule:: discid
    :synopsis: Python binding of Libdiscid

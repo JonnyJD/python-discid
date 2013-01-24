@@ -3,9 +3,13 @@ import sys, os
 sys.path.insert(0, os.path.abspath('.'))        # for extensions
 sys.path.insert(0, os.path.abspath('..'))       # for the code
 
+# to gather version information
+import discid
 # -- General configuration -----------------------------------------------------
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage', 'ext.data_doc']
+needs_sphinx = "1.0"
+
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.extlinks', 'ext.data_doc']
 source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = ['_build']
@@ -14,13 +18,29 @@ exclude_patterns = ['_build']
 project = u'python-discid'
 copyright = u'2013, Johannes Dewender'
 # The short X.Y version.
-version = '0.2'
+version = ".".join(discid._version.split(".")[0:2])
 # The full version, including alpha/beta/rc tags.
-release = '0.2.0dev'
+release = discid._version
+
+libdiscid = '0.3.0'
+
+download_base = "https://github.com/JonnyJD/python-discid/archive"
+if release.endswith("dev"):
+    download_url = "%s/master.%%s" % download_base
+else:
+    download_url = "%s/v%s.%%s" % (download_base, release)
+
+extlinks = {
+  'source_download': (download_url, ''),
+  'issue': ('https://github.com/JonnyJD/python-discid/issues/%s', 'issue '),
+  'libdiscid_download':
+    ('https://github.com/metabrainz/libdiscid/archive/v%s.%%s' % libdiscid, ''),
+}
 
 # -- Options for HTML output ---------------------------------------------------
 
 html_theme = 'default'
+html_title = "%s %s documentation" % (project, version)
 html_domain_indices = False
 
 # -- Options for LaTeX output --------------------------------------------------

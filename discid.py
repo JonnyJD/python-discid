@@ -12,6 +12,9 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Please submit bug reports to Github:
+# https://github.com/JonnyJD/python-discid/issues
 """Python binding of Libdiscid
 
 Libdiscid is a library to calculate MusicBrainz DiscIds
@@ -24,7 +27,7 @@ from ctypes import c_int, c_void_p, c_char_p
 from ctypes.util import find_library
 
 
-_version = "0.2.0-beta"
+_version = "0.2.0dev"
 _base_name = "discid"
 
 def __find_library(name):

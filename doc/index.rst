@@ -1,16 +1,28 @@
-.. python-discid documentation master file, created by
-   sphinx-quickstart2 on Mon Jan 14 06:01:48 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+python-discid |version|
+=======================
 
-Welcome to python-discid's documentation!
-=========================================
+**python-discid** is a Python binding of Libdiscid_ by MusicBrainz.
 
-Contents:
+The main purpose is the calculation of identifiers for audio discs
+to use for the MusicBrainz database.
+
+This module is released under the
+`GNU Lesser General Public Licens Version 3
+<http://www.gnu.org/licenses/lgpl.html>`_ (or later) and
+the code repository and the bug tracker are at Github_.
+
+
+.. _Libdiscid: http://musicbrainz.org/doc/libdiscid
+.. _Github: https://github.com/JonnyJD/python-discid
+
+Contents
+========
 
 .. toctree::
    :maxdepth: 2
 
+   install
+   usage
    discid
 
 
