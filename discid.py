@@ -27,7 +27,7 @@ from ctypes import c_int, c_void_p, c_char_p
 from ctypes.util import find_library
 
 
-_version = "0.2.0dev"
+_version = "0.2-dev"
 _base_name = "discid"
 
 def __find_library(name):

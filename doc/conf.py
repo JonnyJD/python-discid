@@ -27,17 +27,20 @@ exclude_patterns = ['_build']
 # General information about the project.
 project = u'python-discid'
 copyright = u'2013, Johannes Dewender'
-# The short X.Y version.
-version = ".".join(discid._version.split(".")[0:2])
+# The short X.Y version / base version
+version = discid._version.split("-")[0]
 # The full version, including alpha/beta/rc tags.
 release = discid._version
+# see below for "current" = base version with "-dev" appended if necessary
 
 libdiscid = '0.3.0'
 
 download_base = "https://github.com/JonnyJD/python-discid/archive"
 if release.endswith("dev"):
+    current = "%s-dev" % version
     download_url = "%s/master.%%s" % download_base
 else:
+    current = version
     download_url = "%s/v%s.%%s" % (download_base, release)
 
 extlinks = {
@@ -47,10 +50,14 @@ extlinks = {
     ('https://github.com/metabrainz/libdiscid/archive/v%s.%%s' % libdiscid, ''),
 }
 
+rst_epilog = """
+.. |current| replace:: %s
+""" % current
+
 # -- Options for HTML output ---------------------------------------------------
 
 html_theme = 'default'
-html_title = "%s %s documentation" % (project, version)
+html_title = "%s %s documentation" % (project, current)
 html_domain_indices = False
 
 # -- Options for LaTeX output --------------------------------------------------

@@ -1,4 +1,4 @@
-python-discid |version|
+python-discid |current|
 =======================
 
 **python-discid** is a Python binding of Libdiscid_ by MusicBrainz.
