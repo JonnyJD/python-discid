@@ -3,7 +3,7 @@
 import sys
 import unittest
 from distutils.core import setup, Command
-from discid import _version
+from discid import _VERSION
 
 
 class Test(Command):
@@ -43,7 +43,7 @@ class Test(Command):
 
 
 setup(name="discid",
-        version=_version,
+        version=_VERSION,
         description="Python binding of Libdiscid",
         long_description=open("README.rst").read(),
         author="Johannes Dewender",

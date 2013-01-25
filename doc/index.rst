@@ -7,7 +7,7 @@ The main purpose is the calculation of identifiers for audio discs
 to use for the MusicBrainz database.
 
 This module is released under the
-`GNU Lesser General Public Licens Version 3
+`GNU Lesser General Public License Version 3
 <http://www.gnu.org/licenses/lgpl.html>`_ (or later) and
 the code repository and the bug tracker are at Github_.
 

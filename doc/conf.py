@@ -28,9 +28,9 @@ exclude_patterns = ['_build']
 project = u'python-discid'
 copyright = u'2013, Johannes Dewender'
 # The short X.Y version / base version
-version = discid._version.split("-")[0]
+version = discid._VERSION.split("-")[0]
 # The full version, including alpha/beta/rc tags.
-release = discid._version
+release = discid._VERSION
 # see below for "current" = base version with "-dev" appended if necessary
 
 libdiscid = '0.3.0'
