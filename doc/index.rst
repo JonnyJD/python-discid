@@ -24,6 +24,7 @@ Contents
    install
    usage
    discid
+   CHANGES
 
 
 
