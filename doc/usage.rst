@@ -4,7 +4,8 @@ Usage
 Basic
 -----
 
-It is recommended to use :class:`DiscId <discid.DiscId>` like this::
+It is recommended to use :class:`DiscId <discid.DiscId>`
+together with the `with`_ statement::
 
  # this will load libdiscid
  import discid
@@ -31,3 +32,5 @@ see :func:`DiscId.read <discid.DiscId.read>`.
 
 When anything goes wrong reading from the device,
 :exc:`DiscError <discid.DiscError>` is raised.
+
+.. _with: http://docs.python.org/2.7/reference/compound_stmts.html#with

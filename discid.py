@@ -145,7 +145,7 @@ class DiscId(object):
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, value, traceback):
+    def __exit__(self, exc_type, exc_value, traceback):
         self.free()
 
 

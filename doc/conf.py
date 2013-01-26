@@ -19,7 +19,11 @@ import discid
 
 needs_sphinx = "1.0"
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.extlinks', 'ext.data_doc']
+extensions = [
+    'sphinx.ext.autodoc', 'sphinx.ext.coverage',
+    'sphinx.ext.extlinks', 'sphinx.ext.intersphinx',
+    'ext.data_doc'
+]
 source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = ['_build']
@@ -50,6 +54,11 @@ extlinks = {
     ('https://github.com/metabrainz/libdiscid/archive/v%s.%%s' % libdiscid, ''),
 }
 
+intersphinx_mapping = {
+  'python': ('http://python.readthedocs.org/en/latest/', None),
+  'musicbrainzngs':
+    ('http://python-musicbrainz-ngs.readthedocs.org/en/latest/', None),
+}
 rst_epilog = """
 .. |current| replace:: %s
 """ % current
