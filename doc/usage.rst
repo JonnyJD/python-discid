@@ -4,8 +4,7 @@ Usage
 Basic
 -----
 
-It is recommended to use :class:`DiscId <discid.DiscId>`
-together with the `with`_ statement::
+It is recommended to use :class:`DiscId` together with the `with`_ statement::
 
  # this will load libdiscid
  import discid
@@ -17,8 +16,7 @@ together with the `with`_ statement::
 
 This will make sure the internal object is removed afterwards.
 
-If you don't use *with*,
-then you have to use :func:`DiscId.free <discid.DiscId.free>`::
+If you don't use *with*, then you have to use :func:`DiscId.free`::
 
  disc = discid.DiscId()
  device = discid.DEFAULT_DEVICE()
@@ -27,10 +25,8 @@ then you have to use :func:`DiscId.free <discid.DiscId.free>`::
  disc.free()
  # disc can't be used anymore
 
-You can use other devices of course:
-see :func:`DiscId.read <discid.DiscId.read>`.
+You can use other devices of course: see :func:`DiscId.read`.
 
-When anything goes wrong reading from the device,
-:exc:`DiscError <discid.DiscError>` is raised.
+When anything goes wrong reading from the device, :exc:`DiscError` is raised.
 
 .. _with: http://docs.python.org/2.7/reference/compound_stmts.html#with

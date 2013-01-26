@@ -59,6 +59,11 @@ intersphinx_mapping = {
   'musicbrainzngs':
     ('http://python-musicbrainz-ngs.readthedocs.org/en/latest/', None),
 }
+
+rst_prolog = """
+.. currentmodule:: discid
+"""
+
 rst_epilog = """
 .. |current| replace:: %s
 """ % current
