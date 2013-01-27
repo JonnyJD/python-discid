@@ -1,2 +1,5 @@
-include README.rst COPYING COPYING.LESSER
+include README.rst CHANGES.rst COPYING COPYING.LESSER
 include examples.py
+recursive-include doc *.rst
+include doc/conf.py doc/Makefile
+recursive-include doc/ext *.py
