@@ -17,9 +17,14 @@ you might find **python-discid** in a repository used by your package manager.
 These packages are known:
 
  * Arch Linux:
-   `AUR <https://aur.archlinux.org/packages/python-discid/>`_
+   AUR (
+   `Python 2 <https://aur.archlinux.org/packages/python2-discid/>`_,
+   `Python 3 <https://aur.archlinux.org/packages/python-discid/>`_
+   )
  * openSUSE:
    `software.opensuse.org <http://software.opensuse.org/package/python-discid>`_
+ * Ubuntu:
+   `PPA <https://launchpad.net/~jonnyjd/+archive/python-discid>`_
 
 Your package manager will also handle the *libdiscid* dependency automatically.
 
