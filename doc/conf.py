@@ -39,6 +39,8 @@ release = discid._VERSION
 
 libdiscid = '0.3.0'
 
+autoclass_content = "both"      # include class and __init__ docstrings
+
 download_base = "https://github.com/JonnyJD/python-discid/archive"
 if release.endswith("dev"):
     current = "%s-dev" % version
@@ -52,11 +54,13 @@ extlinks = {
   'issue': ('https://github.com/JonnyJD/python-discid/issues/%s', 'issue '),
   'libdiscid_download':
     ('https://github.com/metabrainz/libdiscid/archive/v%s.%%s' % libdiscid, ''),
+  'musicbrainz': ('http://musicbrainz.org/doc/%s', ''),
 }
 
+# there seems to be no way to prefer latest python documentation
 intersphinx_mapping = {
-  'python2': ('http://python.readthedocs.org/en/v2.7.2/', None),
   'python': ('http://python.readthedocs.org/en/latest/', None),
+  'python2': ('http://python.readthedocs.org/en/v2.7.2/', None),
   'musicbrainzngs':
     ('http://python-musicbrainz-ngs.readthedocs.org/en/latest/', None),
 }
