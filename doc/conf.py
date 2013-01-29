@@ -55,6 +55,7 @@ extlinks = {
 }
 
 intersphinx_mapping = {
+  'python2': ('http://python.readthedocs.org/en/v2.7.2/', None),
   'python': ('http://python.readthedocs.org/en/latest/', None),
   'musicbrainzngs':
     ('http://python-musicbrainz-ngs.readthedocs.org/en/latest/', None),
