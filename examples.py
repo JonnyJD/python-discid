@@ -13,7 +13,7 @@ def recommended_example():
 
 def other_example():
     disc = discid.DiscId()
-    device = discid.DEFAULT_DEVICE()
+    device = discid.DEFAULT_DEVICE
     disc.read("/dev/cdrom")
     #print "id: %s" % disc.id # Python 2
     print("id: %s" % disc.id) # Python 3
