@@ -17,7 +17,11 @@
 # https://github.com/JonnyJD/python-discid/issues
 """Python binding of Libdiscid
 
-Libdiscid is a library to calculate MusicBrainz DiscIds
+Libdiscid is a library to calculate MusicBrainz Disc IDs.
+This module provides a python-like API for that functionality.
+
+The user is expected to create a :class:`DiscId` object,
+feed it with some type of TOC and extract the generated information.
 """
 
 import os
@@ -30,7 +34,10 @@ from ctypes.util import find_library
 _VERSION = "0.2-dev"
 _BASE_NAME = "discid"
 
+
 def __find_library(name):
+    """Find a library by base-name
+    """
     windows_names = ["%s.dll" % name, "lib%s.dll" % name, "lib%s-0.dll" % name]
 
     lib_file = find_library(name)
@@ -58,6 +65,8 @@ def __find_library(name):
     return lib_file
 
 def __open_library(lib_name):
+    """Open a library by name or location
+    """
     try:
         return ctypes.cdll.LoadLibrary(lib_name)
     except OSError as err:
@@ -68,6 +77,8 @@ _LIB = __open_library(_LIB_NAME)
 
 
 def _encode(string):
+    """Encode (unicode) string to byte string
+    """
     try:
         return string.encode()
     except AttributeError:
@@ -77,27 +88,47 @@ def _encode(string):
     # device names should be ascii
 
 def _decode(byte_string):
+    """Decode byte string to (unicode) string
+    """
     return byte_string.decode()
 
 
 _LIB.discid_get_default_device.argtypes = ()
 _LIB.discid_get_default_device.restype = c_char_p
 def __get_default_device():
+    """Get the default device for the platform
+    """
     device = _LIB.discid_get_default_device()
-    return _decode(device)
+    if type(device) == type(b"test"):
+        return _decode(device)
+    else:
+        # probably Mocked for sphinx
+        return None
 
-#: default cd drive
 DEFAULT_DEVICE = __get_default_device()
+"""The default device to use for :func:`DiscId.read` on this platform
+given as a :obj:`unicode` or :obj:`str <python:str>` object.
+"""
 
 class DiscError(IOError):
+    """:func:`DiscId.read` will raise this exception when an error occured.
+    An error string (:obj:`unicode`/:obj:`str <python:str>`) is provided.
+    """
     pass
 
 
 class DiscId(object):
+    """The main class of this module.
+    After initialization you should use :func:`read` before getting
+    any data from an object of this class.
+    """
 
     _LIB.discid_new.argtypes = ()
     _LIB.discid_new.restype = c_void_p
     def __init__(self):
+        """The initialization will reserve some memory
+        for internal data structures.
+        """
         self.__handle = c_void_p(_LIB.discid_new())
         self.__success = False
         assert self.__handle.value is not None
@@ -111,6 +142,8 @@ class DiscId(object):
     _LIB.discid_get_error_msg.argtypes = (c_void_p, )
     _LIB.discid_get_error_msg.restype = c_char_p
     def __get_error_msg(self):
+        """Get the error message for the last error with the object.
+        """
         error = _LIB.discid_get_error_msg(self.__handle)
         return _decode(error)
 
@@ -118,6 +151,12 @@ class DiscId(object):
     _LIB.discid_read.argtypes = (c_void_p, c_char_p)
     _LIB.discid_read.restype = c_int
     def read(self, device=None):
+        """Reads the TOC from the device given as string.
+
+        That string can be either of:
+        :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
+        However, it should in no case contain non-ASCII characters.
+        """
         # device = None will use the default device (internally)
         result = _LIB.discid_read(self.__handle, _encode(device)) == 1
         self.__success = result
@@ -128,6 +167,8 @@ class DiscId(object):
     _LIB.discid_get_id.argtypes = (c_void_p, )
     _LIB.discid_get_id.restype = c_char_p
     def __get_id(self):
+        """Gets the current MusicBrainz DiscId
+        """
         if self.__success:
             result = _LIB.discid_get_id(self.__handle)
             return _decode(result)
@@ -135,10 +176,21 @@ class DiscId(object):
             return None
 
     id = property(__get_id, None, None, "MusicBrainz DiscId")
+    """This is the MusicBrainz :musicbrainz:`Disc ID`.
+
+    It is set after a successfull :func:`read` or :obj:`None`.
+    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
 
     _LIB.discid_free.argtypes = (c_void_p, )
     _LIB.discid_free.restype = None
     def free(self):
+        """This will free the internal allocated memory for the object.
+        You can't use this object anymore afterwards.
+
+        Please consider using the :keyword:`with` statement for the object,
+        which will take care of this destruction automatically.
+        """
         _LIB.discid_free(self.__handle)
         self.__handle = None
     
