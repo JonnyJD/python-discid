@@ -21,8 +21,12 @@ class TestClass(unittest.TestCase):
         self.disc = discid.DiscId()
         self.assertTrue(self.disc, "No DiscId object created")
 
-    def runTest(self):
-        pass
+    def test_invalid_device(self):
+        device = "non_existing_device"
+        self.assertRaises(discid.DiscError, self.disc.read, device)
+
+    def test_empty_id(self):
+        self.assertTrue(self.disc.id is None)
 
     def tearDown(self):
         self.disc.free()
