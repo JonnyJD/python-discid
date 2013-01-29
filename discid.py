@@ -109,7 +109,7 @@ class DiscId(object):
             return ""
 
     _LIB.discid_get_error_msg.argtypes = (c_void_p, )
-    _LIB.discid_get_error_msg.resype = c_char_p
+    _LIB.discid_get_error_msg.restype = c_char_p
     def __get_error_msg(self):
         error = _LIB.discid_get_error_msg(self.__handle)
         return _decode(error)
