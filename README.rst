@@ -1,6 +1,9 @@
 Libdiscid Python bindings
 -------------------------
 
+**important note**:
+The API is still in development and might change until 1.0.0!
+
 Python-discid implements Python bindings for MusicBrainz Libdiscid. This
 module works with Python >= 2.6, including Python 3.
 

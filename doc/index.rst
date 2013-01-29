@@ -1,6 +1,9 @@
 python-discid |current|
 =======================
 
+.. warning::
+   The API is still in development and might change until 1.0.0!
+
 **python-discid** is a Python binding of Libdiscid_ by MusicBrainz.
 
 The main purpose is the calculation of identifiers for audio discs
