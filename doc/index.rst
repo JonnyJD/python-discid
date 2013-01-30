@@ -16,7 +16,7 @@ This module is released under the
 the code repository and the bug tracker are at Github_.
 
 If you are interested in a binding for the MusciBrainz Web Service,
-you might be interested in `python-musicbrainz-ngs`.
+you might be interested in `python-musicbrainz-ngs`_.
 
 
 .. _Github: https://github.com/JonnyJD/python-discid
