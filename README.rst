@@ -33,8 +33,8 @@ Usage
 
     with DiscId() as disc:
         disc.read("/dev/cdrom")
-        print "id: %s" % disc.get_id()  # Python 2
-        print("id: %s" % disc.get_id()) # Python 3
+        print "id: %s" % disc.id  # Python 2
+        print("id: %s" % disc.id) # Python 3
 
 See also examples.py.
 
