@@ -10,6 +10,7 @@ def recommended_example():
         disc.read()       # use default device
         print("id: %s" % disc.id)
         print("used %s as device" % discid.DEFAULT_DEVICE)
+        print("submit with:\n%s" % disc.submission_url)
 
 def other_example():
     disc = discid.DiscId()

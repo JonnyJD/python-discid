@@ -52,6 +52,9 @@ class TestClass(unittest.TestCase):
     def test_empty_id(self):
         self.assertTrue(self.disc.id is None)
 
+    def test_empty_submission_url(self):
+        self.assertTrue(self.disc.submission_url is None)
+
     def tearDown(self):
         self.disc.free()
 

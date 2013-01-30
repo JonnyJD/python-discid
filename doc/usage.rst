@@ -14,6 +14,7 @@ with the :keyword:`with` statement::
      print("device: %s" % discid.DEFAULT_DEVICE)
      disc.read()        # reads from default device
      print("id: %s" % disc.id)
+     print("submission url:\n%s" % disc.submission_url)
 
 This will make sure the internal object is removed afterwards.
 

@@ -182,6 +182,27 @@ class DiscId(object):
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
+    _LIB.discid_get_submission_url.argtypes = (c_void_p, )
+    _LIB.discid_get_submission_url.restype = c_char_p
+    def __get_submission_url(self):
+        """Give an URL to submit the current TOC
+        as a new Disc ID to MusicBrainz.
+        """
+        if self.__success:
+            result = _LIB.discid_get_submission_url(self.__handle)
+            return _decode(result)
+        else:
+            return None
+
+    submission_url = property(__get_submission_url, None, None,
+                              "Disc ID / TOC Submission URL for MusicBrainz")
+    """With this url you can submit the current TOC
+    as a new MusicBrainz :musicbrainz:`Disc ID`.
+
+    If there was no successfull :fucn:`read` the url is :obj:`None`.
+    Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
     _LIB.discid_free.argtypes = (c_void_p, )
     _LIB.discid_free.restype = None
     def free(self):
