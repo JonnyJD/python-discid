@@ -31,7 +31,7 @@ from ctypes import c_int, c_void_p, c_char_p
 from ctypes.util import find_library
 
 
-_VERSION = "0.2.0"
+_VERSION = "0.2.1"
 _BASE_NAME = "discid"
 
 

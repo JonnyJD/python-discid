@@ -7,7 +7,6 @@ import unittest
 
 import discid
 
-
 class TestModulePrivate(unittest.TestCase):
 
     # lots of encoding tests, because that is quite different in Python 2/3
@@ -16,7 +15,7 @@ class TestModulePrivate(unittest.TestCase):
         self.assertEqual(discid._encode("test"), b"test")
 
     def test_decode(self):
-        self.assertTrue(type(discid._decode(b"test")) is type(u"test"))
+        self.assertTrue(type(discid._decode(b"test")) is type(b"test".decode()))
         self.assertEqual(discid._decode(b"test"), "test")
 
     def test_encoding(self):
@@ -44,7 +43,7 @@ class TestClass(unittest.TestCase):
         self.assertRaises(discid.DiscError, self.disc.read, device)
 
     def test_device_encoding(self):
-        device = u"non_existing_device"
+        device = b"non_existing_device".decode()
         self.assertRaises(discid.DiscError, self.disc.read, device)
         devicebytes = b"non_existing_device"
         self.assertRaises(discid.DiscError, self.disc.read, devicebytes)

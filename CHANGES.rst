@@ -1,8 +1,13 @@
 Changelog
 =========
 
+Changes in 0.2.1 (2013-01-30):
+------------------------------
+
+ * fix :issue:`9`: test fails on Python 3.2 because of unicode literals
+
 Changes in 0.2.0 (2013-01-30):
----------------------
+------------------------------
 
  * API change from :func:`DiscId.get_id` to :attr:`DiscId.id`
  * added :data:`DEFAULT_DEVICE` as a module constant

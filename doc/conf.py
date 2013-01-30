@@ -51,7 +51,7 @@ else:
 
 extlinks = {
   'source_download': (download_url, ''),
-  'issue': ('https://github.com/JonnyJD/python-discid/issues/%s', 'issue '),
+  'issue': ('https://github.com/JonnyJD/python-discid/issues/%s', '#'),
   'libdiscid_download':
     ('https://github.com/metabrainz/libdiscid/archive/v%s.%%s' % libdiscid, ''),
   'musicbrainz': ('http://musicbrainz.org/doc/%s', ''),
