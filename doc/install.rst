@@ -4,7 +4,7 @@ Download and Installation
 Dependencies
 ------------
 
-**python-discid** works with Python >= 2.6, including current Python 3.
+**python-discid** works with Python 2 >= 2.6, or Python 3 >= 3.1.
 
 The module :mod:`discid` cannot be imported without `Libdiscid`_ installed.
 
