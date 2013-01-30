@@ -119,8 +119,6 @@ class DiscError(IOError):
 
 class DiscId(object):
     """The main class of this module.
-    After initialization you should use :func:`read` before getting
-    any data from an object of this class.
     """
 
     _LIB.discid_new.argtypes = ()
@@ -156,6 +154,8 @@ class DiscId(object):
         That string can be either of:
         :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
         However, it should in no case contain non-ASCII characters.
+
+        A :exc:`DiscError` exception is raised when the reading fails.
         """
         # device = None will use the default device (internally)
         result = _LIB.discid_read(self.__handle, _encode(device)) == 1
@@ -199,7 +199,7 @@ class DiscId(object):
     """With this url you can submit the current TOC
     as a new MusicBrainz :musicbrainz:`Disc ID`.
 
-    If there was no successfull :fucn:`read` the url is :obj:`None`.
+    If there was no successfull :func:`read` the url is :obj:`None`.
     Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
