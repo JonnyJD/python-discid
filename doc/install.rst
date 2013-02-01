@@ -18,13 +18,17 @@ These packages are known:
 
  * Arch Linux:
    AUR (
-   `Python 2 <https://aur.archlinux.org/packages/python2-discid/>`_,
-   `Python 3 <https://aur.archlinux.org/packages/python-discid/>`_
+   `Arch Python 2 <https://aur.archlinux.org/packages/python2-discid/>`_,
+   `Arch Python 3 <https://aur.archlinux.org/packages/python-discid/>`_
    )
  * openSUSE:
-   `software.opensuse.org <http://software.opensuse.org/package/python-discid>`_
+   software.opensuse.org (
+   `SuSE Python 2 <http://software.opensuse.org/package/python-discid>`_,
+   `SuSE Python 3 <http://software.opensuse.org/package/python3-discid>`_
+   )
  * Ubuntu:
    `PPA <https://launchpad.net/~jonnyjd/+archive/python-discid>`_
+   ( both )
 
 Your package manager will also handle the *libdiscid* dependency automatically.
 
