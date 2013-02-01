@@ -31,14 +31,16 @@ from ctypes import c_int, c_void_p, c_char_p
 from ctypes.util import find_library
 
 
-_VERSION = "0.2.1"
-_BASE_NAME = "discid"
+_VERSION = "0.3.0-dev"
+_LIB_BASE_NAME = "discid"
+_LIB_MAJOR_VERSION = 0
 
 
-def __find_library(name):
-    """Find a library by base-name
+def __find_library(name, version=0):
+    """Find a library by base-name and major version
     """
-    windows_names = ["%s.dll" % name, "lib%s.dll" % name, "lib%s-0.dll" % name]
+    windows_names = ["%s.dll" % name, "lib%s.dll" % name,
+                     "lib%s-%d.dll" % (name, version)]
 
     lib_file = find_library(name)
 
@@ -49,11 +51,11 @@ def __find_library(name):
 
     if lib_file is None:
         if sys.platform.startswith == "linux":
-            lib_file = "lib%s.so.0" % name
+            lib_file = "lib%s.so.%d" % (name, version)
         elif sys.platform == "darwin":
-            lib_file = "lib%s.0.dylib" % name
+            lib_file = "lib%s.%d.dylib" % (name, version)
         elif sys.platform == "cygwin":
-            lib_file = "cyg%s-0.dll" % name
+            lib_file = "cyg%s-%d.dll" % (name, version)
         elif sys.platform == "win32":
             for lib_name in windows_names:
                 if os.path.isfile(lib_name):
@@ -61,7 +63,7 @@ def __find_library(name):
                     break
             lib_file = "%s.dll" % name
         else:
-            lib_file = "lib%s.so.0" % name
+            lib_file = "lib%s.so.%d" % (name, version)
     return lib_file
 
 def __open_library(lib_name):
@@ -72,7 +74,7 @@ def __open_library(lib_name):
     except OSError as err:
         raise ImportError(err)
 
-_LIB_NAME = __find_library(_BASE_NAME)
+_LIB_NAME = __find_library(_LIB_BASE_NAME, _LIB_MAJOR_VERSION)
 _LIB = __open_library(_LIB_NAME)
 
 
