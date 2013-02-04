@@ -166,6 +166,27 @@ class DiscId(object):
             raise DiscError(self.__get_error_msg())
         return self.__success
 
+    _LIB.discid_put.argtypes = (c_void_p, c_int, c_int, c_void_p)
+    _LIB.discid_put.restype = c_int
+    # TODO: test if input is valid (int rather than string, ...)
+    def put(self, first, last, offsets):
+        """Creates a TOC based on the offsets given.
+
+        Takes the *first* and *last* **audio** tracks as :obj:`int` and
+        *offsets* is supposed to be the same as :attr:`track_offsets`.
+        That is: ``offsets[0]`` are the total number of sectors
+        and the following are the offsets of each track.
+        """
+        c_offsets = (c_int * len(offsets))(*tuple(offsets))
+        result = _LIB.discid_put(self.__handle, first, last, c_offsets) == 1
+        self.__success = result
+        if not self.__success:
+            # TODO: should that be the same Exception as for read()?
+            # should that be TOCError?
+            raise DiscError(self.__get_error_msg())
+        return self.__success
+
+
     _LIB.discid_get_id.argtypes = (c_void_p, )
     _LIB.discid_get_id.restype = c_char_p
     def __get_id(self):
@@ -177,11 +198,71 @@ class DiscId(object):
         else:
             return None
 
+    _LIB.discid_get_first_track_num.argtypes = (c_void_p, )
+    _LIB.discid_get_first_track_num.restype = c_int
+    def __get_first_track_num(self):
+        """Gets the first track number
+        """
+        return _LIB.discid_get_first_track_num(self.__handle)
+
+    _LIB.discid_get_last_track_num.argtypes = (c_void_p, )
+    _LIB.discid_get_last_track_num.restype = c_int
+    def __get_last_track_num(self):
+        """Gets the last track number
+        """
+        return _LIB.discid_get_last_track_num(self.__handle)
+
+    _LIB.discid_get_sectors.argtypes = (c_void_p, )
+    _LIB.discid_get_sectors.restype = c_int
+    def __get_sectors(self):
+        """Gets the total number of sectors on the disc
+        """
+        return _LIB.discid_get_sectors(self.__handle)
+
+    _LIB.discid_get_track_offset.argtypes = (c_void_p, c_int)
+    _LIB.discid_get_track_offset.restype = c_int
+    def __get_track_offset(self, track_number):
+        """Gets the offset for a specific track
+        """
+        return _LIB.discid_get_track_offset(self.__handle, track_number)
+
+    def __get_track_offsets(self):
+        """Generates the list of offsets,
+        starting with the total number of sectors
+        """
+        offsets = []
+        offsets.append(self.sectors)
+        for track_number in range(self.first_track_num,
+                                  self.last_track_num + 1):
+            offset = self.__get_track_offset(track_number)
+            offsets.append(offset)
+        return offsets
+
+
     id = property(__get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
 
     It is set after a successfull :func:`read` or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
+    last_track_num = property(__get_last_track_num, None, None,
+                              "Number of the last track")
+
+    first_track_num = property(__get_first_track_num, None, None,
+                              "Number of the first track")
+
+    sectors = property(__get_sectors, None, None,
+                              "Total sector count")
+
+    track_offsets = property(__get_track_offsets, None, None,
+                              "List of offsets, track_offsets[0] == sectors")
+    """A list of all track offsets.
+
+    The first element is the leadout track
+    and contains the total number of sectors on the disc.
+    The following elements are the offsets for all **audio** tracks.
+    ``track_offsets[i]`` is the offset for the i-th track (as :obj:`int`).
     """
 
     _LIB.discid_get_submission_url.argtypes = (c_void_p, )

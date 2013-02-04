@@ -54,6 +54,31 @@ class TestClass(unittest.TestCase):
     def test_empty_submission_url(self):
         self.assertTrue(self.disc.submission_url is None)
 
+    def test_put_fail(self):
+        # it will only fail because first > last
+        first = 15
+        last = 1
+        offsets = [258725, 150, 17510, 33275, 45910] # also wrong
+        self.assertRaises(discid.DiscError, self.disc.put, first, last, offsets)
+
+    def test_put_success(self):
+        first = 1
+        last = 15
+        offsets = [258725, 150, 17510, 33275, 45910,
+                   57805, 78310, 94650,109580, 132010,
+                   149160, 165115, 177710, 203325, 215555, 235590]
+        # Guano Apes - Don't give Me Names, without the last data track
+        disc_id = "TqvKjMu7dMliSfmVEBtrL7sBSno-"
+        self.disc.put(first, last, offsets)
+        self.assertEquals(self.disc.id, disc_id)
+
+        # check idempotence (use output again as input)
+        first = self.disc.first_track_num
+        last = self.disc.last_track_num
+        offsets = self.disc.track_offsets
+        self.disc.put(first, last, offsets)
+        self.assertEquals(self.disc.id, disc_id)
+
     def tearDown(self):
         self.disc.free()
 

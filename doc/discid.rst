@@ -20,17 +20,22 @@ feed it with some type of TOC and extract the generated information.
    :undoc-members:
 
 
-   You should use :func:`read` before getting
+   You should use :func:`read` or :func:`put` before getting
    any data from an object of this class:
 
    .. automethod:: read
+   .. automethod:: put
 
 
-   When the a TOC was successfully read,
+   When the a TOC was successfully populated,
    you can access the informational attributes:
 
    .. autoattribute:: id
    .. autoattribute:: submission_url
+   .. autoattribute:: first_track_num
+   .. autoattribute:: last_track_num
+   .. autoattribute:: sectors
+   .. autoattribute:: track_offsets
 
 
    After you are done with the object,
