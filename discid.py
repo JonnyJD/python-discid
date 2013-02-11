@@ -198,6 +198,18 @@ class DiscId(object):
         else:
             return None
 
+    _LIB.discid_get_submission_url.argtypes = (c_void_p, )
+    _LIB.discid_get_submission_url.restype = c_char_p
+    def __get_submission_url(self):
+        """Give an URL to submit the current TOC
+        as a new Disc ID to MusicBrainz.
+        """
+        if self.__success:
+            result = _LIB.discid_get_submission_url(self.__handle)
+            return _decode(result)
+        else:
+            return None
+
     _LIB.discid_get_first_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_first_track_num.restype = c_int
     def __get_first_track_num(self):
@@ -242,8 +254,17 @@ class DiscId(object):
     id = property(__get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
 
-    It is set after a successfull :func:`read` or :obj:`None`.
+    It is set after a the TOC was populated or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
+    submission_url = property(__get_submission_url, None, None,
+                              "Disc ID / TOC Submission URL for MusicBrainz")
+    """With this url you can submit the current TOC
+    as a new MusicBrainz :musicbrainz:`Disc ID`.
+
+    If there is no populated TOC the url is :obj:`None`.
+    Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
     last_track_num = property(__get_last_track_num, None, None,
@@ -263,27 +284,6 @@ class DiscId(object):
     and contains the total number of sectors on the disc.
     The following elements are the offsets for all **audio** tracks.
     ``track_offsets[i]`` is the offset for the i-th track (as :obj:`int`).
-    """
-
-    _LIB.discid_get_submission_url.argtypes = (c_void_p, )
-    _LIB.discid_get_submission_url.restype = c_char_p
-    def __get_submission_url(self):
-        """Give an URL to submit the current TOC
-        as a new Disc ID to MusicBrainz.
-        """
-        if self.__success:
-            result = _LIB.discid_get_submission_url(self.__handle)
-            return _decode(result)
-        else:
-            return None
-
-    submission_url = property(__get_submission_url, None, None,
-                              "Disc ID / TOC Submission URL for MusicBrainz")
-    """With this url you can submit the current TOC
-    as a new MusicBrainz :musicbrainz:`Disc ID`.
-
-    If there was no successfull :func:`read` the url is :obj:`None`.
-    Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
     _LIB.discid_free.argtypes = (c_void_p, )
