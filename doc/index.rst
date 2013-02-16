@@ -15,7 +15,7 @@ This module is released under the
 <http://www.gnu.org/licenses/lgpl.html>`_ (or later) and
 the code repository and the bug tracker are at Github_.
 
-If you are interested in a binding for the MusciBrainz Web Service,
+If you are interested in a binding for the MusicBrainz Web Service,
 you might be interested in `python-musicbrainz-ngs`_.
 
 
