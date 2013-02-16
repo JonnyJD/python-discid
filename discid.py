@@ -130,22 +130,22 @@ class DiscId(object):
         """The initialization will reserve some memory
         for internal data structures.
         """
-        self.__handle = c_void_p(_LIB.discid_new())
-        self.__success = False
-        assert self.__handle.value is not None
+        self._handle = c_void_p(_LIB.discid_new())
+        self._success = False
+        assert self._handle.value is not None
 
     def __str__(self):
-        if self.__success:
+        if self._success:
             return self.id
         else:
             return ""
 
     _LIB.discid_get_error_msg.argtypes = (c_void_p, )
     _LIB.discid_get_error_msg.restype = c_char_p
-    def __get_error_msg(self):
+    def _get_error_msg(self):
         """Get the error message for the last error with the object.
         """
-        error = _LIB.discid_get_error_msg(self.__handle)
+        error = _LIB.discid_get_error_msg(self._handle)
         return _decode(error)
 
 
@@ -161,11 +161,11 @@ class DiscId(object):
         A :exc:`DiscError` exception is raised when the reading fails.
         """
         # device = None will use the default device (internally)
-        result = _LIB.discid_read(self.__handle, _encode(device)) == 1
-        self.__success = result
-        if not self.__success:
-            raise DiscError(self.__get_error_msg())
-        return self.__success
+        result = _LIB.discid_read(self._handle, _encode(device)) == 1
+        self._success = result
+        if not self._success:
+            raise DiscError(self._get_error_msg())
+        return self._success
 
     _LIB.discid_put.argtypes = (c_void_p, c_int, c_int, c_void_p)
     _LIB.discid_put.restype = c_int
@@ -179,67 +179,67 @@ class DiscId(object):
         and the following are the offsets of each track.
         """
         c_offsets = (c_int * len(offsets))(*tuple(offsets))
-        result = _LIB.discid_put(self.__handle, first, last, c_offsets) == 1
-        self.__success = result
-        if not self.__success:
+        result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
+        self._success = result
+        if not self._success:
             # TODO: should that be the same Exception as for read()?
             # should that be TOCError?
-            raise DiscError(self.__get_error_msg())
-        return self.__success
+            raise DiscError(self._get_error_msg())
+        return self._success
 
 
     _LIB.discid_get_id.argtypes = (c_void_p, )
     _LIB.discid_get_id.restype = c_char_p
-    def __get_id(self):
+    def _get_id(self):
         """Gets the current MusicBrainz DiscId
         """
-        if self.__success:
-            result = _LIB.discid_get_id(self.__handle)
+        if self._success:
+            result = _LIB.discid_get_id(self._handle)
             return _decode(result)
         else:
             return None
 
     _LIB.discid_get_submission_url.argtypes = (c_void_p, )
     _LIB.discid_get_submission_url.restype = c_char_p
-    def __get_submission_url(self):
+    def _get_submission_url(self):
         """Give an URL to submit the current TOC
         as a new Disc ID to MusicBrainz.
         """
-        if self.__success:
-            result = _LIB.discid_get_submission_url(self.__handle)
+        if self._success:
+            result = _LIB.discid_get_submission_url(self._handle)
             return _decode(result)
         else:
             return None
 
     _LIB.discid_get_first_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_first_track_num.restype = c_int
-    def __get_first_track_num(self):
+    def _get_first_track_num(self):
         """Gets the first track number
         """
-        return _LIB.discid_get_first_track_num(self.__handle)
+        return _LIB.discid_get_first_track_num(self._handle)
 
     _LIB.discid_get_last_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_last_track_num.restype = c_int
-    def __get_last_track_num(self):
+    def _get_last_track_num(self):
         """Gets the last track number
         """
-        return _LIB.discid_get_last_track_num(self.__handle)
+        return _LIB.discid_get_last_track_num(self._handle)
 
     _LIB.discid_get_sectors.argtypes = (c_void_p, )
     _LIB.discid_get_sectors.restype = c_int
-    def __get_sectors(self):
+    def _get_sectors(self):
         """Gets the total number of sectors on the disc
         """
-        return _LIB.discid_get_sectors(self.__handle)
+        return _LIB.discid_get_sectors(self._handle)
 
     _LIB.discid_get_track_offset.argtypes = (c_void_p, c_int)
     _LIB.discid_get_track_offset.restype = c_int
-    def __get_track_offset(self, track_number):
+    def _get_track_offset(self, track_number):
         """Gets the offset for a specific track
         """
-        return _LIB.discid_get_track_offset(self.__handle, track_number)
+        return _LIB.discid_get_track_offset(self._handle, track_number)
 
-    def __get_track_offsets(self):
+    def _get_track_offsets(self):
         """Generates the list of offsets,
         starting with the total number of sectors
         """
@@ -247,19 +247,19 @@ class DiscId(object):
         offsets.append(self.sectors)
         for track_number in range(self.first_track_num,
                                   self.last_track_num + 1):
-            offset = self.__get_track_offset(track_number)
+            offset = self._get_track_offset(track_number)
             offsets.append(offset)
         return offsets
 
 
-    id = property(__get_id, None, None, "MusicBrainz DiscId")
+    id = property(_get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
 
     It is set after a the TOC was populated or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
-    submission_url = property(__get_submission_url, None, None,
+    submission_url = property(_get_submission_url, None, None,
                               "Disc ID / TOC Submission URL for MusicBrainz")
     """With this url you can submit the current TOC
     as a new MusicBrainz :musicbrainz:`Disc ID`.
@@ -268,16 +268,16 @@ class DiscId(object):
     Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
-    last_track_num = property(__get_last_track_num, None, None,
+    last_track_num = property(_get_last_track_num, None, None,
                               "Number of the last track")
 
-    first_track_num = property(__get_first_track_num, None, None,
+    first_track_num = property(_get_first_track_num, None, None,
                               "Number of the first track")
 
-    sectors = property(__get_sectors, None, None,
+    sectors = property(_get_sectors, None, None,
                               "Total sector count")
 
-    track_offsets = property(__get_track_offsets, None, None,
+    track_offsets = property(_get_track_offsets, None, None,
                               "List of offsets, track_offsets[0] == sectors")
     """A list of all track offsets.
 
@@ -296,8 +296,8 @@ class DiscId(object):
         Please consider using the :keyword:`with` statement for the object,
         which will take care of this destruction automatically.
         """
-        _LIB.discid_free(self.__handle)
-        self.__handle = None
+        _LIB.discid_free(self._handle)
+        self._handle = None
     
     def __enter__(self):
         return self
