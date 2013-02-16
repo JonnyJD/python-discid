@@ -37,7 +37,7 @@ _LIB_BASE_NAME = "discid"
 _LIB_MAJOR_VERSION = 0
 
 
-def __find_library(name, version=0):
+def _find_library(name, version=0):
     """Find a library by base-name and major version
     """
     windows_names = ["%s.dll" % name, "lib%s.dll" % name,
@@ -67,7 +67,7 @@ def __find_library(name, version=0):
             lib_file = "lib%s.so.%d" % (name, version)
     return lib_file
 
-def __open_library(lib_name):
+def _open_library(lib_name):
     """Open a library by name or location
     """
     try:
@@ -75,8 +75,8 @@ def __open_library(lib_name):
     except OSError as err:
         raise ImportError(err)
 
-_LIB_NAME = __find_library(_LIB_BASE_NAME, _LIB_MAJOR_VERSION)
-_LIB = __open_library(_LIB_NAME)
+_LIB_NAME = _find_library(_LIB_BASE_NAME, _LIB_MAJOR_VERSION)
+_LIB = _open_library(_LIB_NAME)
 
 
 def _encode(string):
@@ -98,7 +98,7 @@ def _decode(byte_string):
 
 _LIB.discid_get_default_device.argtypes = ()
 _LIB.discid_get_default_device.restype = c_char_p
-def __get_default_device():
+def _get_default_device():
     """Get the default device for the platform
     """
     device = _LIB.discid_get_default_device()
@@ -108,7 +108,7 @@ def __get_default_device():
         # probably Mocked for sphinx
         return None
 
-DEFAULT_DEVICE = __get_default_device()
+DEFAULT_DEVICE = _get_default_device()
 """The default device to use for :func:`DiscId.read` on this platform
 given as a :obj:`unicode` or :obj:`str <python:str>` object.
 """
