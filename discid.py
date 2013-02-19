@@ -76,7 +76,9 @@ def _open_library(lib_name):
     try:
         return ctypes.cdll.LoadLibrary(lib_name)
     except OSError as err:
-        raise ImportError(err)
+        import_error = ImportError(err)
+        import_error.__suppress_context__ = True
+        raise import_error
 
 _LIB_NAME = _find_library(_LIB_BASE_NAME, _LIB_MAJOR_VERSION)
 _LIB = _open_library(_LIB_NAME)
