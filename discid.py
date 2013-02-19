@@ -54,7 +54,7 @@ def _find_library(name, version=0):
                 lib_file = find_library(lib_name)
 
     if lib_file is None:
-        if sys.platform.startswith == "linux":
+        if sys.platform.startswith("linux"):
             lib_file = "lib%s.so.%d" % (name, version)
         elif sys.platform == "darwin":
             lib_file = "lib%s.%d.dylib" % (name, version)
