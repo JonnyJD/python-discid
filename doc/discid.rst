@@ -9,6 +9,9 @@ At the module level there is one constant available:
 .. autodata:: DEFAULT_DEVICE
    :novalue:
 
+.. autodata:: FEATURES
+   :novalue:
+
 
 DiscId object
 -------------

@@ -108,10 +108,36 @@ def _get_default_device():
         # probably Mocked for sphinx
         return None
 
+try:
+    _LIB.discid_get_features.argtypes = (c_void_p, )
+    _LIB.discid_get_features.restype = None
+except AttributeError:
+    _features_available = False
+else:
+    _features_available = True
+def _get_features():
+    """Get the supported features for the platform.
+    """
+    features = []
+    if _features_available:
+        c_features = (c_char_p * 8)()
+        _LIB.discid_get_features(c_features)
+        for feature in c_features:
+            if feature:
+                features.append(_decode(feature))
+
+    return features
+
 DEFAULT_DEVICE = _get_default_device()
 """The default device to use for :func:`DiscId.read` on this platform
 given as a :obj:`unicode` or :obj:`str <python:str>` object.
 """
+
+FEATURES = _get_features()
+"""The supported features for the platform as a list of strings.
+The full set currently is ``['read', 'MCN', 'ISRC']``.
+"""
+
 
 class DiscError(IOError):
     """:func:`DiscId.read` will raise this exception when an error occured.
