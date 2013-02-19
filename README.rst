@@ -6,6 +6,7 @@ The API is still in development and might change until 1.0.0!
 
 Python-discid implements Python bindings for MusicBrainz Libdiscid. This
 module works with Python 2 >= 2.6, or Python 3 >= 3.1.
+Libdiscid >= 0.2.2 is needed.
 
 Libdiscid's main purpose is the calculation of an identifier of audio
 discs (disc id) to use for the MusicBrainz database.
@@ -49,8 +50,6 @@ Known Issues
 
 - The API is incomplete.
   I will complete it when the base API is decided and stable.
-- The Documentation missing.
-  It will be created when the base API works.
 
 For other things you can submit tickets at `Github`_.
 The API is still subject to change.

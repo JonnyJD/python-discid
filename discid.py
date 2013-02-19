@@ -22,6 +22,9 @@ This module provides a python-like API for that functionality.
 
 The user is expected to create a :class:`DiscId` object,
 feed it with some type of TOC and extract the generated information.
+
+Importing this module will open libdiscid at the same time
+and will raise :exc:`ImportError` when libdiscid is not found.
 """
 
 import os
