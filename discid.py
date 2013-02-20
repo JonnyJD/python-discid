@@ -65,7 +65,6 @@ def _find_library(name, version=0):
                 if os.path.isfile(lib_name):
                     lib_file = lib_name
                     break
-            lib_file = "%s.dll" % name
         else:
             lib_file = "lib%s.so.%d" % (name, version)
     return lib_file
