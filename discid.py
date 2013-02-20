@@ -46,11 +46,31 @@ def _find_library(name, version=0):
     windows_names = ["%s.dll" % name, "lib%s.dll" % name,
                      "lib%s-%d.dll" % (name, version)]
 
+    lib_file = None
+
+    # force prefer current folder
+    # for linux/UNIX-like and Windows
+    if sys.platform in ["darwin", "cygwin"]:
+        # these will already work fine with find_library
+        pass
+    elif sys.platform == "win32":
+        for lib_name in windows_names:
+            if os.path.isfile(lib_name):
+                lib_file = lib_name
+                break
+    else:
+        # that would be linux/UNIX-like
+        # these need to prepend ./
+        lib_name = "./lib%s.so.%d" % (name, version)
+        if os.path.isfile(lib_name):
+            lib_file = lib_name
+
     # doesn't work on Windows
     # Darwin gives a full path when found system-wide
     # Linux and Cygwin give base filename when found
     # Darwin and Cygwin will find and prefer in current folder
-    lib_file = find_library(name)
+    if lib_file is None:
+        lib_file = find_library(name)
 
     # Windows needs complete filenames  
     # and gives a full path when found system-wide
@@ -61,10 +81,16 @@ def _find_library(name, version=0):
                 lib_file = find_library(lib_name)
 
     if lib_file is None:
-        # Linux and other UNIX(-like) are the only platforms
-        # that didn't check in current folder up until now
-        # They also need to prepend ./
-        lib_file = "./lib%s.so.%d" % (name, version)
+        # this won't help anymore,
+        # but gives a nice platform dependent file in the error message
+        if sys.platform == "win32":
+            lib_file = "%s.dll" % name
+        elif sys.platform == "darwin":
+            lib_file = "lib%s.%d.dylib" % (name, version)
+        elif sys.platform == "cygwin":
+            lib_file = "cyg%s-%d.dll" % (name, version)
+        else:
+            lib_file = "lib%s.so.%d" % (name, version)
 
     return lib_file
 
