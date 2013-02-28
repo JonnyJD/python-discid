@@ -7,7 +7,7 @@ discid API
 At the module level there is one constant available:
 
 .. autodata:: DEFAULT_DEVICE
-   :novalue:
+   :annotation:
 
 
 DiscId object
