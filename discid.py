@@ -109,8 +109,8 @@ def _get_default_device():
         return None
 
 try:
-    _LIB.discid_get_features.argtypes = (c_void_p, )
-    _LIB.discid_get_features.restype = None
+    _LIB.discid_get_feature_list.argtypes = (c_void_p, )
+    _LIB.discid_get_feature_list.restype = None
 except AttributeError:
     _features_available = False
 else:
@@ -120,8 +120,8 @@ def _get_features():
     """
     features = []
     if _features_available:
-        c_features = (c_char_p * 8)()
-        _LIB.discid_get_features(c_features)
+        c_features = (c_char_p * 32)()
+        _LIB.discid_get_feature_list(c_features)
         for feature in c_features:
             if feature:
                 features.append(_decode(feature))
