@@ -24,7 +24,7 @@ The user is expected to create a :class:`DiscId` object,
 feed it with some type of TOC and extract the generated information.
 
 Importing this module will open libdiscid at the same time
-and will raise :exc:`ImportError` when libdiscid is not found.
+and will raise :exc:`OSError` when libdiscid is not found.
 """
 
 import os
@@ -97,10 +97,7 @@ def _find_library(name, version=0):
 def _open_library(lib_name):
     """Open a library by name or location
     """
-    try:
-        return ctypes.cdll.LoadLibrary(lib_name)
-    except OSError as err:
-        raise ImportError(err)
+    return ctypes.cdll.LoadLibrary(lib_name)
 
 _LIB_NAME = _find_library(_LIB_BASE_NAME, _LIB_MAJOR_VERSION)
 _LIB = _open_library(_LIB_NAME)

@@ -9,7 +9,8 @@ Dependencies
 The module :mod:`discid` cannot be imported
 without `Libdiscid`_ >= 0.2.2 installed.
 If you want to use it as optional dependency,
-import the module only when needed or catch the :exc:`ImportError`.
+import the module only when needed or catch the :exc:`OSError`
+when libdiscid is not found.
 
 Package Repositories (Linux)
 ----------------------------
