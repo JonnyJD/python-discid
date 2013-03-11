@@ -199,8 +199,13 @@ class DiscId(object):
         :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
         However, it should in no case contain non-ASCII characters.
 
-        A :exc:`DiscError` exception is raised when the reading fails.
+        A :exc:`DiscError` exception is raised when the reading fails,
+        and :exc:`NotImplementedError` when libdiscid doesn't support
+        reading discs on the current platform.
         """
+        if "read" not in FEATURES:
+            raise NotImplementedError("discid_read not implemented on platform")
+
         # device = None will use the default device (internally)
         result = _LIB.discid_read(self._handle, _encode(device)) == 1
         self._success = result
