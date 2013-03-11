@@ -132,10 +132,53 @@ def _get_default_device():
         # probably Mocked for sphinx
         return None
 
+try:
+    _LIB.discid_get_feature_list.argtypes = (c_void_p, )
+    _LIB.discid_get_feature_list.restype = None
+except AttributeError:
+    _features_available = False
+else:
+    _features_available = True
+def _get_features():
+    """Get the supported features for the platform.
+    """
+    features = []
+    if _features_available:
+        c_features = (c_char_p * 32)()
+        _LIB.discid_get_feature_list(c_features)
+        for feature in c_features:
+            if feature:
+                features.append(_decode(feature))
+    else:
+        # libdiscid <= 0.4.0
+        features = ["read"]     # no generic platform yet
+        try:
+            # test for ISRC/MCN API (introduced 0.3.0)
+            _LIB.discid_get_mcn
+        except AttributeError:
+            pass
+        else:
+            # ISRC/MCN API found -> libdiscid = 0.3.x
+            if (sys.platform.startswith("linux") and
+                    not os.path.isfile("/usr/lib/libdiscid.so.0.3.0")):
+                features += ["mcn", "isrc"]
+            elif sys.platform in ["darwin", "win32"]:
+                features += ["mcn", "isrc"]
+
+    return features
+
 DEFAULT_DEVICE = _get_default_device()
 """The default device to use for :func:`DiscId.read` on this platform
 given as a :obj:`unicode` or :obj:`str <python:str>` object.
 """
+
+FEATURES = _get_features()
+"""The supported features for the platform as a list of strings.
+The full set currently is ``['read', 'MCN', 'ISRC']``.
+Some Functions can raise :exc:`NotImplementedError` when a feature
+is not available.
+"""
+
 
 class DiscError(IOError):
     """:func:`DiscId.read` will raise this exception when an error occured.
@@ -182,8 +225,13 @@ class DiscId(object):
         :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
         However, it should in no case contain non-ASCII characters.
 
-        A :exc:`DiscError` exception is raised when the reading fails.
+        A :exc:`DiscError` exception is raised when the reading fails,
+        and :exc:`NotImplementedError` when libdiscid doesn't support
+        reading discs on the current platform.
         """
+        if "read" not in FEATURES:
+            raise NotImplementedError("discid_read not implemented on platform")
+
         # device = None will use the default device (internally)
         result = _LIB.discid_read(self._handle, _encode(device)) == 1
         self._success = result
