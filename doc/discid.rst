@@ -4,7 +4,7 @@ discid API
 .. automodule:: discid
    :synopsis: Python binding of Libdiscid
 
-At the module level there is one constant available:
+At the module level there are these constants available:
 
 .. autodata:: DEFAULT_DEVICE
    :novalue:
