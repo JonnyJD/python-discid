@@ -125,6 +125,21 @@ def _get_features():
         for feature in c_features:
             if feature:
                 features.append(_decode(feature))
+    else:
+        # libdiscid <= 0.4.0
+        features = ["read"]     # no generic platform yet
+        try:
+            # test for ISRC/MCN API (introduced 0.3.0)
+            _LIB.discid_get_mcn
+        except AttributeError:
+            pass
+        else:
+            # ISRC/MCN API found -> libdiscid = 0.3.x
+            if (sys.platform.startswith("linux") and
+                    not os.path.isfile("/usr/lib/libdiscid.so.0.3.0")):
+                features += ["mcn", "isrc"]
+            elif sys.platform in ["darwin", "win32"]:
+                features += ["mcn", "isrc"]
 
     return features
 
