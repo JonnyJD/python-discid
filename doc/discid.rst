@@ -10,7 +10,7 @@ At the module level there are these constants available:
    :annotation:
 
 .. autodata:: FEATURES
-   :novalue:
+   :annotation:
 
 
 DiscId object
