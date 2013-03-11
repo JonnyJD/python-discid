@@ -81,19 +81,19 @@ If you don't have a package manager
 that takes care of the *Libdiscid* dependency,
 you have to download it manually.
 
-You can find several builds at http://musicbrainz.org/doc/libdiscid.
+You can find several builds and the source
+at http://musicbrainz.org/doc/libdiscid.
 
 If no build for your platform is available,
-you have to get the source
-as :libdiscid_download:`zip` or :libdiscid_download:`tar.gz`
-and install with::
+you have to build from source and install with::
 
  cmake .
  make
  make install
 
 If the last step doesn't work for you,
-you might have to place the :file:`.DLL`, :file:`.dylib` or :file:`.so`
+you might have to place the files :file:`discid.DLL`, :file:`libdiscid.*.dylib`
+or :file:`libdiscid.so.*`
 (depending on your platform)
 in the same directory as you start your script from
 or somewhere in your :envvar:`PATH`.

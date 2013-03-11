@@ -37,8 +37,6 @@ version = ".".join(discid.__version__.split("-")[0].split(".")[0:2])
 release = discid.__version__
 # see below for "current" = base version with "-dev" appended if necessary
 
-libdiscid = '0.3.0'
-
 autoclass_content = "both"      # include class and __init__ docstrings
 
 download_base = "https://github.com/JonnyJD/python-discid/archive"
@@ -52,8 +50,6 @@ else:
 extlinks = {
   'source_download': (download_url, ''),
   'issue': ('https://github.com/JonnyJD/python-discid/issues/%s', '#'),
-  'libdiscid_download':
-    ('https://github.com/metabrainz/libdiscid/archive/v%s.%%s' % libdiscid, ''),
   'musicbrainz': ('http://musicbrainz.org/doc/%s', ''),
 }
 
