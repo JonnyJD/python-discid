@@ -10,11 +10,11 @@ class DataDocumenter(autodoc.DataDocumenter):
     These can have a :novalue: option.
     """
     option_spec = {"noindex": autodoc.bool_option,
-            "novalue": autodoc.bool_option}
+            "annotation": autodoc.bool_option}
 
     def add_directive_header(self, sig):
         autodoc.ModuleLevelDocumenter.add_directive_header(self, sig)
-        if not "novalue" in self.options:
+        if not "annotation" in self.options:
             try:
                 objrepr = safe_repr(self.object)
             except ValueError:

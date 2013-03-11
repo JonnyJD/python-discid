@@ -7,7 +7,7 @@ discid API
 At the module level there are these constants available:
 
 .. autodata:: DEFAULT_DEVICE
-   :novalue:
+   :annotation:
 
 .. autodata:: FEATURES
    :novalue:
