@@ -151,6 +151,8 @@ given as a :obj:`unicode` or :obj:`str <python:str>` object.
 FEATURES = _get_features()
 """The supported features for the platform as a list of strings.
 The full set currently is ``['read', 'MCN', 'ISRC']``.
+Some Functions can raise :exc:`NotImplementedError` when a feature
+is not available.
 """
 
 
