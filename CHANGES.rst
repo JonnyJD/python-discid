@@ -1,6 +1,18 @@
 Changelog
 =========
 
+Changes in 0.3.0 (2013-03-11):
+------------------------------
+
+ * feature :issue:`20`: add :data:`FEATURES` list
+ * feature: :func:`DiscId.put`, :attr:`DiscId.track_offsets`,
+   :attr:`DiscId.sectors`, :attr:`DiscId.first_track_num`,
+   :attr:`DiscId.last_track_num`
+ * fix :issue:`17`: test fails on Mac OS X for default_device
+ * fix :issue:`16`: prefer libdiscid in current directory
+ * fix :issue:`15`: import can now raise :exc:`OSError`
+ * fix :issue:`14`: find libdiscid in current folder (Linux/Unix)
+
 Changes in 0.2.1 (2013-01-30):
 ------------------------------
 
