@@ -29,7 +29,7 @@ class TestModule(unittest.TestCase):
 
     def test_default_device(self):
         device = discid.DEFAULT_DEVICE
-        self.assertTrue(device, "No default device given")
+        self.assertTrue(device is not None, "No default device given")
 
 
 class TestClass(unittest.TestCase):
