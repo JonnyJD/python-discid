@@ -97,7 +97,14 @@ def _find_library(name, version=0):
 def _open_library(lib_name):
     """Open a library by name or location
     """
-    return ctypes.cdll.LoadLibrary(lib_name)
+    try:
+        return ctypes.cdll.LoadLibrary(lib_name)
+    except OSError as exc:
+        if lib_name not in str(exc):
+            # replace uninformative Error on Windows
+            raise OSError("could not find libdiscid: %s" % lib_name)
+        else:
+            raise
 
 _LIB_NAME = _find_library(_LIB_BASE_NAME, _LIB_MAJOR_VERSION)
 _LIB = _open_library(_LIB_NAME)
