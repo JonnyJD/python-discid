@@ -39,6 +39,7 @@ feed it with some type of TOC and extract the generated information.
    .. autoattribute:: last_track_num
    .. autoattribute:: sectors
    .. autoattribute:: track_offsets
+   .. autoattribute:: mcn
 
 
    After you are done with the object,
