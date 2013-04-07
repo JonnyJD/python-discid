@@ -231,6 +231,7 @@ class DiscId(object):
         That string can be either of:
         :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
         However, it should in no case contain non-ASCII characters.
+        If no device is given, the :data:`DEFAULT_DEVICE` is used.
 
         A :exc:`DiscError` exception is raised when the reading fails,
         and :exc:`NotImplementedError` when libdiscid doesn't support
