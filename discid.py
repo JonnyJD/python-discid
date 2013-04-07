@@ -364,6 +364,24 @@ class DiscId(object):
             offsets.append(offset)
         return offsets
 
+    try:
+        _LIB.discid_get_mcn.argtypes = (c_void_p, )
+        _LIB.discid_get_mcn.restype = c_char_p
+    except AttributeError:
+        pass
+    def _get_mcn(self):
+        """Gets the current Media Catalogue Number (MCN/UPC/EAN)
+        """
+        if self._success and "mcn" in self._requested_features:
+            try:
+                result = _LIB.discid_get_mcn(self._handle)
+            except AttributeError:
+                return None
+            else:
+                return _decode(result)
+        else:
+            return None
+
 
     id = property(_get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
@@ -398,6 +416,14 @@ class DiscId(object):
     and contains the total number of sectors on the disc.
     The following elements are the offsets for all **audio** tracks.
     ``track_offsets[i]`` is the offset for the i-th track (as :obj:`int`).
+    """
+
+    mcn = property(_get_mcn, None, None, "Media Catalogue Number")
+    """This is the Media Catalogue Number (MCN/UPC/EAN)
+
+    It is set after a the "mcn" feature was requested on a read
+    and supported by the platform or :obj:`None`.
+    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
     _LIB.discid_free.argtypes = (c_void_p, )
