@@ -30,7 +30,7 @@ and will raise :exc:`OSError` when libdiscid is not found.
 import os
 import sys
 import ctypes
-from ctypes import c_int, c_void_p, c_char_p
+from ctypes import c_int, c_void_p, c_char_p, c_uint, sizeof
 from ctypes.util import find_library
 
 
@@ -206,6 +206,7 @@ class DiscId(object):
         """
         self._handle = c_void_p(_LIB.discid_new())
         self._success = False
+        self._requested_features = []
         assert self._handle.value is not None
 
     def __str__(self):
@@ -225,13 +226,23 @@ class DiscId(object):
 
     _LIB.discid_read.argtypes = (c_void_p, c_char_p)
     _LIB.discid_read.restype = c_int
-    def read(self, device=None):
-        """Reads the TOC from the device given as string.
+    try:
+        _LIB.discid_read_sparse.argtypes = (c_void_p, c_char_p, c_uint)
+        _LIB.discid_read_sparse.restype = c_int
+    except AttributeError:
+        pass
+    def read(self, device=None, features=[]):
+        """Reads the TOC from the device given as string
 
         That string can be either of:
         :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
         However, it should in no case contain non-ASCII characters.
         If no device is given, the :data:`DEFAULT_DEVICE` is used.
+
+        You can optionally add a subset of the features in
+        :data:`FEATURES` or the whole list to read more than just the TOC.
+        In contrast to libdiscid, :func:`read` won't read any
+        of the additional features by default.
 
         A :exc:`DiscError` exception is raised when the reading fails,
         and :exc:`NotImplementedError` when libdiscid doesn't support
@@ -240,8 +251,30 @@ class DiscId(object):
         if "read" not in FEATURES:
             raise NotImplementedError("discid_read not implemented on platform")
 
+        python_discid_features = ["read", "mcn", "isrc"]
+        # only use features implemented on this platform and in this module
+        self._requested_features = list(set(features) & set(FEATURES)
+                                        & set(python_discid_features))
+
+        # create the bitmask for libdiscid
+        if set(features) == set(FEATURES):
+            # full feature set requested
+            # possibly some features can't be accessed by this module
+            c_features = 2 ** (8 * sizeof(c_uint)) - 1  # UINT_MAX
+        else:
+            c_features = 0
+            for feature in features:
+                if feature == "mcn":
+                    c_features += 1 << 1
+                if feature == "isrc":
+                    c_features += 1 << 2
+
         # device = None will use the default device (internally)
-        result = _LIB.discid_read(self._handle, _encode(device)) == 1
+        try:
+            result = _LIB.discid_read_sparse(self._handle, _encode(device),
+                                             c_features) == 1
+        except AttributeError:
+            result = _LIB.discid_read(self._handle, _encode(device)) == 1
         self._success = result
         if not self._success:
             raise DiscError(self._get_error_msg())
