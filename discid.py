@@ -30,7 +30,7 @@ and will raise :exc:`OSError` when libdiscid is not found.
 import os
 import sys
 import ctypes
-from ctypes import c_int, c_void_p, c_char_p, c_uint, sizeof
+from ctypes import c_int, c_void_p, c_char_p, c_uint
 from ctypes.util import find_library
 
 
@@ -264,14 +264,9 @@ class DiscId(object):
                                         & set(FEATURES_IMPLEMENTED))
 
         # create the bitmask for libdiscid
-        if set(features) == set(FEATURES):
-            # full feature set requested
-            # possibly some features can't be accessed by this module
-            c_features = 2 ** (8 * sizeof(c_uint)) - 1  # UINT_MAX
-        else:
-            c_features = 0
-            for feature in features:
-                c_features += _FEATURE_MAPPING.get(feature, 0)
+        c_features = 0
+        for feature in features:
+            c_features += _FEATURE_MAPPING.get(feature, 0)
 
         # device = None will use the default device (internally)
         try:
