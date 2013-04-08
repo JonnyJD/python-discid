@@ -91,6 +91,23 @@ class TestClass(unittest.TestCase):
         self.disc.free()
 
 
+class TestDisc(unittest.TestCase):
+    """Test reading the disc currently in the drive
+    """
+
+    def setUp(self):
+        self.disc = discid.DiscId()
+        self.assertTrue(self.disc, "No DiscId object created")
+
+    def test_read_simple(self):
+        self.disc.read()        # read from default drive
+        self.assertTrue(len(self.disc.id) == 28)
+
+    def tearDown(self):
+        self.disc.free()
+
+
+
 if __name__ == "__main__":
     unittest.main()
 
