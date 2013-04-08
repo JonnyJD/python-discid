@@ -37,7 +37,7 @@ class TestModule(unittest.TestCase):
 
     def test_features_implemented(self):
         features = discid.FEATURES_IMPLEMENTED
-        self.assertTrue(len(features) > 0, "No feature list implemented")
+        self.assertTrue(features, "No feature list implemented")
 
 
 class TestClass(unittest.TestCase):
@@ -99,9 +99,33 @@ class TestDisc(unittest.TestCase):
         self.disc = discid.DiscId()
         self.assertTrue(self.disc, "No DiscId object created")
 
+    def test_default_device(self):
+        """Can't be empty, in contrast to the test in TestModule"""
+        device = discid.DEFAULT_DEVICE
+        self.assertTrue(device, "No default device given")
+
+    def test_features(self):
+        """Can't be empty, in contrast to the test in TestModule"""
+        features = discid.FEATURES
+        self.assertTrue(features, "No feature list given")
+
     def test_read_simple(self):
         self.disc.read()        # read from default drive
-        self.assertTrue(len(self.disc.id) == 28)
+        self.assertTrue(len(self.disc.id) == 28, "Invalid Disc ID")
+        self.assertTrue(self.disc.submission_url, "Invalid submission url")
+        self.assertTrue(self.disc.sectors == self.disc.track_offsets[0],
+                        "track_offsets[0] must match total sector count")
+        num_tracks = len(self.disc.track_offsets) - 1
+        self.assertTrue(num_tracks == self.disc.last_track_num,
+                        "Track number and offset list mismatch")
+
+        for i in range(num_tracks + 1):
+            offset = self.disc.track_offsets[i]
+            self.assertTrue(offset <= self.disc.sectors, "Invalid offset")
+            if i > 1:
+                previous_offset = self.disc.track_offsets[i-1]
+                self.assertTrue(offset >= previous_offset,
+                                "Invalid offset list")
 
     def tearDown(self):
         self.disc.free()
