@@ -355,7 +355,7 @@ class DiscId(object):
     """
 
     last_track_num = property(_get_last_track_num, None, None,
-                              "Number of the last track")
+                              "Number of the last **audio** track")
 
     first_track_num = property(_get_first_track_num, None, None,
                               "Number of the first track")
