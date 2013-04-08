@@ -39,6 +39,8 @@ __version__ = "0.3.0"
 _LIB_BASE_NAME = "discid"
 _LIB_MAJOR_VERSION = 0
 
+# our implemented of libdiscid's enum discid_feature
+_FEATURE_MAPPING = {"read": 1 << 0, "mcn": 1 << 1, "isrc": 1 << 2}
 
 
 def _find_library(name, version=0):
@@ -188,7 +190,7 @@ Some features might not be implemented in this python module,
 see :data:`FEATURES_IMPLEMENTED`.
 """
 
-FEATURES_IMPLEMENTED = ["read"]
+FEATURES_IMPLEMENTED = list(_FEATURE_MAPPING.keys())
 """The features implemented in this python module as a list of strings.
 Some might not be available for your platform, see :data:`FEATURES`.
 """
@@ -257,10 +259,9 @@ class DiscId(object):
         if "read" not in FEATURES:
             raise NotImplementedError("discid_read not implemented on platform")
 
-        python_discid_features = ["read", "mcn", "isrc"]
         # only use features implemented on this platform and in this module
         self._requested_features = list(set(features) & set(FEATURES)
-                                        & set(python_discid_features))
+                                        & set(FEATURES_IMPLEMENTED))
 
         # create the bitmask for libdiscid
         if set(features) == set(FEATURES):
@@ -270,10 +271,7 @@ class DiscId(object):
         else:
             c_features = 0
             for feature in features:
-                if feature == "mcn":
-                    c_features += 1 << 1
-                if feature == "isrc":
-                    c_features += 1 << 2
+                c_features += _FEATURE_MAPPING.get(feature, 0)
 
         # device = None will use the default device (internally)
         try:
