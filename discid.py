@@ -40,6 +40,7 @@ _LIB_BASE_NAME = "discid"
 _LIB_MAJOR_VERSION = 0
 
 
+
 def _find_library(name, version=0):
     """Find a library by base-name and major version
     """
@@ -180,12 +181,17 @@ given as a :obj:`unicode` or :obj:`str <python:str>` object.
 """
 
 FEATURES = _get_features()
-"""The supported features for the platform as a list of strings.
-The full set currently is ``['read', 'MCN', 'ISRC']``.
+"""The features libdiscid supports for the platform as a list of strings.
 Some Functions can raise :exc:`NotImplementedError` when a feature
 is not available.
+Some features might not be implemented in this python module,
+see :data:`FEATURES_IMPLEMENTED`.
 """
 
+FEATURES_IMPLEMENTED = ["read"]
+"""The features implemented in this python module as a list of strings.
+Some might not be available for your platform, see :data:`FEATURES`.
+"""
 
 class DiscError(IOError):
     """:func:`DiscId.read` will raise this exception when an error occured.
