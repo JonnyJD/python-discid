@@ -31,6 +31,14 @@ class TestModule(unittest.TestCase):
         device = discid.DEFAULT_DEVICE
         self.assertTrue(device is not None, "No default device given")
 
+    def test_features(self):
+        features = discid.FEATURES
+        self.assertTrue(features is not None, "No feature list given")
+
+    def test_features_implemented(self):
+        features = discid.FEATURES_IMPLEMENTED
+        self.assertTrue(len(features) > 0, "No feature list implemented")
+
 
 class TestClass(unittest.TestCase):
 
