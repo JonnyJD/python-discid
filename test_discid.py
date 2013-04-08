@@ -111,12 +111,12 @@ class TestDisc(unittest.TestCase):
 
     def test_read_simple(self):
         self.disc.read()        # read from default drive
-        self.assertTrue(len(self.disc.id) == 28, "Invalid Disc ID")
+        self.assertEqual(len(self.disc.id), 28, "Invalid Disc ID")
         self.assertTrue(self.disc.submission_url, "Invalid submission url")
-        self.assertTrue(self.disc.sectors == self.disc.track_offsets[0],
-                        "track_offsets[0] must match total sector count")
+        self.assertEqual(self.disc.sectors, self.disc.track_offsets[0],
+                         "track_offsets[0] must match total sector count")
         num_tracks = len(self.disc.track_offsets) - 1
-        self.assertTrue(num_tracks == self.disc.last_track_num,
+        self.assertEqual(self.disc.last_track_num, num_tracks,
                         "Track number and offset list mismatch")
 
         for i in range(num_tracks + 1):
@@ -126,6 +126,24 @@ class TestDisc(unittest.TestCase):
                 previous_offset = self.disc.track_offsets[i-1]
                 self.assertTrue(offset >= previous_offset,
                                 "Invalid offset list")
+
+        # check idempotence (use output again as input to put)
+        disc_id = self.disc.id
+        submission_url = self.disc.submission_url
+        first = self.disc.first_track_num
+        offsets = self.disc.track_offsets
+        self.disc.put(first, num_tracks, offsets)
+        self.assertEqual(self.disc.id, disc_id, "different id after put")
+        self.assertEqual(self.disc.track_offsets, offsets,
+                         "different offsets after put")
+        self.assertEqual(self.disc.submission_url, submission_url,
+                         "different submission_url after put")
+        self.assertEqual(self.disc.first_track_num, first,
+                         "different first track after put")
+        self.assertEqual(self.disc.last_track_num, num_tracks,
+                         "different last track after put")
+        self.assertEqual(self.disc.sectors, offsets[0],
+                         "different sector count after put")
 
     def tearDown(self):
         self.disc.free()
