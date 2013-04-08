@@ -12,6 +12,8 @@ At the module level there are these constants available:
 .. autodata:: FEATURES
    :annotation:
 
+.. autodata:: FEATURES_IMPLEMENTED
+
 
 DiscId object
 -------------
