@@ -36,11 +36,14 @@ feed it with some type of TOC and extract the generated information.
    you can access the informational attributes:
 
    .. autoattribute:: id
+   .. autoattribute:: freedb_id
    .. autoattribute:: submission_url
+   .. autoattribute:: webservice_url
    .. autoattribute:: first_track_num
    .. autoattribute:: last_track_num
    .. autoattribute:: sectors
    .. autoattribute:: track_offsets
+   .. autoattribute:: track_lengths
 
 
    After you are done with the object,

@@ -405,7 +405,7 @@ class DiscId(object):
     webservice_url = property(_get_webservice_url, None, None,
                               "web service URL for info about the CD")
     """With this url you can retrive information about the CD in XML
-    from the MusicBraiz web service.
+    from the MusicBrainz web service.
 
     If there is no populated TOC the url is :obj:`None`.
     Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
