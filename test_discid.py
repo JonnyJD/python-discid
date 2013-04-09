@@ -56,10 +56,17 @@ class TestClass(unittest.TestCase):
         devicebytes = b"non_existing_device"
         self.assertRaises(discid.DiscError, self.disc.read, devicebytes)
 
-    def test_for_None(self):
+    def test_emptyness(self):
+        # all should be empty and don't give exceptions
         self.assertTrue(self.disc.id is None)
         self.assertTrue(self.disc.submission_url is None)
         self.assertTrue(self.disc.webservice_url is None)
+        self.assertFalse(self.disc.first_track_num)
+        self.assertFalse(self.disc.last_track_num)
+        self.assertFalse(self.disc.sectors)
+        # only test that access doesn't give exceptions
+        self.disc.track_offsets
+        self.disc.track_lengths
 
     def test_put_fail(self):
         # it will only fail because first > last
