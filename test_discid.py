@@ -56,13 +56,9 @@ class TestClass(unittest.TestCase):
         devicebytes = b"non_existing_device"
         self.assertRaises(discid.DiscError, self.disc.read, devicebytes)
 
-    def test_empty_id(self):
+    def test_for_None(self):
         self.assertTrue(self.disc.id is None)
-
-    def test_empty_submission_url(self):
         self.assertTrue(self.disc.submission_url is None)
-
-    def test_empty_webservice_url(self):
         self.assertTrue(self.disc.webservice_url is None)
 
     def test_put_fail(self):
