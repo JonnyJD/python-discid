@@ -297,6 +297,17 @@ class DiscId(object):
         else:
             return None
 
+    _LIB.discid_get_webservice_url.argtypes = (c_void_p, )
+    _LIB.discid_get_webservice_url.restype = c_char_p
+    def _get_webservice_url(self):
+        """Give an URL to retrieve information about the CD from MusicBrainz.
+        """
+        if self._success:
+            result = _LIB.discid_get_webservice_url(self._handle)
+            return _decode(result)
+        else:
+            return None
+
     _LIB.discid_get_first_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_first_track_num.restype = c_int
     def _get_first_track_num(self):
@@ -373,6 +384,14 @@ class DiscId(object):
     Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
+    webservice_url = property(_get_webservice_url, None, None,
+                              "web service URL for info about the CD")
+    """With this url you can retrive information about the CD in XML
+    from the MusicBraiz web service.
+
+    If there is no populated TOC the url is :obj:`None`.
+    Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
     last_track_num = property(_get_last_track_num, None, None,
                               "Number of the last **audio** track")
 

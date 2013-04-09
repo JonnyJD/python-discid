@@ -62,6 +62,9 @@ class TestClass(unittest.TestCase):
     def test_empty_submission_url(self):
         self.assertTrue(self.disc.submission_url is None)
 
+    def test_empty_webservice_url(self):
+        self.assertTrue(self.disc.webservice_url is None)
+
     def test_put_fail(self):
         # it will only fail because first > last
         first = 15
@@ -118,6 +121,7 @@ class TestDisc(unittest.TestCase):
         self.disc.read()        # read from default drive
         self.assertEqual(len(self.disc.id), 28, "Invalid Disc ID")
         self.assertTrue(self.disc.submission_url, "Invalid submission url")
+        self.assertTrue(self.disc.webservice_url, "Invalid web service url")
         self.assertEqual(self.disc.sectors, self.disc.track_offsets[0],
                          "track_offsets[0] must match total sector count")
         num_tracks = len(self.disc.track_offsets) - 1
@@ -135,6 +139,7 @@ class TestDisc(unittest.TestCase):
         # check idempotence (use output again as input to put)
         disc_id = self.disc.id
         submission_url = self.disc.submission_url
+        webservice_url = self.disc.webservice_url
         first = self.disc.first_track_num
         offsets = self.disc.track_offsets
         lengths = self.disc.track_lengths
@@ -144,6 +149,8 @@ class TestDisc(unittest.TestCase):
                          "different offsets after put")
         self.assertEqual(self.disc.submission_url, submission_url,
                          "different submission_url after put")
+        self.assertEqual(self.disc.webservice_url, webservice_url,
+                         "different webservice_url after put")
         self.assertEqual(self.disc.first_track_num, first,
                          "different first track after put")
         self.assertEqual(self.disc.last_track_num, num_tracks,
