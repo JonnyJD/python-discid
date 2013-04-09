@@ -285,6 +285,17 @@ class DiscId(object):
         else:
             return None
 
+    _LIB.discid_get_freedb_id.argtypes = (c_void_p, )
+    _LIB.discid_get_freedb_id.restype = c_char_p
+    def _get_freedb_id(self):
+        """Gets the current FreeDB DiscId
+        """
+        if self._success:
+            result = _LIB.discid_get_freedb_id(self._handle)
+            return _decode(result)
+        else:
+            return None
+
     _LIB.discid_get_submission_url.argtypes = (c_void_p, )
     _LIB.discid_get_submission_url.restype = c_char_p
     def _get_submission_url(self):
@@ -370,6 +381,13 @@ class DiscId(object):
 
     id = property(_get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
+
+    It is set after a the TOC was populated or :obj:`None`.
+    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
+    freedb_id = property(_get_freedb_id, None, None, "FreeDB DiscId")
+    """This is the :musicbrainz:`FreeDB` Disc ID (without category).
 
     It is set after a the TOC was populated or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.

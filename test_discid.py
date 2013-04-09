@@ -59,6 +59,7 @@ class TestClass(unittest.TestCase):
     def test_emptyness(self):
         # all should be empty and don't give exceptions
         self.assertTrue(self.disc.id is None)
+        self.assertTrue(self.disc.freedb_id is None)
         self.assertTrue(self.disc.submission_url is None)
         self.assertTrue(self.disc.webservice_url is None)
         self.assertFalse(self.disc.first_track_num)
@@ -83,8 +84,10 @@ class TestClass(unittest.TestCase):
                    149160, 165115, 177710, 203325, 215555, 235590]
         # Guano Apes - Don't give Me Names, without the last data track
         disc_id = "TqvKjMu7dMliSfmVEBtrL7sBSno-"
+        freedb_id = "b60d770f"
         self.disc.put(first, last, offsets)
         self.assertEquals(self.disc.id, disc_id)
+        self.assertEquals(self.disc.freedb_id, freedb_id)
 
         # check idempotence (use output again as input)
         first = self.disc.first_track_num
@@ -93,6 +96,7 @@ class TestClass(unittest.TestCase):
         lengths = self.disc.track_lengths
         self.disc.put(first, last, offsets)
         self.assertEquals(self.disc.id, disc_id)
+        self.assertEquals(self.disc.freedb_id, freedb_id)
         self.assertEqual(self.disc.track_offsets, offsets)
         self.assertEqual(self.disc.first_track_num, first)
         self.assertEqual(self.disc.last_track_num, last)
@@ -123,6 +127,7 @@ class TestDisc(unittest.TestCase):
     def test_read_simple(self):
         self.disc.read()        # read from default drive
         self.assertEqual(len(self.disc.id), 28, "Invalid Disc ID")
+        self.assertEqual(len(self.disc.freedb_id), 8, "Invalid FreeDB Disc ID")
         self.assertTrue(self.disc.submission_url, "Invalid submission url")
         self.assertTrue(self.disc.webservice_url, "Invalid web service url")
         self.assertEqual(self.disc.sectors, self.disc.track_offsets[0],
@@ -141,6 +146,7 @@ class TestDisc(unittest.TestCase):
 
         # check idempotence (use output again as input to put)
         disc_id = self.disc.id
+        freedb_id = self.disc.freedb_id
         submission_url = self.disc.submission_url
         webservice_url = self.disc.webservice_url
         first = self.disc.first_track_num
@@ -148,6 +154,8 @@ class TestDisc(unittest.TestCase):
         lengths = self.disc.track_lengths
         self.disc.put(first, num_tracks, offsets)
         self.assertEqual(self.disc.id, disc_id, "different id after put")
+        self.assertEqual(self.disc.freedb_id, freedb_id,
+                         "different freedb id after put")
         self.assertEqual(self.disc.track_offsets, offsets,
                          "different offsets after put")
         self.assertEqual(self.disc.submission_url, submission_url,
