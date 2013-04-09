@@ -34,7 +34,7 @@ from ctypes import c_int, c_void_p, c_char_p
 from ctypes.util import find_library
 
 
-__version__ = "0.4.0"
+__version__ = "0.4.0-dev"
 
 _LIB_BASE_NAME = "discid"
 _LIB_MAJOR_VERSION = 0
