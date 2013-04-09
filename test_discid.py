@@ -100,12 +100,12 @@ class TestDisc(unittest.TestCase):
         self.assertTrue(self.disc, "No DiscId object created")
 
     def test_default_device(self):
-        """Can't be empty, in contrast to the test in TestModule"""
+        # Can't be empty, in contrast to the test in TestModule
         device = discid.DEFAULT_DEVICE
         self.assertTrue(device, "No default device given")
 
     def test_features(self):
-        """Can't be empty, in contrast to the test in TestModule"""
+        # Can't be empty, in contrast to the test in TestModule
         features = discid.FEATURES
         self.assertTrue(features, "No feature list given")
 
