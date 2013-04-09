@@ -337,6 +337,25 @@ class DiscId(object):
             offsets.append(offset)
         return offsets
 
+    _LIB.discid_get_track_length.argtypes = (c_void_p, c_int)
+    _LIB.discid_get_track_length.restype = c_int
+    def _get_track_length(self, track_number):
+        """Gets the length for a specific track
+        """
+        return _LIB.discid_get_track_length(self._handle, track_number)
+
+    def _get_track_lengths(self):
+        """Generates the list of lengths,
+        starting with the lengths of the first pregap
+        """
+        lengths = []
+        lengths.append(self.track_offsets[1])
+        for track_number in range(self.first_track_num,
+                                  self.last_track_num + 1):
+            length = self._get_track_length(track_number)
+            lengths.append(length)
+        return lengths
+
 
     id = property(_get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
@@ -372,6 +391,16 @@ class DiscId(object):
     The following elements are the offsets for all **audio** tracks.
     ``track_offsets[i]`` is the offset for the i-th track (as :obj:`int`).
     """
+
+    track_lengths = property(_get_track_lengths, None, None,
+                              "List of lengths, track_lengths[0] == 1st pregap")
+    """A list of all track lengths.
+
+    The first element is the length of the pregap of the first track.
+    The following elements are the lengths for all **audio** tracks.
+    ``track_length[i]`` is the length for the i-th track (as :obj:`int`).
+    """
+
 
     _LIB.discid_free.argtypes = (c_void_p, )
     _LIB.discid_free.restype = None

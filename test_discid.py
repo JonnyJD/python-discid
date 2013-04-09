@@ -84,8 +84,13 @@ class TestClass(unittest.TestCase):
         first = self.disc.first_track_num
         last = self.disc.last_track_num
         offsets = self.disc.track_offsets
+        lengths = self.disc.track_lengths
         self.disc.put(first, last, offsets)
         self.assertEquals(self.disc.id, disc_id)
+        self.assertEqual(self.disc.track_offsets, offsets)
+        self.assertEqual(self.disc.first_track_num, first)
+        self.assertEqual(self.disc.last_track_num, last)
+        self.assertEqual(self.disc.track_lengths, lengths)
 
     def tearDown(self):
         self.disc.free()
@@ -132,6 +137,7 @@ class TestDisc(unittest.TestCase):
         submission_url = self.disc.submission_url
         first = self.disc.first_track_num
         offsets = self.disc.track_offsets
+        lengths = self.disc.track_lengths
         self.disc.put(first, num_tracks, offsets)
         self.assertEqual(self.disc.id, disc_id, "different id after put")
         self.assertEqual(self.disc.track_offsets, offsets,
@@ -144,6 +150,8 @@ class TestDisc(unittest.TestCase):
                          "different last track after put")
         self.assertEqual(self.disc.sectors, offsets[0],
                          "different sector count after put")
+        self.assertEqual(self.disc.track_lengths, lengths,
+                         "different lengths after put")
 
     def tearDown(self):
         self.disc.free()
