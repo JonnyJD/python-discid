@@ -62,6 +62,7 @@ class TestClass(unittest.TestCase):
         self.assertTrue(self.disc.freedb_id is None)
         self.assertTrue(self.disc.submission_url is None)
         self.assertTrue(self.disc.webservice_url is None)
+        self.assertTrue(self.disc.mcn is None)
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
         self.assertFalse(self.disc.sectors)
@@ -144,6 +145,9 @@ class TestDisc(unittest.TestCase):
                 self.assertTrue(offset >= previous_offset,
                                 "Invalid offset list")
 
+        # additional features should be unset, not empty
+        self.assertTrue(self.disc.mcn is None)
+
         # check idempotence (use output again as input to put)
         disc_id = self.disc.id
         freedb_id = self.disc.freedb_id
@@ -170,6 +174,16 @@ class TestDisc(unittest.TestCase):
                          "different sector count after put")
         self.assertEqual(self.disc.track_lengths, lengths,
                          "different lengths after put")
+
+    def test_read_features(self):
+        self.disc.read(features=["mcn", "isrc"]) # read from default drive
+        self.assertEqual(len(self.disc.id), 28, "Invalid Disc ID")
+        self.assertTrue(self.disc.submission_url, "Invalid submission url")
+
+        if "mcn" in discid.FEATURES:
+            self.assertTrue(self.disc.mcn is not None)
+        else:
+            self.assertTrue(self.disc.mcn is None)
 
     def tearDown(self):
         self.disc.free()
