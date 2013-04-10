@@ -422,6 +422,33 @@ class DiscId(object):
         else:
             return None
 
+    try:
+        _LIB.discid_get_track_isrc.argtypes = (c_void_p, c_int)
+        _LIB.discid_get_track_isrc.restype = c_char_p
+    except AttributeError:
+        pass
+    def _get_track_isrc(self, track_number):
+        """Gets the ISRC for a specific track
+        """
+        try:
+            result = _LIB.discid_get_track_isrc(self._handle, track_number)
+        except AttributeError:
+            return None
+        else:
+            return _decode(result)
+
+    def _get_track_isrcs(self):
+        """Generates the list of ISRCs,
+        starting with the MCN of the disc as elemnt 0
+        """
+        isrcs = []
+        if self._success and "isrc" in self._requested_features:
+            isrcs.append(self.mcn)
+            for track_number in range(self.first_track_num,
+                                      self.last_track_num + 1):
+                isrc = self._get_track_isrc(track_number)
+                isrcs.append(isrc)
+        return isrcs
 
     id = property(_get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
@@ -488,6 +515,18 @@ class DiscId(object):
     It is set after a the "mcn" feature was requested on a read
     and supported by the platform or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
+    track_isrcs = property(_get_track_isrcs, None, None,
+                              "List of ISRCs, track_isrcs[0] == mcn")
+    """A list of all track ISRCs.
+
+    The first element is the MCN of the disc.
+    The following elements are the isrcs for all **audio** tracks.
+    If no ISRC was found, it is the empty string.
+    If no ISRCs were requested or the feature is not available,
+    this will be the empty list.
+    ``track_isrcs[i]`` is the ISRC for the i-th track (as :obj:`int`).
     """
 
 

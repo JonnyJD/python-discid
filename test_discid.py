@@ -66,6 +66,7 @@ class TestClass(unittest.TestCase):
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
         self.assertFalse(self.disc.sectors)
+        self.assertFalse(self.disc.track_isrcs)
         # only test that access doesn't give exceptions
         self.disc.track_offsets
         self.disc.track_lengths
@@ -184,6 +185,11 @@ class TestDisc(unittest.TestCase):
             self.assertTrue(self.disc.mcn is not None)
         else:
             self.assertTrue(self.disc.mcn is None)
+
+        if "isrc" in discid.FEATURES:
+            self.assertTrue(self.disc.track_isrcs)
+        else:
+            self.assertFalse(self.disc.track_isrcs)
 
     def tearDown(self):
         self.disc.free()
