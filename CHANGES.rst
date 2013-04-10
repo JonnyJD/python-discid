@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Changes in 0.4.0 (2013-04-09):
+------------------------------
+
+ * feature: added :data:`FEATURES_IMPLEMENTED`, :attr:`DiscId.track_lengths`,
+   :attr:`DiscId.webservice_url` and :attr:`DiscId.freedb_id`
+ * feature :issue:`18`: disc access test suite
+ * fix :issue:`21`: uninformative error on Windows
+
 Changes in 0.3.0 (2013-03-11):
 ------------------------------
 

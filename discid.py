@@ -34,7 +34,7 @@ from ctypes import c_int, c_void_p, c_char_p, c_uint
 from ctypes.util import find_library
 
 
-__version__ = "0.3.0"
+__version__ = "0.4.0-dev"
 
 _LIB_BASE_NAME = "discid"
 _LIB_MAJOR_VERSION = 0
@@ -311,6 +311,17 @@ class DiscId(object):
         else:
             return None
 
+    _LIB.discid_get_freedb_id.argtypes = (c_void_p, )
+    _LIB.discid_get_freedb_id.restype = c_char_p
+    def _get_freedb_id(self):
+        """Gets the current FreeDB DiscId
+        """
+        if self._success:
+            result = _LIB.discid_get_freedb_id(self._handle)
+            return _decode(result)
+        else:
+            return None
+
     _LIB.discid_get_submission_url.argtypes = (c_void_p, )
     _LIB.discid_get_submission_url.restype = c_char_p
     def _get_submission_url(self):
@@ -319,6 +330,17 @@ class DiscId(object):
         """
         if self._success:
             result = _LIB.discid_get_submission_url(self._handle)
+            return _decode(result)
+        else:
+            return None
+
+    _LIB.discid_get_webservice_url.argtypes = (c_void_p, )
+    _LIB.discid_get_webservice_url.restype = c_char_p
+    def _get_webservice_url(self):
+        """Give an URL to retrieve information about the CD from MusicBrainz.
+        """
+        if self._success:
+            result = _LIB.discid_get_webservice_url(self._handle)
             return _decode(result)
         else:
             return None
@@ -363,6 +385,25 @@ class DiscId(object):
             offsets.append(offset)
         return offsets
 
+    _LIB.discid_get_track_length.argtypes = (c_void_p, c_int)
+    _LIB.discid_get_track_length.restype = c_int
+    def _get_track_length(self, track_number):
+        """Gets the length for a specific track
+        """
+        return _LIB.discid_get_track_length(self._handle, track_number)
+
+    def _get_track_lengths(self):
+        """Generates the list of lengths,
+        starting with the lengths of the first pregap
+        """
+        lengths = []
+        lengths.append(self.track_offsets[1])
+        for track_number in range(self.first_track_num,
+                                  self.last_track_num + 1):
+            length = self._get_track_length(track_number)
+            lengths.append(length)
+        return lengths
+
     try:
         _LIB.discid_get_mcn.argtypes = (c_void_p, )
         _LIB.discid_get_mcn.restype = c_char_p
@@ -389,6 +430,13 @@ class DiscId(object):
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
+    freedb_id = property(_get_freedb_id, None, None, "FreeDB DiscId")
+    """This is the :musicbrainz:`FreeDB` Disc ID (without category).
+
+    It is set after a the TOC was populated or :obj:`None`.
+    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
     submission_url = property(_get_submission_url, None, None,
                               "Disc ID / TOC Submission URL for MusicBrainz")
     """With this url you can submit the current TOC
@@ -398,8 +446,16 @@ class DiscId(object):
     Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
+    webservice_url = property(_get_webservice_url, None, None,
+                              "web service URL for info about the CD")
+    """With this url you can retrive information about the CD in XML
+    from the MusicBrainz web service.
+
+    If there is no populated TOC the url is :obj:`None`.
+    Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
     last_track_num = property(_get_last_track_num, None, None,
-                              "Number of the last track")
+                              "Number of the last **audio** track")
 
     first_track_num = property(_get_first_track_num, None, None,
                               "Number of the first track")
@@ -417,6 +473,15 @@ class DiscId(object):
     ``track_offsets[i]`` is the offset for the i-th track (as :obj:`int`).
     """
 
+    track_lengths = property(_get_track_lengths, None, None,
+                              "List of lengths, track_lengths[0] == 1st pregap")
+    """A list of all track lengths.
+
+    The first element is the length of the pregap of the first track.
+    The following elements are the lengths for all **audio** tracks.
+    ``track_length[i]`` is the length for the i-th track (as :obj:`int`).
+    """
+
     mcn = property(_get_mcn, None, None, "Media Catalogue Number")
     """This is the Media Catalogue Number (MCN/UPC/EAN)
 
@@ -424,6 +489,7 @@ class DiscId(object):
     and supported by the platform or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
+
 
     _LIB.discid_free.argtypes = (c_void_p, )
     _LIB.discid_free.restype = None
