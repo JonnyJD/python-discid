@@ -200,6 +200,14 @@ class TestDisc(unittest.TestCase):
         else:
             self.assertFalse(self.disc.track_isrcs)
 
+    def test_read_put(self):
+        # a read followed with a put, which should clear the features
+        self.disc.read(features=["mcn", "isrc"]) # read from default drive
+        disc = test_discs[0]
+        self.disc.put(disc["first"], disc["last"], disc["offsets"])
+        self.assertTrue(self.disc.mcn is None)
+        self.assertFalse(self.disc.track_isrcs)
+
     def tearDown(self):
         self.disc.free()
 

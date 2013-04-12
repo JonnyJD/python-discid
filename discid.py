@@ -290,6 +290,9 @@ class DiscId(object):
         That is: ``offsets[0]`` are the total number of sectors
         and the following are the offsets of each track.
         """
+        # only the "read" (= TOC) feature is supported by put
+        self._requested_features = ["read"]
+
         c_offsets = (c_int * len(offsets))(*tuple(offsets))
         result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
         self._success = result
