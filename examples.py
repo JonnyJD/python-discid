@@ -5,22 +5,17 @@
 # this will load Libdiscid
 import discid
 
-def recommended_example():
-    with discid.DiscId() as disc:
-        disc.read()       # use default device
-        print("id: %s" % disc.id)
-        print("used %s as device" % discid.DEFAULT_DEVICE)
-        print("submit with:\n%s" % disc.submission_url)
+def simple_example():
+    disc = discid.read()       # use default device
+    print("id: %s" % disc.id)
+    print("used %s as device" % discid.DEFAULT_DEVICE)
+    print("submit with:\n%s" % disc.submission_url)
 
 def other_example():
-    disc = discid.DiscId()
-    device = discid.DEFAULT_DEVICE
-    disc.read("/dev/cdrom")
-    #print "id: %s" % disc.id # Python 2
-    print("id: %s" % disc.id) # Python 3
-    disc.free()
+    disc = discid.read("/dev/cdrom")
+    print("id:  %s" % disc.id)
 
-recommended_example()
+simple_example()
 #other_example()
 
 # vim:set shiftwidth=4 smarttab expandtab:

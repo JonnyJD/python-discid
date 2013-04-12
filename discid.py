@@ -193,6 +193,16 @@ FEATURES_IMPLEMENTED = ["read"]
 Some might not be available for your platform, see :data:`FEATURES`.
 """
 
+def read(device=None, features=[]):
+    disc = DiscId()
+    disc.read(device, features)
+    return disc
+
+def put(first, last, offsets):
+    disc = DiscId()
+    disc.put(first, last, offsets)
+    return disc
+
 class DiscError(IOError):
     """:func:`DiscId.read` will raise this exception when an error occured.
     An error string (:obj:`unicode`/:obj:`str <python:str>`) is provided.
@@ -455,6 +465,9 @@ class DiscId(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+    def __del__(self):
         self.free()
 
 
