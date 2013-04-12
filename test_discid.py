@@ -7,6 +7,19 @@ import unittest
 
 import discid
 
+test_discs = [
+        {
+            "name": "Guano Apes - Don't give Me Names, without last data track",
+            "first": 1,
+            "last" : 15,
+            "offsets": [258725, 150, 17510, 33275, 45910,
+                        57805, 78310, 94650,109580, 132010,
+                        149160, 165115, 177710, 203325, 215555, 235590],
+            "id": "TqvKjMu7dMliSfmVEBtrL7sBSno-",
+            "freedb": "b60d770f"
+        }
+    ]
+
 class TestModulePrivate(unittest.TestCase):
 
     # lots of encoding tests, because that is quite different in Python 2/3
@@ -79,17 +92,13 @@ class TestClass(unittest.TestCase):
         self.assertRaises(discid.DiscError, self.disc.put, first, last, offsets)
 
     def test_put_success(self):
-        first = 1
-        last = 15
-        offsets = [258725, 150, 17510, 33275, 45910,
-                   57805, 78310, 94650,109580, 132010,
-                   149160, 165115, 177710, 203325, 215555, 235590]
-        # Guano Apes - Don't give Me Names, without the last data track
-        disc_id = "TqvKjMu7dMliSfmVEBtrL7sBSno-"
-        freedb_id = "b60d770f"
-        self.disc.put(first, last, offsets)
-        self.assertEquals(self.disc.id, disc_id)
-        self.assertEquals(self.disc.freedb_id, freedb_id)
+        disc = test_discs[0]
+        self.disc.put(disc["first"], disc["last"], disc["offsets"])
+        self.assertEqual(self.disc.id, disc["id"])
+        self.assertEqual(self.disc.freedb_id, disc["freedb"])
+        self.assertEqual(self.disc.first_track_num, disc["first"])
+        self.assertEqual(self.disc.last_track_num, disc["last"])
+        self.assertEqual(self.disc.track_offsets, disc["offsets"])
 
         # check idempotence (use output again as input)
         first = self.disc.first_track_num
@@ -97,8 +106,8 @@ class TestClass(unittest.TestCase):
         offsets = self.disc.track_offsets
         lengths = self.disc.track_lengths
         self.disc.put(first, last, offsets)
-        self.assertEquals(self.disc.id, disc_id)
-        self.assertEquals(self.disc.freedb_id, freedb_id)
+        self.assertEqual(self.disc.id, disc["id"])
+        self.assertEqual(self.disc.freedb_id, disc["freedb"])
         self.assertEqual(self.disc.track_offsets, offsets)
         self.assertEqual(self.disc.first_track_num, first)
         self.assertEqual(self.disc.last_track_num, last)
