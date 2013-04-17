@@ -168,7 +168,8 @@ def _get_features():
         else:
             # ISRC/MCN API found -> libdiscid = 0.3.x
             if (sys.platform.startswith("linux") and
-                    not os.path.isfile("/usr/lib/libdiscid.so.0.3.0")):
+                    not os.path.isfile("/usr/lib/libdiscid.so.0.3.0")
+                    and not os.path.isfile("/usr/lib64/libdiscid.so.0.3.0")):
                 features += ["mcn", "isrc"]
             elif sys.platform in ["darwin", "win32"]:
                 features += ["mcn", "isrc"]
