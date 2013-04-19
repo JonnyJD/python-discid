@@ -193,7 +193,7 @@ FEATURES_IMPLEMENTED = ["read"]
 Some might not be available for your platform, see :data:`FEATURES`.
 """
 
-def read(device=None, features=[]):
+def read(device=None):
     """Reads the TOC from the device given as string
     and returns a :class:`DiscID` object.
 
@@ -207,7 +207,7 @@ def read(device=None, features=[]):
     reading discs on the current platform.
     """
     disc = DiscId()
-    disc._read(device, features)
+    disc.read(device)
     return disc
 
 def put(first, last, offsets):
@@ -220,7 +220,7 @@ def put(first, last, offsets):
     and the following are the offsets of each track.
     """
     disc = DiscId()
-    disc._put(first, last, offsets)
+    disc.put(first, last, offsets)
     return disc
 
 class DiscError(IOError):
