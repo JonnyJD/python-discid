@@ -194,13 +194,33 @@ Some might not be available for your platform, see :data:`FEATURES`.
 """
 
 def read(device=None, features=[]):
+    """Reads the TOC from the device given as string
+    and returns a :class:`DiscID` object.
+
+    That string can be either of:
+    :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
+    However, it should in no case contain non-ASCII characters.
+    If no device is given, the :data:`DEFAULT_DEVICE` is used.
+
+    A :exc:`DiscError` exception is raised when the reading fails,
+    and :exc:`NotImplementedError` when libdiscid doesn't support
+    reading discs on the current platform.
+    """
     disc = DiscId()
-    disc.read(device, features)
+    disc._read(device, features)
     return disc
 
 def put(first, last, offsets):
+    """Creates a TOC based on the offsets given
+    and resturns a :class:`DiscId` object.
+
+    Takes the *first* and *last* **audio** tracks as :obj:`int` and
+    *offsets* is supposed to be the same as :attr:`track_offsets`.
+    That is: ``offsets[0]`` are the total number of sectors
+    and the following are the offsets of each track.
+    """
     disc = DiscId()
-    disc.put(first, last, offsets)
+    disc._put(first, last, offsets)
     return disc
 
 class DiscError(IOError):
@@ -244,14 +264,7 @@ class DiscId(object):
     def read(self, device=None):
         """Reads the TOC from the device given as string.
 
-        That string can be either of:
-        :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
-        However, it should in no case contain non-ASCII characters.
-        If no device is given, the :data:`DEFAULT_DEVICE` is used.
-
-        A :exc:`DiscError` exception is raised when the reading fails,
-        and :exc:`NotImplementedError` when libdiscid doesn't support
-        reading discs on the current platform.
+        The user is supposed to use :func:`discid.read`.
         """
         if "read" not in FEATURES:
             raise NotImplementedError("discid_read not implemented on platform")
@@ -269,10 +282,7 @@ class DiscId(object):
     def put(self, first, last, offsets):
         """Creates a TOC based on the offsets given.
 
-        Takes the *first* and *last* **audio** tracks as :obj:`int` and
-        *offsets* is supposed to be the same as :attr:`track_offsets`.
-        That is: ``offsets[0]`` are the total number of sectors
-        and the following are the offsets of each track.
+        The user is supposed to use :func:`discid.put`.
         """
         c_offsets = (c_int * len(offsets))(*tuple(offsets))
         result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
@@ -451,24 +461,22 @@ class DiscId(object):
 
     _LIB.discid_free.argtypes = (c_void_p, )
     _LIB.discid_free.restype = None
-    def free(self):
+    def _free(self):
         """This will free the internal allocated memory for the object.
-        You can't use this object anymore afterwards.
-
-        Please consider using the :keyword:`with` statement for the object,
-        which will take care of this destruction automatically.
         """
         _LIB.discid_free(self._handle)
         self._handle = None
     
     def __enter__(self):
+        """deprecated :keyword:`with` usage"""
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        """deprecated :keyword:`with` usage"""
         pass
 
     def __del__(self):
-        self.free()
+        self._free()
 
 
 # vim:set shiftwidth=4 smarttab expandtab:
