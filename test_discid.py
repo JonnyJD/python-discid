@@ -103,7 +103,7 @@ class TestClass(unittest.TestCase):
         self.assertEqual(self.disc.track_lengths, lengths)
 
     def tearDown(self):
-        self.disc.free()
+        self.disc._free()
 
 
 class TestDisc(unittest.TestCase):
@@ -172,7 +172,7 @@ class TestDisc(unittest.TestCase):
                          "different lengths after put")
 
     def tearDown(self):
-        self.disc.free()
+        self.disc._free()
 
 
 
