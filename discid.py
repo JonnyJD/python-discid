@@ -354,6 +354,8 @@ class DiscId(object):
         """
         offsets = []
         offsets.append(self.sectors)
+        for track_number in range(1, self.first_track_num):
+            offsets.append(None)
         for track_number in range(self.first_track_num,
                                   self.last_track_num + 1):
             offset = self._get_track_offset(track_number)
@@ -373,6 +375,8 @@ class DiscId(object):
         """
         lengths = []
         lengths.append(self.track_offsets[1])
+        for track_number in range(1, self.first_track_num):
+            lengths.append(None)
         for track_number in range(self.first_track_num,
                                   self.last_track_num + 1):
             length = self._get_track_length(track_number)
