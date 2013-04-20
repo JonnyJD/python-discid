@@ -170,7 +170,8 @@ def _get_features():
         else:
             # ISRC/MCN API found -> libdiscid = 0.3.x
             if (sys.platform.startswith("linux") and
-                    not os.path.isfile("/usr/lib/libdiscid.so.0.3.0")):
+                    not os.path.isfile("/usr/lib/libdiscid.so.0.3.0")
+                    and not os.path.isfile("/usr/lib64/libdiscid.so.0.3.0")):
                 features += ["mcn", "isrc"]
             elif sys.platform in ["darwin", "win32"]:
                 features += ["mcn", "isrc"]
@@ -382,6 +383,8 @@ class DiscId(object):
         """
         offsets = []
         offsets.append(self.sectors)
+        for track_number in range(1, self.first_track_num):
+            offsets.append(None)
         for track_number in range(self.first_track_num,
                                   self.last_track_num + 1):
             offset = self._get_track_offset(track_number)
@@ -401,6 +404,8 @@ class DiscId(object):
         """
         lengths = []
         lengths.append(self.track_offsets[1])
+        for track_number in range(1, self.first_track_num):
+            lengths.append(None)
         for track_number in range(self.first_track_num,
                                   self.last_track_num + 1):
             length = self._get_track_length(track_number)
@@ -447,6 +452,8 @@ class DiscId(object):
         isrcs = []
         if self._success and "isrc" in self._requested_features:
             isrcs.append(self.mcn)
+            for track_number in range(1, self.first_track_num):
+                isrcs.append(None)
             for track_number in range(self.first_track_num,
                                       self.last_track_num + 1):
                 isrc = self._get_track_isrc(track_number)
