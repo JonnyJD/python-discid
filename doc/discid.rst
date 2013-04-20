@@ -44,6 +44,8 @@ feed it with some type of TOC and extract the generated information.
    .. autoattribute:: sectors
    .. autoattribute:: track_offsets
    .. autoattribute:: track_lengths
+   .. autoattribute:: mcn
+   .. autoattribute:: track_isrcs
 
 
    After you are done with the object,
