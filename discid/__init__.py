@@ -28,6 +28,7 @@ and will raise :exc:`OSError` when libdiscid is not found.
 """
 
 from discid.disc import read, put, Disc, DiscError
+from discid.deprecated import DiscId
 import discid.libdiscid
 import discid.disc
 
@@ -58,12 +59,3 @@ FEATURES_IMPLEMENTED = discid.disc.FEATURES_IMPLEMENTED
 """The features implemented in this python module as a list of strings.
 Some might not be available for your platform, see :data:`FEATURES`.
 """
-
-class DiscId(Disc):
-    """Deprecated class, use :func:`read` or :func:`put` or :class:`Disc`.
-    """
-
-    def __init__(self):
-        sys.stderr.write("\nWarning: The DiscId class is deprecated.\n")
-        sys.stderr.write("         Use read/put on module level or Disc.\n")
-        Disc.__init__(self)
