@@ -20,7 +20,7 @@
 Libdiscid is a library to calculate MusicBrainz Disc IDs.
 This module provides a python-like API for that functionality.
 
-The user is expected to create a :class:`DiscId` object
+The user is expected to create a :class:`Disc` object
 using :func:`read` or :func:`put` and extract the generated information.
 
 Importing this module will open libdiscid at the same time
@@ -198,7 +198,7 @@ Some might not be available for your platform, see :data:`FEATURES`.
 
 def read(device=None, features=[]):
     """Reads the TOC from the device given as string
-    and returns a :class:`DiscId` object.
+    and returns a :class:`Disc` object.
 
     That string can be either of:
     :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
@@ -214,20 +214,20 @@ def read(device=None, features=[]):
     and :exc:`NotImplementedError` when libdiscid doesn't support
     reading discs on the current platform.
     """
-    disc = DiscId()
+    disc = Disc()
     disc.read(device)
     return disc
 
 def put(first, last, offsets):
     """Creates a TOC based on the offsets given
-    and resturns a :class:`DiscId` object.
+    and resturns a :class:`Disc` object.
 
     Takes the *first* and *last* **audio** tracks as :obj:`int` and
     *offsets* is supposed to be the same as :attr:`track_offsets`.
     That is: ``offsets[0]`` are the total number of sectors
     and the following are the offsets of each track.
     """
-    disc = DiscId()
+    disc = Disc()
     disc.put(first, last, offsets)
     return disc
 
@@ -238,8 +238,8 @@ class DiscError(IOError):
     pass
 
 
-class DiscId(object):
-    """The main class of this module.
+class Disc(object):
+    """The class of the object returned by :func:`read` or :func:`put`.
     """
 
     _LIB.discid_new.argtypes = ()
@@ -578,6 +578,17 @@ class DiscId(object):
 
     def __del__(self):
         self._free()
+
+
+class DiscId(Disc):
+    """Deprecated class, use :func:`read` or :func:`put` or :class:`Disc`.
+    """
+
+    def __init__(self):
+        sys.stderr.write("\nWarning: The DiscId class is deprecated.\n")
+        sys.stderr.write("         Use read/put on module level or Disc.\n")
+        Disc.__init__(self)
+
 
 
 # vim:set shiftwidth=4 smarttab expandtab:

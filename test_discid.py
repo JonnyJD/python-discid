@@ -96,8 +96,8 @@ class TestModule(unittest.TestCase):
 class TestClass(unittest.TestCase):
 
     def setUp(self):
-        self.disc = discid.DiscId()
-        self.assertTrue(self.disc, "No DiscId object created")
+        self.disc = discid.Disc()
+        self.assertTrue(self.disc, "No Disc object created")
 
     def test_emptyness(self):
         # all should be empty and don't give exceptions
