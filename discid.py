@@ -20,8 +20,8 @@
 Libdiscid is a library to calculate MusicBrainz Disc IDs.
 This module provides a python-like API for that functionality.
 
-The user is expected to create a :class:`DiscId` object,
-feed it with some type of TOC and extract the generated information.
+The user is expected to create a :class:`DiscId` object
+using :func:`read` or :func:`put` and extract the generated information.
 
 Importing this module will open libdiscid at the same time
 and will raise :exc:`OSError` when libdiscid is not found.
@@ -179,7 +179,7 @@ def _get_features():
     return features
 
 DEFAULT_DEVICE = _get_default_device()
-"""The default device to use for :func:`DiscId.read` on this platform
+"""The default device to use for :func:`read` on this platform
 given as a :obj:`unicode` or :obj:`str <python:str>` object.
 """
 
@@ -198,7 +198,7 @@ Some might not be available for your platform, see :data:`FEATURES`.
 
 def read(device=None, features=[]):
     """Reads the TOC from the device given as string
-    and returns a :class:`DiscID` object.
+    and returns a :class:`DiscId` object.
 
     That string can be either of:
     :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
@@ -232,7 +232,7 @@ def put(first, last, offsets):
     return disc
 
 class DiscError(IOError):
-    """:func:`DiscId.read` will raise this exception when an error occured.
+    """:func:`read` will raise this exception when an error occured.
     An error string (:obj:`unicode`/:obj:`str <python:str>`) is provided.
     """
     pass
@@ -327,7 +327,7 @@ class DiscId(object):
     _LIB.discid_get_id.argtypes = (c_void_p, )
     _LIB.discid_get_id.restype = c_char_p
     def _get_id(self):
-        """Gets the current MusicBrainz DiscId
+        """Gets the current MusicBrainz disc ID
         """
         if self._success:
             result = _LIB.discid_get_id(self._handle)
@@ -338,7 +338,7 @@ class DiscId(object):
     _LIB.discid_get_freedb_id.argtypes = (c_void_p, )
     _LIB.discid_get_freedb_id.restype = c_char_p
     def _get_freedb_id(self):
-        """Gets the current FreeDB DiscId
+        """Gets the current FreeDB disc ID
         """
         if self._success:
             result = _LIB.discid_get_freedb_id(self._handle)
@@ -480,14 +480,14 @@ class DiscId(object):
                 isrcs.append(isrc)
         return isrcs
 
-    id = property(_get_id, None, None, "MusicBrainz DiscId")
+    id = property(_get_id, None, None, "MusicBrainz disc ID")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
 
     It is set after a the TOC was populated or :obj:`None`.
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
-    freedb_id = property(_get_freedb_id, None, None, "FreeDB DiscId")
+    freedb_id = property(_get_freedb_id, None, None, "FreeDB disc ID")
     """This is the :musicbrainz:`FreeDB` Disc ID (without category).
 
     It is set after a the TOC was populated or :obj:`None`.
