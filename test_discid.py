@@ -153,7 +153,7 @@ class TestDisc(unittest.TestCase):
                                 "Invalid offset list")
 
         # additional features should be unset, not empty
-        self.assertTrue(self.disc.mcn is None)
+        self.assertTrue(disc.mcn is None)
 
         # check idempotence (use output again as input to put)
         disc_id = disc.id
@@ -163,7 +163,7 @@ class TestDisc(unittest.TestCase):
         first = disc.first_track_num
         offsets = disc.track_offsets
         lengths = disc.track_lengths
-        self.disc.put(first, num_tracks, offsets)
+        disc = discid.put(first, num_tracks, offsets)
         self.assertEqual(disc.id, disc_id, "different id after put")
         self.assertEqual(disc.freedb_id, freedb_id,
                          "different freedb id after put")
