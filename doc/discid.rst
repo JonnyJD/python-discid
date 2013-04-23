@@ -18,16 +18,16 @@ At the module level there are these constants available:
 .. autodata:: FEATURES_IMPLEMENTED
 
 
-These functions are used to create a :class:`DiscId` object.
+These functions are used to create a :class:`Disc` object.
 
 .. autofunction:: read
 .. autofunction:: put
 
 
-DiscId object
+Disc object
 -------------
 
-.. autoclass:: DiscId
+.. autoclass:: Disc
    :undoc-members:
 
 
