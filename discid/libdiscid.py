@@ -152,17 +152,8 @@ def _get_features():
     return features
 
 DEFAULT_DEVICE = _get_default_device()
-"""The default device to use for :func:`read` on this platform
-given as a :obj:`unicode` or :obj:`str <python:str>` object.
-"""
 
 FEATURES = _get_features()
-"""The features libdiscid supports for the platform as a list of strings.
-Some Functions can raise :exc:`NotImplementedError` when a feature
-is not available.
-Some features might not be implemented in this python module,
-see :data:`FEATURES_IMPLEMENTED`.
-"""
 
 
 # vim:set shiftwidth=4 smarttab expandtab:

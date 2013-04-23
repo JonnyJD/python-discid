@@ -29,9 +29,6 @@ _FEATURE_MAPPING = {"read": 1 << 0, "mcn": 1 << 1, "isrc": 1 << 2}
 
 
 FEATURES_IMPLEMENTED = list(_FEATURE_MAPPING.keys())
-"""The features implemented in this python module as a list of strings.
-Some might not be available for your platform, see :data:`FEATURES`.
-"""
 
 def read(device=None, features=[]):
     """Reads the TOC from the device given as string

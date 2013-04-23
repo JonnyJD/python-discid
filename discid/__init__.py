@@ -27,11 +27,32 @@ Importing this module will open libdiscid at the same time
 and will raise :exc:`OSError` when libdiscid is not found.
 """
 
-from discid.disc import read, put, Disc, DiscError, FEATURES_IMPLEMENTED
-from discid.libdiscid import DEFAULT_DEVICE, FEATURES
+from discid.disc import read, put, Disc, DiscError
+import discid.libdiscid
+import discid.disc
 
 __version__ = "0.4.0-dev"
 
+
+# these contants are defined here so sphinx can catch the "docstrings"
+
+DEFAULT_DEVICE = discid.libdiscid.DEFAULT_DEVICE
+"""The default device to use for :func:`read` on this platform
+given as a :obj:`unicode` or :obj:`str <python:str>` object.
+"""
+
+FEATURES = discid.libdiscid.FEATURES
+"""The features libdiscid supports for the platform as a list of strings.
+Some Functions can raise :exc:`NotImplementedError` when a feature
+is not available.
+Some features might not be implemented in this python module,
+see :data:`FEATURES_IMPLEMENTED`.
+"""
+
+FEATURES_IMPLEMENTED = discid.disc.FEATURES_IMPLEMENTED
+"""The features implemented in this python module as a list of strings.
+Some might not be available for your platform, see :data:`FEATURES`.
+"""
 
 class DiscId(Disc):
     """Deprecated class, use :func:`read` or :func:`put` or :class:`Disc`.
