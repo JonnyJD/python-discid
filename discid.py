@@ -30,7 +30,7 @@ and will raise :exc:`OSError` when libdiscid is not found.
 import os
 import sys
 import ctypes
-from ctypes import c_int, c_void_p, c_char_p
+from ctypes import c_int, c_void_p, c_char_p, c_uint
 from ctypes.util import find_library
 
 
@@ -39,6 +39,8 @@ __version__ = "0.4.0-dev"
 _LIB_BASE_NAME = "discid"
 _LIB_MAJOR_VERSION = 0
 
+# our implemented of libdiscid's enum discid_feature
+_FEATURE_MAPPING = {"read": 1 << 0, "mcn": 1 << 1, "isrc": 1 << 2}
 
 
 def _find_library(name, version=0):
@@ -189,12 +191,12 @@ Some features might not be implemented in this python module,
 see :data:`FEATURES_IMPLEMENTED`.
 """
 
-FEATURES_IMPLEMENTED = ["read"]
+FEATURES_IMPLEMENTED = list(_FEATURE_MAPPING.keys())
 """The features implemented in this python module as a list of strings.
 Some might not be available for your platform, see :data:`FEATURES`.
 """
 
-def read(device=None):
+def read(device=None, features=[]):
     """Reads the TOC from the device given as string
     and returns a :class:`DiscID` object.
 
@@ -202,6 +204,11 @@ def read(device=None):
     :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
     However, it should in no case contain non-ASCII characters.
     If no device is given, the :data:`DEFAULT_DEVICE` is used.
+
+    You can optionally add a subset of the features in
+    :data:`FEATURES` or the whole list to read more than just the TOC.
+    In contrast to libdiscid, :func:`read` won't read any
+    of the additional features by default.
 
     A :exc:`DiscError` exception is raised when the reading fails,
     and :exc:`NotImplementedError` when libdiscid doesn't support
@@ -243,6 +250,7 @@ class DiscId(object):
         """
         self._handle = c_void_p(_LIB.discid_new())
         self._success = False
+        self._requested_features = []
         assert self._handle.value is not None
 
     def __str__(self):
@@ -262,16 +270,34 @@ class DiscId(object):
 
     _LIB.discid_read.argtypes = (c_void_p, c_char_p)
     _LIB.discid_read.restype = c_int
-    def read(self, device=None):
-        """Reads the TOC from the device given as string.
+    try:
+        _LIB.discid_read_sparse.argtypes = (c_void_p, c_char_p, c_uint)
+        _LIB.discid_read_sparse.restype = c_int
+    except AttributeError:
+        pass
+    def read(self, device=None, features=[]):
+        """Reads the TOC from the device given as string
 
         The user is supposed to use :func:`discid.read`.
         """
         if "read" not in FEATURES:
             raise NotImplementedError("discid_read not implemented on platform")
 
+        # only use features implemented on this platform and in this module
+        self._requested_features = list(set(features) & set(FEATURES)
+                                        & set(FEATURES_IMPLEMENTED))
+
+        # create the bitmask for libdiscid
+        c_features = 0
+        for feature in features:
+            c_features += _FEATURE_MAPPING.get(feature, 0)
+
         # device = None will use the default device (internally)
-        result = _LIB.discid_read(self._handle, _encode(device)) == 1
+        try:
+            result = _LIB.discid_read_sparse(self._handle, _encode(device),
+                                             c_features) == 1
+        except AttributeError:
+            result = _LIB.discid_read(self._handle, _encode(device)) == 1
         self._success = result
         if not self._success:
             raise DiscError(self._get_error_msg())
@@ -285,6 +311,9 @@ class DiscId(object):
 
         The user is supposed to use :func:`discid.put`.
         """
+        # only the "read" (= TOC) feature is supported by put
+        self._requested_features = ["read"]
+
         c_offsets = (c_int * len(offsets))(*tuple(offsets))
         result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
         self._success = result
@@ -403,6 +432,53 @@ class DiscId(object):
             lengths.append(length)
         return lengths
 
+    try:
+        _LIB.discid_get_mcn.argtypes = (c_void_p, )
+        _LIB.discid_get_mcn.restype = c_char_p
+    except AttributeError:
+        pass
+    def _get_mcn(self):
+        """Gets the current Media Catalogue Number (MCN/UPC/EAN)
+        """
+        if self._success and "mcn" in self._requested_features:
+            try:
+                result = _LIB.discid_get_mcn(self._handle)
+            except AttributeError:
+                return None
+            else:
+                return _decode(result)
+        else:
+            return None
+
+    try:
+        _LIB.discid_get_track_isrc.argtypes = (c_void_p, c_int)
+        _LIB.discid_get_track_isrc.restype = c_char_p
+    except AttributeError:
+        pass
+    def _get_track_isrc(self, track_number):
+        """Gets the ISRC for a specific track
+        """
+        try:
+            result = _LIB.discid_get_track_isrc(self._handle, track_number)
+        except AttributeError:
+            return None
+        else:
+            return _decode(result)
+
+    def _get_track_isrcs(self):
+        """Generates the list of ISRCs,
+        starting with the MCN of the disc as elemnt 0
+        """
+        isrcs = []
+        if self._success and "isrc" in self._requested_features:
+            isrcs.append(self.mcn)
+            for track_number in range(1, self.first_track_num):
+                isrcs.append(None)
+            for track_number in range(self.first_track_num,
+                                      self.last_track_num + 1):
+                isrc = self._get_track_isrc(track_number)
+                isrcs.append(isrc)
+        return isrcs
 
     id = property(_get_id, None, None, "MusicBrainz DiscId")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
@@ -461,6 +537,26 @@ class DiscId(object):
     The first element is the length of the pregap of the first track.
     The following elements are the lengths for all **audio** tracks.
     ``track_length[i]`` is the length for the i-th track (as :obj:`int`).
+    """
+
+    mcn = property(_get_mcn, None, None, "Media Catalogue Number")
+    """This is the Media Catalogue Number (MCN/UPC/EAN)
+
+    It is set after a the "mcn" feature was requested on a read
+    and supported by the platform or :obj:`None`.
+    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+    """
+
+    track_isrcs = property(_get_track_isrcs, None, None,
+                              "List of ISRCs, track_isrcs[0] == mcn")
+    """A list of all track ISRCs.
+
+    The first element is the MCN of the disc.
+    The following elements are the isrcs for all **audio** tracks.
+    If no ISRC was found, it is the empty string.
+    If no ISRCs were requested or the feature is not available,
+    this will be the empty list.
+    ``track_isrcs[i]`` is the ISRC for the i-th track (as :obj:`int`).
     """
 
 

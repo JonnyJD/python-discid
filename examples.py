@@ -11,11 +11,12 @@ def simple_example():
     print("used %s as device" % discid.DEFAULT_DEVICE)
     print("submit with:\n%s" % disc.submission_url)
 
-def other_example():
-    disc = discid.read("/dev/cdrom")
+def feature_example():
+    disc = discid.read("/dev/cdrom", ["mcn"])
     print("id:  %s" % disc.id)
+    print("MCN: %s" % disc.mcn)
 
 simple_example()
-#other_example()
+#feature_example()
 
 # vim:set shiftwidth=4 smarttab expandtab:

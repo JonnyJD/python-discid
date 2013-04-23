@@ -7,6 +7,19 @@ import unittest
 
 import discid
 
+test_discs = [
+        {
+            "name": "Guano Apes - Don't give Me Names, without last data track",
+            "first": 1,
+            "last" : 15,
+            "offsets": [258725, 150, 17510, 33275, 45910,
+                        57805, 78310, 94650,109580, 132010,
+                        149160, 165115, 177710, 203325, 215555, 235590],
+            "id": "TqvKjMu7dMliSfmVEBtrL7sBSno-",
+            "freedb": "b60d770f"
+        }
+    ]
+
 class TestModulePrivate(unittest.TestCase):
 
     # lots of encoding tests, because that is quite different in Python 2/3
@@ -57,17 +70,14 @@ class TestModule(unittest.TestCase):
         self.assertRaises(discid.DiscError, discid.put, first, last, offsets)
 
     def test_put_success(self):
-        first = 1
-        last = 15
-        offsets = [258725, 150, 17510, 33275, 45910,
-                   57805, 78310, 94650,109580, 132010,
-                   149160, 165115, 177710, 203325, 215555, 235590]
-        # Guano Apes - Don't give Me Names, without the last data track
-        disc_id = "TqvKjMu7dMliSfmVEBtrL7sBSno-"
-        freedb_id = "b60d770f"
-        disc = discid.put(first, last, offsets)
-        self.assertEquals(disc.id, disc_id)
-        self.assertEquals(disc.freedb_id, freedb_id)
+        test_disc = test_discs[0]
+        disc = discid.put(test_disc["first"], test_disc["last"],
+                          test_disc["offsets"])
+        self.assertEqual(disc.id, test_disc["id"])
+        self.assertEqual(disc.freedb_id, test_disc["freedb"])
+        self.assertEqual(disc.first_track_num, test_disc["first"])
+        self.assertEqual(disc.last_track_num, test_disc["last"])
+        self.assertEqual(disc.track_offsets, test_disc["offsets"])
 
         # check idempotence (use output again as input)
         first = disc.first_track_num
@@ -75,8 +85,8 @@ class TestModule(unittest.TestCase):
         offsets = disc.track_offsets
         lengths = disc.track_lengths
         disc = discid.put(first, last, offsets)
-        self.assertEquals(disc.id, disc_id)
-        self.assertEquals(disc.freedb_id, freedb_id)
+        self.assertEqual(disc.id, test_disc["id"])
+        self.assertEqual(disc.freedb_id, test_disc["freedb"])
         self.assertEqual(disc.track_offsets, offsets)
         self.assertEqual(disc.first_track_num, first)
         self.assertEqual(disc.last_track_num, last)
@@ -95,12 +105,17 @@ class TestClass(unittest.TestCase):
         self.assertTrue(self.disc.freedb_id is None)
         self.assertTrue(self.disc.submission_url is None)
         self.assertTrue(self.disc.webservice_url is None)
+        self.assertTrue(self.disc.mcn is None)
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
         self.assertFalse(self.disc.sectors)
+        self.assertFalse(self.disc.track_isrcs)
         # only test that access doesn't give exceptions
         self.disc.track_offsets
         self.disc.track_lengths
+
+    def tearDown(self):
+        self.disc._free()
 
 
 class TestDisc(unittest.TestCase):
@@ -137,6 +152,9 @@ class TestDisc(unittest.TestCase):
                 self.assertTrue(offset >= previous_offset,
                                 "Invalid offset list")
 
+        # additional features should be unset, not empty
+        self.assertTrue(self.disc.mcn is None)
+
         # check idempotence (use output again as input to put)
         disc_id = disc.id
         freedb_id = disc.freedb_id
@@ -164,6 +182,29 @@ class TestDisc(unittest.TestCase):
         self.assertEqual(disc.track_lengths, lengths,
                          "different lengths after put")
 
+    def test_read_features(self):
+        disc = discid.read(features=["mcn", "isrc"]) # read from default drive
+        self.assertEqual(len(disc.id), 28, "Invalid Disc ID")
+        self.assertTrue(disc.submission_url, "Invalid submission url")
+
+        if "mcn" in discid.FEATURES:
+            self.assertTrue(disc.mcn is not None)
+        else:
+            self.assertTrue(disc.mcn is None)
+
+        if "isrc" in discid.FEATURES:
+            self.assertTrue(disc.track_isrcs)
+        else:
+            self.assertFalse(disc.track_isrcs)
+
+    def test_read_put(self):
+        # a read followed with a put, which should clear the features
+        disc = discid.read(features=["mcn", "isrc"]) # read from default drive
+        test_disc = test_discs[0]
+        disc = discid.put(test_disc["first"], test_disc["last"],
+                          test_disc["offsets"])
+        self.assertTrue(disc.mcn is None)
+        self.assertFalse(disc.track_isrcs)
 
 
 if __name__ == "__main__":

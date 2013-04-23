@@ -37,6 +37,8 @@ DiscId object
    .. autoattribute:: sectors
    .. autoattribute:: track_offsets
    .. autoattribute:: track_lengths
+   .. autoattribute:: mcn
+   .. autoattribute:: track_isrcs
 
 
 The discid module includes a custom exception to handle specific problems:
