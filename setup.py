@@ -51,7 +51,7 @@ setup(name="discid",
         author_email="brainz@JonnyJD.net",
         url="https://python-discid.readthedocs.org/",
         license="LGPLv3+",
-        py_modules = ["discid"],
+        packages = ["discid"],
         cmdclass = {"test": Test},
         classifiers=[
             "Development Status :: 4 - Beta",

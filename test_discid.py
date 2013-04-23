@@ -22,20 +22,24 @@ test_discs = [
 
 class TestModulePrivate(unittest.TestCase):
 
-    # lots of encoding tests, because that is quite different in Python 2/3
+    # lots of encoding tests
+    # not part of the actual API, but this is quite different in Python 2/3
     def test_encode(self):
-        self.assertTrue(type(discid._encode("test")) is type(b"test"))
-        self.assertEqual(discid._encode("test"), b"test")
+        self.assertTrue(type(discid.util._encode("test")) is type(b"test"))
+        self.assertEqual(discid.util._encode("test"), b"test")
 
     def test_decode(self):
-        self.assertTrue(type(discid._decode(b"test")) is type(b"test".decode()))
-        self.assertEqual(discid._decode(b"test"), "test")
+        self.assertTrue(type(discid.util._decode(b"test"))
+                        is type(b"test".decode()))
+        self.assertEqual(discid.util._decode(b"test"), "test")
 
     def test_encoding(self):
         string = "test"
-        self.assertEqual(discid._decode(discid._encode(string)), string)
+        self.assertEqual(discid.util._decode(discid.util._encode(string)),
+                         string)
         bytestring = b"test"
-        self.assertEqual(discid._encode(discid._decode(bytestring)), bytestring)
+        self.assertEqual(discid.util._encode(discid.util._decode(bytestring)),
+                         bytestring)
 
 
 class TestModule(unittest.TestCase):
