@@ -38,6 +38,7 @@ __version__ = "0.4.0-dev"
 
 LIBDISCID_VERSION_STRING = discid.libdiscid.LIBDISCID_VERSION_STRING
 """The version string of the loaded libdiscid in the form `libdiscid x.y.z`.
+For old versions the string is `libdiscid < 0.4.0`.
 """
 
 DEFAULT_DEVICE = discid.libdiscid.DEFAULT_DEVICE

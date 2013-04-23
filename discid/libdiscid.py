@@ -103,17 +103,20 @@ _LIB = _open_library(_LIB_NAME)
 
 
 
-_LIB.discid_get_version_string.argtypes = ()
-_LIB.discid_get_version_string.restype = c_char_p
+try:
+    _LIB.discid_get_version_string.argtypes = ()
+    _LIB.discid_get_version_string.restype = c_char_p
+except AttributeError:
+    pass
 def _get_version_string():
     """Get the version string of libdiscid
     """
-    version_string = _LIB.discid_get_version_string()
-    if type(version_string) == type(b"test"):
-        return _decode(version_string)
+    try:
+        version_string = _LIB.discid_get_version_string()
+    except:
+        return "libdiscid < 0.4.0"
     else:
-        # probably Mocked for sphinx
-        return None
+        return _decode(version_string)
 
 _LIB.discid_get_default_device.argtypes = ()
 _LIB.discid_get_default_device.restype = c_char_p
