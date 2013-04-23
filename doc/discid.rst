@@ -6,6 +6,9 @@ discid API
 
 At the module level there are these constants available:
 
+.. autodata:: LIBDISCID_VERSION_STRING
+   :annotation:
+
 .. autodata:: DEFAULT_DEVICE
    :annotation:
 

@@ -40,6 +40,10 @@ class TestModulePrivate(unittest.TestCase):
 
 class TestModule(unittest.TestCase):
 
+    def test_version_string(self):
+        version_string = discid.LIBDISCID_VERSION_STRING
+        self.assertTrue(version_string is not None, "No version string given")
+
     def test_default_device(self):
         device = discid.DEFAULT_DEVICE
         self.assertTrue(device is not None, "No default device given")

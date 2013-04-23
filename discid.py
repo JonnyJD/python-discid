@@ -130,6 +130,18 @@ def _decode(byte_string):
     return byte_string.decode()
 
 
+_LIB.discid_get_version_string.argtypes = ()
+_LIB.discid_get_version_string.restype = c_char_p
+def _get_version_string():
+    """Get the version string of libdiscid
+    """
+    version_string = _LIB.discid_get_version_string()
+    if type(version_string) == type(b"test"):
+        return _decode(version_string)
+    else:
+        # probably Mocked for sphinx
+        return None
+
 _LIB.discid_get_default_device.argtypes = ()
 _LIB.discid_get_default_device.restype = c_char_p
 def _get_default_device():
@@ -177,6 +189,10 @@ def _get_features():
                 features += ["mcn", "isrc"]
 
     return features
+
+LIBDISCID_VERSION_STRING = _get_version_string()
+"""The version string of the loaded libdiscid in the form `libdiscid x.y.z`.
+"""
 
 DEFAULT_DEVICE = _get_default_device()
 """The default device to use for :func:`read` on this platform
