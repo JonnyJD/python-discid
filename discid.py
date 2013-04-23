@@ -215,7 +215,7 @@ def read(device=None, features=[]):
     reading discs on the current platform.
     """
     disc = DiscId()
-    disc.read(device)
+    disc.read(device, features)
     return disc
 
 def put(first, last, offsets):
