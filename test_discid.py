@@ -112,7 +112,6 @@ class TestClass(unittest.TestCase):
         self.assertTrue(self.disc.id is None)
         self.assertTrue(self.disc.freedb_id is None)
         self.assertTrue(self.disc.submission_url is None)
-        self.assertTrue(self.disc.webservice_url is None)
         self.assertTrue(self.disc.mcn is None)
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
@@ -145,7 +144,6 @@ class TestDisc(unittest.TestCase):
         self.assertEqual(len(disc.id), 28, "Invalid Disc ID")
         self.assertEqual(len(disc.freedb_id), 8, "Invalid FreeDB Disc ID")
         self.assertTrue(disc.submission_url, "Invalid submission url")
-        self.assertTrue(disc.webservice_url, "Invalid web service url")
         self.assertEqual(disc.sectors, disc.track_offsets[0],
                          "track_offsets[0] must match total sector count")
         num_tracks = len(disc.track_offsets) - 1
@@ -167,7 +165,6 @@ class TestDisc(unittest.TestCase):
         disc_id = disc.id
         freedb_id = disc.freedb_id
         submission_url = disc.submission_url
-        webservice_url = disc.webservice_url
         first = disc.first_track_num
         offsets = disc.track_offsets
         lengths = disc.track_lengths
@@ -179,8 +176,6 @@ class TestDisc(unittest.TestCase):
                          "different offsets after put")
         self.assertEqual(disc.submission_url, submission_url,
                          "different submission_url after put")
-        self.assertEqual(disc.webservice_url, webservice_url,
-                         "different webservice_url after put")
         self.assertEqual(disc.first_track_num, first,
                          "different first track after put")
         self.assertEqual(disc.last_track_num, num_tracks,
