@@ -55,7 +55,7 @@ def read(device=None, features=[]):
 
 def put(first, last, offsets):
     """Creates a TOC based on the offsets given
-    and resturns a :class:`Disc` object.
+    and returns a :class:`Disc` object.
 
     Takes the *first* and *last* **audio** tracks as :obj:`int` and
     *offsets* is supposed to be the same as :attr:`track_offsets`.
@@ -233,19 +233,18 @@ class Disc(object):
         else:
             return None
 
+
     @property
     def id(self):
-        """This is the MusicBrainz :musicbrainz:`Disc ID`.
-
-        This is a :obj:`unicode` or :obj:`str <python:str>` object.
+        """This is the MusicBrainz :musicbrainz:`Disc ID`,
+        a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_id()
 
     @property
     def freedb_id(self):
-        """This is the :musicbrainz:`FreeDB` Disc ID (without category).
-
-        This is a :obj:`unicode` or :obj:`str <python:str>` object.
+        """This is the :musicbrainz:`FreeDB` Disc ID (without category),
+        a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_freedb_id()
 
@@ -255,7 +254,6 @@ class Disc(object):
 
         With this url you can submit the current TOC
         as a new MusicBrainz :musicbrainz:`Disc ID`.
-
         This is a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_submission_url()
@@ -279,7 +277,7 @@ class Disc(object):
     def mcn(self):
         """This is the Media Catalogue Number (MCN/UPC/EAN)
 
-        It is set after a the "mcn" feature was requested on a read
+        It is set after the `"mcn"` feature was requested on a read
         and supported by the platform or :obj:`None`.
         If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
         """

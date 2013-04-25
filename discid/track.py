@@ -66,6 +66,7 @@ class Track(object):
         else:
             return None
 
+
     @property
     def number(self):
         """The track number"""
@@ -85,8 +86,9 @@ class Track(object):
     def isrc(self):
         """The International Standard Recording Code
 
-        This will be `None` when isrcs were not requested or not supported,
-        otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        This will be `None` when the `"isrc"` feature was not requested
+        or not supported, otherwise this is a :obj:`unicode` or
+        :obj:`str <python:str>` object.
         """
         return self._get_track_isrc()
 
