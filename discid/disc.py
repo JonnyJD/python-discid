@@ -233,45 +233,60 @@ class Disc(object):
         else:
             return None
 
-    id = property(_get_id, None, None, "MusicBrainz disc ID")
-    """This is the MusicBrainz :musicbrainz:`Disc ID`.
+    @property
+    def id(self):
+        """This is the MusicBrainz :musicbrainz:`Disc ID`.
 
-    It is set after a the TOC was populated or :obj:`None`.
-    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
-    """
+        It is set after a the TOC was populated or :obj:`None`.
+        If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        """
+        return self._get_id()
 
-    freedb_id = property(_get_freedb_id, None, None, "FreeDB disc ID")
-    """This is the :musicbrainz:`FreeDB` Disc ID (without category).
+    @property
+    def freedb_id(self):
+        """This is the :musicbrainz:`FreeDB` Disc ID (without category).
 
-    It is set after a the TOC was populated or :obj:`None`.
-    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
-    """
+        It is set after a the TOC was populated or :obj:`None`.
+        If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        """
+        return self._get_freedb_id()
 
-    submission_url = property(_get_submission_url, None, None,
-                              "Disc ID / TOC Submission URL for MusicBrainz")
-    """With this url you can submit the current TOC
-    as a new MusicBrainz :musicbrainz:`Disc ID`.
+    @property
+    def submission_url(self):
+        """Disc ID / TOC Submission URL for MusicBrainz
 
-    If there is no populated TOC the url is :obj:`None`.
-    Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
-    """
+        With this url you can submit the current TOC
+        as a new MusicBrainz :musicbrainz:`Disc ID`.
 
-    last_track_num = property(_get_last_track_num, None, None,
-                              "Number of the last **audio** track")
+        If there is no populated TOC the url is :obj:`None`.
+        Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        """
+        return self._get_submission_url()
 
-    first_track_num = property(_get_first_track_num, None, None,
-                              "Number of the first track")
+    @property
+    def first_track_num(self):
+        """Number of the first track"""
+        return self._get_first_track_num()
 
-    sectors = property(_get_sectors, None, None,
-                              "Total sector count")
+    @property
+    def last_track_num(self):
+        """Number of the last **audio** track"""
+        return self._get_last_track_num()
 
-    mcn = property(_get_mcn, None, None, "Media Catalogue Number")
-    """This is the Media Catalogue Number (MCN/UPC/EAN)
+    @property
+    def sectors(self):
+        """Total sector count"""
+        return self._get_sectors()
 
-    It is set after a the "mcn" feature was requested on a read
-    and supported by the platform or :obj:`None`.
-    If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
-    """
+    @property
+    def mcn(self):
+        """This is the Media Catalogue Number (MCN/UPC/EAN)
+
+        It is set after a the "mcn" feature was requested on a read
+        and supported by the platform or :obj:`None`.
+        If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        """
+        return self._get_mcn()
 
     @property
     def tracks(self):
