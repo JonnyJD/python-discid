@@ -72,13 +72,13 @@ class TestModule(unittest.TestCase):
         self.assertRaises(discid.DiscError, discid.read, devicebytes)
 
     def test_put_fail(self):
-        # it will only fail because first > last
-        first = 15
-        last = 1
-        sectors = 258725
-        offsets = [150, 17510, 33275, 45910] # also wrong
+        # not enough offsets
+        self.assertRaises(discid.DiscError, discid.put, 1, 2, 150, [150])
+        # too many offsets
         self.assertRaises(discid.DiscError,
-                          discid.put, first, last, sectors, offsets)
+                          discid.put, 1, 2, 1000, [150, 500, 750])
+        # total sectors / offset mismatch
+        self.assertRaises(discid.DiscError, discid.put, 1, 2, 150, [150, 500])
 
     def test_put_success(self):
         test_disc = test_discs[0]

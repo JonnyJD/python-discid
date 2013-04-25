@@ -146,12 +146,16 @@ class Disc(object):
 
     _LIB.discid_put.argtypes = (c_void_p, c_int, c_int, c_void_p)
     _LIB.discid_put.restype = c_int
-    # TODO: test if input is valid (int rather than string, ...)
     def put(self, first, last, disc_sectors, track_offsets):
         """Creates a TOC based on the input given.
 
         The user is supposed to use :func:`discid.put`.
         """
+        # check for common usage errors
+        if (len(track_offsets) != last - first + 1
+                or False in [disc_sectors >= off for off in track_offsets]):
+            raise DiscError("invalid parameters given")
+
         # only the "read" (= TOC) feature is supported by put
         self._requested_features = ["read"]
 
