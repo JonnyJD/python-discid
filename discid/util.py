@@ -32,7 +32,12 @@ def _encode(string):
 def _decode(byte_string):
     """Decode byte string to (unicode) string
     """
-    return byte_string.decode()
+    # this test for bytes works on Python 2 and 3
+    if type(byte_string) == type(b"test"):
+        return byte_string.decode()
+    else:
+        # probably mocked for sphinx
+        return None
 
 
 # vim:set shiftwidth=4 smarttab expandtab:

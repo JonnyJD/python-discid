@@ -113,7 +113,7 @@ def _get_version_string():
     """
     try:
         version_string = _LIB.discid_get_version_string()
-    except:
+    except AttributeError:
         return "libdiscid < 0.4.0"
     else:
         return _decode(version_string)
@@ -124,11 +124,7 @@ def _get_default_device():
     """Get the default device for the platform
     """
     device = _LIB.discid_get_default_device()
-    if type(device) == type(b"test"):
-        return _decode(device)
-    else:
-        # probably Mocked for sphinx
-        return None
+    return _decode(device)
 
 try:
     _LIB.discid_get_feature_list.argtypes = (c_void_p, )
