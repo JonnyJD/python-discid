@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-# Please submit bug reports to Github:
+# Please submit bug reports to GitHub:
 # https://github.com/JonnyJD/python-discid/issues
 """libdiscid dynamic loading code and constants
 

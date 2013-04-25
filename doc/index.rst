@@ -13,7 +13,7 @@ to use for the MusicBrainz_ database.
 This module is released under the
 `GNU Lesser General Public License Version 3
 <http://www.gnu.org/licenses/lgpl.html>`_ or later (LGPL3+) and
-the code repository and the bug tracker are at Github_.
+the code repository and the bug tracker are at GitHub_.
 
 If you are interested in a binding for the MusicBrainz Web Service,
 you might be interested in `python-musicbrainz-ngs`_.
@@ -52,7 +52,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`search`
 
-.. _Github: https://github.com/JonnyJD/python-discid
+.. _GitHub: https://github.com/JonnyJD/python-discid
 .. _MusicBrainz: http://musicbrainz.org
 .. _python-musicbrainz-ngs: https://readthedocs.org/docs/python-musicbrainz-ngs/
 .. _python-libdiscid: http://pythonhosted.org/python-libdiscid/

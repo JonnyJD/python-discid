@@ -44,8 +44,8 @@ Version 3. See COPYING.LESSER for details.
 
 Bugs
 ~~~~
-You can submit tickets at `Github`_.
+You can submit tickets at `GitHub`_.
 
 .. _libdiscid: http://musicbrainz.org/doc/libdiscid
 .. _Disc ID Calculation: http://musicbrainz.org/doc/Disc_ID_Calculation
-.. _Github: https://github.com/JonnyJD/python-discid
+.. _GitHub: https://github.com/JonnyJD/python-discid

@@ -46,7 +46,7 @@ You still have to install `Libdiscid`_.
 
 Source Code
 -----------
-The code is available from `Github`_
+The code is available from `GitHub`_
 as :source_download:`zip` and :source_download:`tar.gz`.
 
 You can always get the latest code with :command:`git`::
@@ -67,7 +67,7 @@ You can test your setup (including `Libdiscid`_) with::
 
  python setup.py test
 
-.. _Github: https://github.com/JonnyJD/python-discid
+.. _GitHub: https://github.com/JonnyJD/python-discid
 
 Libdiscid
 ---------
