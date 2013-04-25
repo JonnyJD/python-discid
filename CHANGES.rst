@@ -1,6 +1,20 @@
 Changelog
 =========
 
+Changes in 0.5.0 (2013-04-??):
+------------------------------
+
+ * feature: :issue:`10` add :attr:`Disc.mcn` and :attr:`Track.isrc`
+ * feature: add :data:`LIBDISCID_VERSION_STRING`
+ * :issue:`22` move :func:`read` and :func:`put` to module level
+ * :issue:`25` provide a package `discid` rather than a module
+ * rename :class:`DiscId` to :class:`Disc`
+ * fix: :issue:`27` move track attributes to :class:`Track`
+ * fix: :issue:`24` only have "real" tracks in the list(s) (0 not special)
+ * fix: :issue:`19` only read the requested features from disc (sparse)
+ * fix: :issue:`26` remove :attr:`DiscId.webservice_url` (deprecated)
+ * fix: detect the version of libdiscid 0.3.0 also in lib64 installations
+
 Changes in 0.4.0 (2013-04-09):
 ------------------------------
 
