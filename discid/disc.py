@@ -22,6 +22,7 @@ from ctypes import c_int, c_void_p, c_char_p, c_uint
 
 from discid.libdiscid import _LIB, DEFAULT_DEVICE, FEATURES
 from discid.util import _encode, _decode
+from discid.track import Track
 
 
 # our implemented of libdiscid's enum discid_feature
@@ -214,48 +215,6 @@ class Disc(object):
         """
         return _LIB.discid_get_sectors(self._handle)
 
-    _LIB.discid_get_track_offset.argtypes = (c_void_p, c_int)
-    _LIB.discid_get_track_offset.restype = c_int
-    def _get_track_offset(self, track_number):
-        """Gets the offset for a specific track
-        """
-        return _LIB.discid_get_track_offset(self._handle, track_number)
-
-    def _get_track_offsets(self):
-        """Generates the list of offsets,
-        starting with the total number of sectors
-        """
-        offsets = []
-        offsets.append(self.sectors)
-        for track_number in range(1, self.first_track_num):
-            offsets.append(None)
-        for track_number in range(self.first_track_num,
-                                  self.last_track_num + 1):
-            offset = self._get_track_offset(track_number)
-            offsets.append(offset)
-        return offsets
-
-    _LIB.discid_get_track_length.argtypes = (c_void_p, c_int)
-    _LIB.discid_get_track_length.restype = c_int
-    def _get_track_length(self, track_number):
-        """Gets the length for a specific track
-        """
-        return _LIB.discid_get_track_length(self._handle, track_number)
-
-    def _get_track_lengths(self):
-        """Generates the list of lengths,
-        starting with the lengths of the first pregap
-        """
-        lengths = []
-        lengths.append(self.track_offsets[1])
-        for track_number in range(1, self.first_track_num):
-            lengths.append(None)
-        for track_number in range(self.first_track_num,
-                                  self.last_track_num + 1):
-            length = self._get_track_length(track_number)
-            lengths.append(length)
-        return lengths
-
     try:
         _LIB.discid_get_mcn.argtypes = (c_void_p, )
         _LIB.discid_get_mcn.restype = c_char_p
@@ -273,36 +232,6 @@ class Disc(object):
                 return _decode(result)
         else:
             return None
-
-    try:
-        _LIB.discid_get_track_isrc.argtypes = (c_void_p, c_int)
-        _LIB.discid_get_track_isrc.restype = c_char_p
-    except AttributeError:
-        pass
-    def _get_track_isrc(self, track_number):
-        """Gets the ISRC for a specific track
-        """
-        try:
-            result = _LIB.discid_get_track_isrc(self._handle, track_number)
-        except AttributeError:
-            return None
-        else:
-            return _decode(result)
-
-    def _get_track_isrcs(self):
-        """Generates the list of ISRCs,
-        starting with the MCN of the disc as elemnt 0
-        """
-        isrcs = []
-        if self._success and "isrc" in self._requested_features:
-            isrcs.append(self.mcn)
-            for track_number in range(1, self.first_track_num):
-                isrcs.append(None)
-            for track_number in range(self.first_track_num,
-                                      self.last_track_num + 1):
-                isrc = self._get_track_isrc(track_number)
-                isrcs.append(isrc)
-        return isrcs
 
     id = property(_get_id, None, None, "MusicBrainz disc ID")
     """This is the MusicBrainz :musicbrainz:`Disc ID`.
@@ -336,25 +265,6 @@ class Disc(object):
     sectors = property(_get_sectors, None, None,
                               "Total sector count")
 
-    track_offsets = property(_get_track_offsets, None, None,
-                              "List of offsets, track_offsets[0] == sectors")
-    """A list of all track offsets.
-
-    The first element is the leadout track
-    and contains the total number of sectors on the disc.
-    The following elements are the offsets for all **audio** tracks.
-    ``track_offsets[i]`` is the offset for the i-th track (as :obj:`int`).
-    """
-
-    track_lengths = property(_get_track_lengths, None, None,
-                              "List of lengths, track_lengths[0] == 1st pregap")
-    """A list of all track lengths.
-
-    The first element is the length of the pregap of the first track.
-    The following elements are the lengths for all **audio** tracks.
-    ``track_length[i]`` is the length for the i-th track (as :obj:`int`).
-    """
-
     mcn = property(_get_mcn, None, None, "Media Catalogue Number")
     """This is the Media Catalogue Number (MCN/UPC/EAN)
 
@@ -363,17 +273,15 @@ class Disc(object):
     If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
     """
 
-    track_isrcs = property(_get_track_isrcs, None, None,
-                              "List of ISRCs, track_isrcs[0] == mcn")
-    """A list of all track ISRCs.
-
-    The first element is the MCN of the disc.
-    The following elements are the isrcs for all **audio** tracks.
-    If no ISRC was found, it is the empty string.
-    If no ISRCs were requested or the feature is not available,
-    this will be the empty list.
-    ``track_isrcs[i]`` is the ISRC for the i-th track (as :obj:`int`).
-    """
+    @property
+    def tracks(self):
+        """A list of :class:`Track` objects for this Disc.
+        """
+        tracks = []
+        if self._success:
+            for number in range(self.first_track_num, self.last_track_num + 1):
+                tracks.append(Track(self, number))
+        return tracks
 
 
     _LIB.discid_free.argtypes = (c_void_p, )

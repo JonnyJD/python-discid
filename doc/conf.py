@@ -37,8 +37,6 @@ version = ".".join(discid.__version__.split("-")[0].split(".")[0:2])
 release = discid.__version__
 # see below for "current" = base version with "-dev" appended if necessary
 
-autoclass_content = "both"      # include class and __init__ docstrings
-
 download_base = "https://github.com/JonnyJD/python-discid/archive"
 if release.endswith("dev"):
     current = "%s-dev" % version
