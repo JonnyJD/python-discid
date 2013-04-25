@@ -39,6 +39,8 @@ Disc object
    .. autoattribute:: first_track_num
    .. autoattribute:: last_track_num
    .. autoattribute:: sectors
+   .. autoattribute:: length
+   .. autoattribute:: seconds
    .. autoattribute:: mcn
    .. autoattribute:: tracks
 
@@ -50,7 +52,9 @@ Track object
 
    .. autoattribute:: number
    .. autoattribute:: offset
+   .. autoattribute:: sectors
    .. autoattribute:: length
+   .. autoattribute:: seconds
    .. autoattribute:: isrc
 
 Exceptions
