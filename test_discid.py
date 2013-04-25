@@ -73,12 +73,12 @@ class TestModule(unittest.TestCase):
 
     def test_put_fail(self):
         # not enough offsets
-        self.assertRaises(discid.DiscError, discid.put, 1, 2, 150, [150])
+        self.assertRaises(discid.TOCError, discid.put, 1, 2, 150, [150])
         # too many offsets
-        self.assertRaises(discid.DiscError,
+        self.assertRaises(discid.TOCError,
                           discid.put, 1, 2, 1000, [150, 500, 750])
         # total sectors / offset mismatch
-        self.assertRaises(discid.DiscError, discid.put, 1, 2, 150, [150, 500])
+        self.assertRaises(discid.TOCError, discid.put, 1, 2, 150, [150, 500])
 
     def test_put_success(self):
         test_disc = test_discs[0]

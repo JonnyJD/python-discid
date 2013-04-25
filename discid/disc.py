@@ -65,6 +65,9 @@ def put(first, last, disc_sectors, track_offsets):
     Depending on how you get the total sector count,
     you might have to substract 11400 (2:32 min.) for discs with data tracks.
 
+    A :exc:`TOCError` exception is raised when illegal parameters
+    are provided.
+
     .. seealso:: :musicbrainz:`Disc ID Calculation`
     """
     disc = Disc()
@@ -74,7 +77,12 @@ def put(first, last, disc_sectors, track_offsets):
 
 class DiscError(IOError):
     """:func:`read` will raise this exception when an error occured.
-    An error string (:obj:`unicode`/:obj:`str <python:str>`) is provided.
+    """
+    pass
+
+class TOCError(Exception):
+    """:func:`put` will raise this exception when illegal paramaters
+    are provided.
     """
     pass
 
@@ -152,9 +160,10 @@ class Disc(object):
         The user is supposed to use :func:`discid.put`.
         """
         # check for common usage errors
-        if (len(track_offsets) != last - first + 1
-                or False in [disc_sectors >= off for off in track_offsets]):
-            raise DiscError("invalid parameters given")
+        if len(track_offsets) != last - first + 1:
+            raise TOCError("Invalid number of track offsets")
+        elif False in [disc_sectors >= off for off in track_offsets]:
+            raise TOCError("Disc sector count too low")
 
         # only the "read" (= TOC) feature is supported by put
         self._requested_features = ["read"]
@@ -164,9 +173,7 @@ class Disc(object):
         result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
         self._success = result
         if not self._success:
-            # TODO: should that be the same Exception as for read()?
-            # should that be TOCError?
-            raise DiscError(self._get_error_msg())
+            raise TOCError(self._get_error_msg())
         return self._success
 
 
