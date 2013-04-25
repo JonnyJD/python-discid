@@ -237,8 +237,7 @@ class Disc(object):
     def id(self):
         """This is the MusicBrainz :musicbrainz:`Disc ID`.
 
-        It is set after a the TOC was populated or :obj:`None`.
-        If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        This is a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_id()
 
@@ -246,8 +245,7 @@ class Disc(object):
     def freedb_id(self):
         """This is the :musicbrainz:`FreeDB` Disc ID (without category).
 
-        It is set after a the TOC was populated or :obj:`None`.
-        If set, this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        This is a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_freedb_id()
 
@@ -258,8 +256,7 @@ class Disc(object):
         With this url you can submit the current TOC
         as a new MusicBrainz :musicbrainz:`Disc ID`.
 
-        If there is no populated TOC the url is :obj:`None`.
-        Otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
+        This is a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_submission_url()
 

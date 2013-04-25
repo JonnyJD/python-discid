@@ -85,7 +85,8 @@ class Track(object):
     def isrc(self):
         """The International Standard Recording Code
 
-        This will be `None` when isrcs were not requested or not supported.
+        This will be `None` when isrcs were not requested or not supported,
+        otherwise this is a :obj:`unicode` or :obj:`str <python:str>` object.
         """
         return self._get_track_isrc()
 
