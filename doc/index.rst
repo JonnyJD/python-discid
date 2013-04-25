@@ -38,10 +38,6 @@ The main difference is, that `python-libdiscid` is released
 under the Expat license and uses Cython.
 This means that it needs to be compiled against libdiscid.
 `Python-discid` doesn't need compilation, as it uses :mod:`ctypes`.
-You don't have to care about explicit memory allocation
-with either one of these bindings.
-Please disregard any notes in `python-libdiscid` about `discid` usage.
-The current `discid` documentation is what you are reading here ;-)
 
 If you want to use the disc ID created by `python-discid` to query
 MusicBrainz for metatdata, then you should use `python-musicbrainz-ngs`_.
