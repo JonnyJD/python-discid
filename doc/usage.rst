@@ -25,7 +25,7 @@ When anything goes wrong reading from the device, :exc:`DiscError` is raised.
 
 Advanced
 --------
-Python-discid can do more than just provide the MusicBrainz Disc ID.
+:mod:`discid` can do more than just provide the MusicBrainz Disc ID.
 You can get details about the tracks an fetch additional features
 like the ISRCs and the MCN, which is basically the EAN/UPC of the disc::
 
@@ -62,3 +62,38 @@ An example for the TOC
 
 See also :musicbrainz:`Disc ID Calculation` for details
 on which numbers to choose.
+
+.. _fetching_metadata:
+
+Fetching Metadata
+-----------------
+You can use `python-musicbrainz-ngs`_ to fetch metadata for your disc.
+The relevant function is :func:`musicbrainzngs.get_releases_by_discid`::
+
+ import discid
+ import musicbrainzngs
+
+ musicbrainzngs.set_useragent("python-discid-example", "0.1", "your@mail")
+
+ disc = discid.read()
+ try:
+     result = musicbrainzngs.get_releases_by_discid(disc.id,
+                                                    includes=["artists"])
+ except musicbrainzngs.ResponseError:
+     print("disc not found or bad response")
+ else:
+     if result.get("disc"):
+         print("artist:\t%s" %
+               result["disc"]["release-list"][0]["artist-credit-phrase"])
+         print("title:\t%s" % result["disc"]["release-list"][0]["title"])
+     elif result.get("cdstub"):
+         print("artist:\t" % result["cdstub"]["artist"])
+         print("title:\t" % result["cdstub"]["title"])
+
+You can fetch much more data.
+See :mod:`musicbrainzngs` for details.
+
+.. note:: Please submit your disc ID with :attr:`Disc.submission_url`
+   when it isn't found at the MusicBrainz server.
+
+.. _python-musicbrainz-ngs: https://readthedocs.org/docs/python-musicbrainz-ngs/
