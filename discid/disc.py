@@ -278,8 +278,9 @@ class Disc(object):
         """A list of :class:`Track` objects for this Disc.
         """
         tracks = []
-        for number in range(self.first_track_num, self.last_track_num + 1):
-            tracks.append(Track(self, number))
+        if self._success:
+            for number in range(self.first_track_num, self.last_track_num + 1):
+                tracks.append(Track(self, number))
         return tracks
 
 

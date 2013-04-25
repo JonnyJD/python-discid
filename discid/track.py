@@ -55,7 +55,7 @@ class Track(object):
     except AttributeError:
         pass
     def _get_track_isrc(self):
-        if self._success and "isrc" in self._requested_features:
+        if self._disc._success and "isrc" in self._disc._requested_features:
             try:
                 result = _LIB.discid_get_track_isrc(self._disc._handle,
                                                     self.number)
