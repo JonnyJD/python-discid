@@ -3,7 +3,6 @@ Download and Installation
 
 Dependencies
 ------------
-
 **python-discid** works with Python 2 >= 2.6, or Python 3 >= 3.1.
 
 The module :mod:`discid` cannot be imported
@@ -14,7 +13,6 @@ when libdiscid is not found.
 
 Package Repositories (Linux)
 ----------------------------
-
 If you are using Linux,
 you might find **python-discid** in a repository used by your package manager.
 
@@ -38,7 +36,6 @@ Your package manager will also handle the *libdiscid* dependency automatically.
 
 PyPI
 ----
-
 The next-best option is to load the Package from
 `pypi <http://pypi.python.org/pypi/discid>`_
 with `pip <http://www.pip-installer.org/>`_::
@@ -49,7 +46,6 @@ You still have to install `Libdiscid`_.
 
 Source Code
 -----------
-
 The code is available from `Github`_
 as :source_download:`zip` and :source_download:`tar.gz`.
 
@@ -59,8 +55,7 @@ You can always get the latest code with :command:`git`::
 
 Installation
 ************
-
-You can use **python-discid** already when you put the :file:`discid.py`
+You can use **python-discid** already when you put the folder :file:`discid`
 in the same location you run your script from
 or somewhere in your :envvar:`PYTHONPATH`.
 
@@ -76,7 +71,6 @@ You can test your setup (including `Libdiscid`_) with::
 
 Libdiscid
 ---------
-
 If you don't have a package manager
 that takes care of the *Libdiscid* dependency,
 you have to download it manually.
