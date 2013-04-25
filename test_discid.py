@@ -85,20 +85,9 @@ class TestModule(unittest.TestCase):
         self.assertEqual(disc.freedb_id, test_disc["freedb"])
         self.assertEqual(disc.first_track_num, test_disc["first"])
         self.assertEqual(disc.last_track_num, test_disc["last"])
-        self.assertEqual(disc.track_offsets, test_disc["offsets"])
-
-        # check idempotence (use output again as input)
-        first = disc.first_track_num
-        last = disc.last_track_num
-        offsets = disc.track_offsets
-        lengths = disc.track_lengths
-        disc = discid.put(first, last, offsets)
-        self.assertEqual(disc.id, test_disc["id"])
-        self.assertEqual(disc.freedb_id, test_disc["freedb"])
-        self.assertEqual(disc.track_offsets, offsets)
-        self.assertEqual(disc.first_track_num, first)
-        self.assertEqual(disc.last_track_num, last)
-        self.assertEqual(disc.track_lengths, lengths)
+        self.assertEqual(disc.sectors, test_disc["offsets"][0])
+        track_offsets = [track.offset for track in disc.tracks]
+        self.assertEqual(track_offsets, test_disc["offsets"][1:])
 
 
 class TestClass(unittest.TestCase):
@@ -116,10 +105,7 @@ class TestClass(unittest.TestCase):
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
         self.assertFalse(self.disc.sectors)
-        self.assertFalse(self.disc.track_isrcs)
-        # only test that access doesn't give exceptions
-        self.disc.track_offsets
-        self.disc.track_lengths
+        self.assertFalse(self.disc.tracks)
 
     def tearDown(self):
         self.disc._free()
@@ -144,45 +130,48 @@ class TestDisc(unittest.TestCase):
         self.assertEqual(len(disc.id), 28, "Invalid Disc ID")
         self.assertEqual(len(disc.freedb_id), 8, "Invalid FreeDB Disc ID")
         self.assertTrue(disc.submission_url, "Invalid submission url")
-        self.assertEqual(disc.sectors, disc.track_offsets[0],
-                         "track_offsets[0] must match total sector count")
-        num_tracks = len(disc.track_offsets) - 1
-        self.assertEqual(disc.last_track_num, num_tracks,
-                        "Track number and offset list mismatch")
+        self.assertEqual(disc.last_track_num, len(disc.tracks),
+                        "Wrong amount of tracks")
 
-        for i in range(num_tracks + 1):
-            offset = disc.track_offsets[i]
-            self.assertTrue(offset <= disc.sectors, "Invalid offset")
-            if i > 1:
-                previous_offset = disc.track_offsets[i-1]
-                self.assertTrue(offset >= previous_offset,
-                                "Invalid offset list")
+        for track in disc.tracks:
+            self.assertTrue(track.offset <= disc.sectors, "Invalid offset")
+            if track.number > 1:
+                previous_offset = disc.tracks[track.number-2].offset
+                self.assertTrue(track.offset >= previous_offset,
+                                "Invalid offset series")
 
         # additional features should be unset, not empty
         self.assertTrue(disc.mcn is None)
+        for track in disc.tracks:
+            self.assertTrue(track.isrc is None)
 
         # check idempotence (use output again as input to put)
         disc_id = disc.id
         freedb_id = disc.freedb_id
         submission_url = disc.submission_url
         first = disc.first_track_num
-        offsets = disc.track_offsets
-        lengths = disc.track_lengths
-        disc = discid.put(first, num_tracks, offsets)
+        last = disc.last_track_num
+        track_offsets = [track.offset for track in disc.tracks]
+        offsets = [disc.sectors] + track_offsets
+        track_lengths = [track.length for track in disc.tracks]
+
+        disc = discid.put(first, last, offsets)
         self.assertEqual(disc.id, disc_id, "different id after put")
         self.assertEqual(disc.freedb_id, freedb_id,
                          "different freedb id after put")
-        self.assertEqual(disc.track_offsets, offsets,
-                         "different offsets after put")
         self.assertEqual(disc.submission_url, submission_url,
                          "different submission_url after put")
         self.assertEqual(disc.first_track_num, first,
                          "different first track after put")
-        self.assertEqual(disc.last_track_num, num_tracks,
+        self.assertEqual(disc.last_track_num, last,
                          "different last track after put")
         self.assertEqual(disc.sectors, offsets[0],
                          "different sector count after put")
-        self.assertEqual(disc.track_lengths, lengths,
+        new_offsets = [track.offset for track in disc.tracks]
+        self.assertEqual(new_offsets, track_offsets,
+                         "different offsets after put")
+        new_lengths = [track.length for track in disc.tracks]
+        self.assertEqual(new_lengths, track_lengths,
                          "different lengths after put")
 
     def test_read_features(self):
@@ -195,10 +184,11 @@ class TestDisc(unittest.TestCase):
         else:
             self.assertTrue(disc.mcn is None)
 
-        if "isrc" in discid.FEATURES:
-            self.assertTrue(disc.track_isrcs)
-        else:
-            self.assertFalse(disc.track_isrcs)
+        for track in disc.tracks:
+            if "isrc" in discid.FEATURES:
+                self.assertTrue(track.isrc is not None)
+            else:
+                self.assertTrue(track.isrc is None)
 
     def test_read_put(self):
         # a read followed with a put, which should clear the features
@@ -207,7 +197,8 @@ class TestDisc(unittest.TestCase):
         disc = discid.put(test_disc["first"], test_disc["last"],
                           test_disc["offsets"])
         self.assertTrue(disc.mcn is None)
-        self.assertFalse(disc.track_isrcs)
+        for track in disc.tracks:
+            self.assertTrue(track.isrc is None)
 
 
 if __name__ == "__main__":
