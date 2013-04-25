@@ -28,6 +28,7 @@ and will raise :exc:`OSError` when libdiscid is not found.
 """
 
 from discid.disc import read, put, Disc, DiscError
+from discid.track import Track
 from discid.deprecated import DiscId
 import discid.libdiscid
 import discid.disc

@@ -4,6 +4,8 @@ discid API
 .. automodule:: discid
    :synopsis: Python binding of Libdiscid
 
+Constants
+---------
 At the module level there are these constants available:
 
 .. autodata:: LIBDISCID_VERSION_STRING
@@ -17,7 +19,8 @@ At the module level there are these constants available:
 
 .. autodata:: FEATURES_IMPLEMENTED
 
-
+Functions
+---------
 These functions are used to create a :class:`Disc` object.
 
 .. autofunction:: read
@@ -25,8 +28,7 @@ These functions are used to create a :class:`Disc` object.
 
 
 Disc object
--------------
-
+-----------
 .. autoclass:: Disc
    :undoc-members:
 
@@ -37,12 +39,22 @@ Disc object
    .. autoattribute:: first_track_num
    .. autoattribute:: last_track_num
    .. autoattribute:: sectors
-   .. autoattribute:: track_offsets
-   .. autoattribute:: track_lengths
    .. autoattribute:: mcn
-   .. autoattribute:: track_isrcs
+   .. autoattribute:: tracks
 
 
+Track object
+------------
+.. autoclass:: Track
+   :undoc-members:
+
+   .. autoattribute:: number
+   .. autoattribute:: offset
+   .. autoattribute:: length
+   .. autoattribute:: isrc
+
+Exceptions
+----------
 The discid module includes a custom exception to handle specific problems:
 
 .. autoexception:: DiscError
