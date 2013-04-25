@@ -18,6 +18,8 @@
 """utility functions
 """
 
+SECTORS_PER_SECOND = 75
+
 def _encode(string):
     """Encode (unicode) string to byte string
     """

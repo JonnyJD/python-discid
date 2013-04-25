@@ -52,7 +52,7 @@ An example for the TOC
  disc = discid.put(first, last, offsets)
  print("id: %s" % disc.id)
  last_track = disc.tracks[disc.last_track_num - 1]
- print("last track length: %s sectors" % last_track.length)
+ print("last track length: %s seconds" % last_track.seconds)
 
 .. note:: The example disc has track 16 as a multimedia/data track.
    The sector count for the disc is the ending sector for track 15!
