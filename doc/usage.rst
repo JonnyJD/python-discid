@@ -59,3 +59,6 @@ An example for the TOC
    Depending on how you get this number, you might need to substract
    11400 (2:32 minutes) from your sector count.
    Make sure the last track length is correct!
+
+See also :musicbrainz:`Disc ID Calculation` for details
+on which numbers to choose.
