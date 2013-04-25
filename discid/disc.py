@@ -53,17 +53,22 @@ def read(device=None, features=[]):
     disc.read(device, features)
     return disc
 
-def put(first, last, offsets):
-    """Creates a TOC based on the offsets given
+def put(first, last, disc_sectors, track_offsets):
+    """Creates a TOC based on the information given
     and returns a :class:`Disc` object.
 
-    Takes the *first* and *last* **audio** tracks as :obj:`int` and
-    *offsets* is supposed to be the same as :attr:`track_offsets`.
-    That is: ``offsets[0]`` are the total number of sectors
-    and the following are the offsets of each track.
+    Takes the `first` track and `last` **audio** track as :obj:`int`.
+    `disc_sectors` is the end of the last audio track,
+    normally the total sector count of the disc.
+    `track_offsets` is a list of all audio track offsets.
+
+    Depending on how you get the total sector count,
+    you might have to substract 11400 (2:32 min.) for discs with data tracks.
+
+    .. seealso:: :musicbrainz:`Disc ID Calculation`
     """
     disc = Disc()
-    disc.put(first, last, offsets)
+    disc.put(first, last, disc_sectors, track_offsets)
     return disc
 
 
@@ -142,14 +147,15 @@ class Disc(object):
     _LIB.discid_put.argtypes = (c_void_p, c_int, c_int, c_void_p)
     _LIB.discid_put.restype = c_int
     # TODO: test if input is valid (int rather than string, ...)
-    def put(self, first, last, offsets):
-        """Creates a TOC based on the offsets given.
+    def put(self, first, last, disc_sectors, track_offsets):
+        """Creates a TOC based on the input given.
 
         The user is supposed to use :func:`discid.put`.
         """
         # only the "read" (= TOC) feature is supported by put
         self._requested_features = ["read"]
 
+        offsets = [disc_sectors] + track_offsets
         c_offsets = (c_int * len(offsets))(*tuple(offsets))
         result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
         self._success = result

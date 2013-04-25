@@ -12,7 +12,8 @@ test_discs = [
             "name": "Guano Apes - Don't give Me Names, without last data track",
             "first": 1,
             "last" : 15,
-            "offsets": [258725, 150, 17510, 33275, 45910,
+            "sectors": 258725,
+            "offsets": [150, 17510, 33275, 45910,
                         57805, 78310, 94650,109580, 132010,
                         149160, 165115, 177710, 203325, 215555, 235590],
             "id": "TqvKjMu7dMliSfmVEBtrL7sBSno-",
@@ -74,20 +75,22 @@ class TestModule(unittest.TestCase):
         # it will only fail because first > last
         first = 15
         last = 1
-        offsets = [258725, 150, 17510, 33275, 45910] # also wrong
-        self.assertRaises(discid.DiscError, discid.put, first, last, offsets)
+        sectors = 258725
+        offsets = [150, 17510, 33275, 45910] # also wrong
+        self.assertRaises(discid.DiscError,
+                          discid.put, first, last, sectors, offsets)
 
     def test_put_success(self):
         test_disc = test_discs[0]
         disc = discid.put(test_disc["first"], test_disc["last"],
-                          test_disc["offsets"])
+                          test_disc["sectors"], test_disc["offsets"])
         self.assertEqual(disc.id, test_disc["id"])
         self.assertEqual(disc.freedb_id, test_disc["freedb"])
         self.assertEqual(disc.first_track_num, test_disc["first"])
         self.assertEqual(disc.last_track_num, test_disc["last"])
-        self.assertEqual(disc.sectors, test_disc["offsets"][0])
+        self.assertEqual(disc.sectors, test_disc["sectors"])
         track_offsets = [track.offset for track in disc.tracks]
-        self.assertEqual(track_offsets, test_disc["offsets"][1:])
+        self.assertEqual(track_offsets, test_disc["offsets"])
 
 
 class TestClass(unittest.TestCase):
@@ -151,11 +154,11 @@ class TestDisc(unittest.TestCase):
         submission_url = disc.submission_url
         first = disc.first_track_num
         last = disc.last_track_num
+        sectors = disc.sectors
         track_offsets = [track.offset for track in disc.tracks]
-        offsets = [disc.sectors] + track_offsets
         track_lengths = [track.length for track in disc.tracks]
 
-        disc = discid.put(first, last, offsets)
+        disc = discid.put(first, last, sectors, track_offsets)
         self.assertEqual(disc.id, disc_id, "different id after put")
         self.assertEqual(disc.freedb_id, freedb_id,
                          "different freedb id after put")
@@ -165,7 +168,7 @@ class TestDisc(unittest.TestCase):
                          "different first track after put")
         self.assertEqual(disc.last_track_num, last,
                          "different last track after put")
-        self.assertEqual(disc.sectors, offsets[0],
+        self.assertEqual(disc.sectors, sectors,
                          "different sector count after put")
         new_offsets = [track.offset for track in disc.tracks]
         self.assertEqual(new_offsets, track_offsets,
@@ -195,7 +198,7 @@ class TestDisc(unittest.TestCase):
         disc = discid.read(features=["mcn", "isrc"]) # read from default drive
         test_disc = test_discs[0]
         disc = discid.put(test_disc["first"], test_disc["last"],
-                          test_disc["offsets"])
+                          test_disc["sectors"], test_disc["offsets"])
         self.assertTrue(disc.mcn is None)
         for track in disc.tracks:
             self.assertTrue(track.isrc is None)
