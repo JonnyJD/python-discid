@@ -20,7 +20,7 @@
 
 from ctypes import c_int, c_void_p, c_char_p, c_uint
 
-from discid.libdiscid import _LIB, DEFAULT_DEVICE, FEATURES
+from discid.libdiscid import _LIB, FEATURES
 from discid.util import _encode, _decode
 from discid.track import Track
 
