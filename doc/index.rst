@@ -1,7 +1,7 @@
 python-discid |current|
 =======================
 
-.. warning::
+.. note::
    The API is still in development and might change until 1.0.0!
 
 **python-discid** is a Python binding
