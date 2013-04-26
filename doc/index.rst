@@ -7,9 +7,10 @@ python-discid |current|
 **python-discid** is a Python binding
 of :musicbrainz:`libdiscid` by MusicBrainz.
 
-The main purpose is the calculation of and identifier for audio discs
-(disc ID) to use for the MusicBrainz_ database.
-Additionally the disc MCN and track ISRCs can be extracted.
+The main purpose is the calculation of an identifier for audio discs
+(:musicbrainz:`Disc ID`) to use for the MusicBrainz_ database.
+Additionally the disc MCN and track :musicbrainz:`ISRCs <ISRC>`
+can be extracted.
 
 This module is released under the
 `GNU Lesser General Public License Version 3

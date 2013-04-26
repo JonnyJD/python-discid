@@ -1,13 +1,17 @@
 Changelog
 =========
 
-Changes in 0.5.0 (2013-04-??):
+Changes in 0.5.0 (2013-04-27):
 ------------------------------
 
  * feature: :issue:`10` add :attr:`Disc.mcn` and :attr:`Track.isrc`
  * feature: add :data:`LIBDISCID_VERSION_STRING`
+ * feature: :issue:`28` add :attr:`Disc.seconds`, :attr:`Track.seconds`
+   and aliases :attr:`Disc.length` and :attr:`Track.sectors`
  * :issue:`22` move :func:`read` and :func:`put` to module level
  * :issue:`25` provide a package `discid` rather than a module
+ * :issue:`29` changed parameters for :func:`put` to include extra `sectors`
+   and add :exc:`TOCError`
  * rename :class:`DiscId` to :class:`Disc`
  * fix: :issue:`27` move track attributes to :class:`Track`
  * fix: :issue:`24` only have "real" tracks in the list(s) (0 not special)
