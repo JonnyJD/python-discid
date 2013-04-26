@@ -10,13 +10,10 @@ At the module level there are these constants available:
 
 .. autodata:: LIBDISCID_VERSION_STRING
    :annotation:
-
 .. autodata:: DEFAULT_DEVICE
    :annotation:
-
 .. autodata:: FEATURES
    :annotation:
-
 .. autodata:: FEATURES_IMPLEMENTED
 
 Functions
@@ -25,7 +22,6 @@ These functions are used to create a :class:`Disc` object.
 
 .. autofunction:: read
 .. autofunction:: put
-
 
 Disc object
 -----------
@@ -44,7 +40,6 @@ Disc object
    .. autoattribute:: mcn
    .. autoattribute:: tracks
 
-
 Track object
 ------------
 .. autoclass:: Track
@@ -62,4 +57,6 @@ Exceptions
 The discid module includes a custom exception to handle specific problems:
 
 .. autoexception:: DiscError
+   :show-inheritance:
+.. autoexception:: TOCError
    :show-inheritance:

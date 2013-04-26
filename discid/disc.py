@@ -53,23 +53,36 @@ def read(device=None, features=[]):
     disc.read(device, features)
     return disc
 
-def put(first, last, offsets):
-    """Creates a TOC based on the offsets given
+def put(first, last, disc_sectors, track_offsets):
+    """Creates a TOC based on the information given
     and returns a :class:`Disc` object.
 
-    Takes the *first* and *last* **audio** tracks as :obj:`int` and
-    *offsets* is supposed to be the same as :attr:`track_offsets`.
-    That is: ``offsets[0]`` are the total number of sectors
-    and the following are the offsets of each track.
+    Takes the `first` track and `last` **audio** track as :obj:`int`.
+    `disc_sectors` is the end of the last audio track,
+    normally the total sector count of the disc.
+    `track_offsets` is a list of all audio track offsets.
+
+    Depending on how you get the total sector count,
+    you might have to substract 11400 (2:32 min.) for discs with data tracks.
+
+    A :exc:`TOCError` exception is raised when illegal parameters
+    are provided.
+
+    .. seealso:: :musicbrainz:`Disc ID Calculation`
     """
     disc = Disc()
-    disc.put(first, last, offsets)
+    disc.put(first, last, disc_sectors, track_offsets)
     return disc
 
 
 class DiscError(IOError):
     """:func:`read` will raise this exception when an error occured.
-    An error string (:obj:`unicode`/:obj:`str <python:str>`) is provided.
+    """
+    pass
+
+class TOCError(Exception):
+    """:func:`put` will raise this exception when illegal paramaters
+    are provided.
     """
     pass
 
@@ -141,22 +154,26 @@ class Disc(object):
 
     _LIB.discid_put.argtypes = (c_void_p, c_int, c_int, c_void_p)
     _LIB.discid_put.restype = c_int
-    # TODO: test if input is valid (int rather than string, ...)
-    def put(self, first, last, offsets):
-        """Creates a TOC based on the offsets given.
+    def put(self, first, last, disc_sectors, track_offsets):
+        """Creates a TOC based on the input given.
 
         The user is supposed to use :func:`discid.put`.
         """
+        # check for common usage errors
+        if len(track_offsets) != last - first + 1:
+            raise TOCError("Invalid number of track offsets")
+        elif False in [disc_sectors >= off for off in track_offsets]:
+            raise TOCError("Disc sector count too low")
+
         # only the "read" (= TOC) feature is supported by put
         self._requested_features = ["read"]
 
+        offsets = [disc_sectors] + track_offsets
         c_offsets = (c_int * len(offsets))(*tuple(offsets))
         result = _LIB.discid_put(self._handle, first, last, c_offsets) == 1
         self._success = result
         if not self._success:
-            # TODO: should that be the same Exception as for read()?
-            # should that be TOCError?
-            raise DiscError(self._get_error_msg())
+            raise TOCError(self._get_error_msg())
         return self._success
 
 

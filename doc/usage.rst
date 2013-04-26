@@ -48,8 +48,9 @@ An example for the TOC
 
  first = 1
  last = 15
- offsets = [258725] + [150, 17510, ..., 235590]
- disc = discid.put(first, last, offsets)
+ sectors = 258725
+ offsets = [150, 17510, ..., 235590]
+ disc = discid.put(first, last, sectors, offsets)
  print("id: %s" % disc.id)
  last_track = disc.tracks[disc.last_track_num - 1]
  print("last track length: %s seconds" % last_track.seconds)
@@ -60,8 +61,8 @@ An example for the TOC
    11400 (2:32 minutes) from your sector count.
    Make sure the last track length is correct!
 
-See also :musicbrainz:`Disc ID Calculation` for details
-on which numbers to choose.
+.. seealso:: :musicbrainz:`Disc ID Calculation` for details
+   on which numbers to choose.
 
 .. _fetching_metadata:
 
