@@ -88,6 +88,14 @@ class TestModule(unittest.TestCase):
         self.assertEqual(disc.sectors, test_disc["offsets"][0])
         track_offsets = [track.offset for track in disc.tracks]
         self.assertEqual(track_offsets, test_disc["offsets"][1:])
+        self.assertEqual(disc.sectors,
+                         disc.tracks[-1].offset + disc.tracks[-1].sectors)
+        self.assertEqual(disc.seconds,
+                         disc.sectors // discid.util.SECTORS_PER_SECOND)
+        for track in disc.tracks:
+            self.assertEqual(track.seconds,
+                             track.sectors // discid.util.SECTORS_PER_SECOND)
+
 
 
 class TestClass(unittest.TestCase):
@@ -105,6 +113,8 @@ class TestClass(unittest.TestCase):
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
         self.assertFalse(self.disc.sectors)
+        self.assertFalse(self.disc.length)
+        self.assertFalse(self.disc.seconds)
         self.assertFalse(self.disc.tracks)
 
     def tearDown(self):
@@ -132,6 +142,8 @@ class TestDisc(unittest.TestCase):
         self.assertTrue(disc.submission_url, "Invalid submission url")
         self.assertEqual(disc.last_track_num, len(disc.tracks),
                         "Wrong amount of tracks")
+        self.assertEqual(disc.sectors,
+                         disc.tracks[-1].offset + disc.tracks[-1].sectors)
 
         for track in disc.tracks:
             self.assertTrue(track.offset <= disc.sectors, "Invalid offset")
@@ -153,7 +165,7 @@ class TestDisc(unittest.TestCase):
         last = disc.last_track_num
         track_offsets = [track.offset for track in disc.tracks]
         offsets = [disc.sectors] + track_offsets
-        track_lengths = [track.length for track in disc.tracks]
+        track_sectors = [track.sectors for track in disc.tracks]
 
         disc = discid.put(first, last, offsets)
         self.assertEqual(disc.id, disc_id, "different id after put")
@@ -170,8 +182,8 @@ class TestDisc(unittest.TestCase):
         new_offsets = [track.offset for track in disc.tracks]
         self.assertEqual(new_offsets, track_offsets,
                          "different offsets after put")
-        new_lengths = [track.length for track in disc.tracks]
-        self.assertEqual(new_lengths, track_lengths,
+        new_sectors = [track.sectors for track in disc.tracks]
+        self.assertEqual(new_sectors, track_sectors,
                          "different lengths after put")
 
     def test_read_features(self):

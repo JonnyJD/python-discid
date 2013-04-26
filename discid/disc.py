@@ -21,7 +21,7 @@
 from ctypes import c_int, c_void_p, c_char_p, c_uint
 
 from discid.libdiscid import _LIB, FEATURES
-from discid.util import _encode, _decode
+from discid.util import _encode, _decode, SECTORS_PER_SECOND
 from discid.track import Track
 
 
@@ -270,8 +270,16 @@ class Disc(object):
 
     @property
     def sectors(self):
-        """Total sector count"""
+        """Total length in sectors"""
         return self._get_sectors()
+
+    length = sectors
+    """This is an alias for :attr:`sectors`"""
+
+    @property
+    def seconds(self):
+        """Total length in seconds"""
+        return self.sectors // SECTORS_PER_SECOND
 
     @property
     def mcn(self):

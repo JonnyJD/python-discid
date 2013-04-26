@@ -21,7 +21,7 @@
 from ctypes import c_int, c_void_p, c_char_p
 
 from discid.libdiscid import _LIB
-from discid.util import _decode
+from discid.util import _decode, SECTORS_PER_SECOND
 
 
 class Track(object):
@@ -78,9 +78,17 @@ class Track(object):
         return self._get_track_offset()
 
     @property
-    def length(self):
-        """The track length"""
+    def sectors(self):
+        """The track length in sectors"""
         return self._get_track_length()
+
+    length = sectors
+    """This is an alias for :attr:`sectors`"""
+
+    @property
+    def seconds(self):
+        """Track length in seconds"""
+        return self.sectors // SECTORS_PER_SECOND
 
     @property
     def isrc(self):
