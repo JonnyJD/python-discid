@@ -9,15 +9,16 @@ module works with Python 2 >= 2.6, or Python 3 >= 3.1.
 Libdiscid >= 0.2.2 is needed.
 
 Libdiscid's main purpose is the calculation of an identifier of audio
-discs (disc id) to use for the MusicBrainz database.
+discs (disc ID) to use for the MusicBrainz database.
 
 That identifier is calculated from the TOC of the disc, similar to the
-freeDB CDDB identifier. Libdiscid can calculate MusicBranz Disc IDs and
-freeDB Disc IDs.
+freeDB CDDB identifier. Libdiscid can calculate MusicBrainz disc IDs and
+freeDB disc IDs.
+Additionally the MCN of the disc and ISRCs from the tracks can be extracted.
 
-This module is a very close binding that offloads all relevant data
+This module is a close binding that offloads all relevant data
 storage and calculation to Libdiscid. On the other hand it gives a
-pythonic API and uses an object and exceptions.
+pythonic API and uses objects and exceptions.
 
 For more information on Libdiscid see `libdiscid`_.
 
@@ -35,7 +36,7 @@ Usage
     print "id: %s" % disc.id  # Python 2
     print("id: %s" % disc.id) # Python 3
 
-See also examples.py.
+See also the examples.py.
 
 License
 ~~~~~~~
