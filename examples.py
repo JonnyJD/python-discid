@@ -8,7 +8,7 @@ import discid
 def simple_example():
     disc = discid.read()       # use default device
     print("id: %s" % disc.id)
-    print("used %s as device" % discid.DEFAULT_DEVICE)
+    print("used %s as device" % discid.get_default_device())
     print("submit with:\n%s" % disc.submission_url)
 
 

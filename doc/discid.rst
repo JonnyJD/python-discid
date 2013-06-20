@@ -10,8 +10,6 @@ At the module level there are these constants available:
 
 .. autodata:: LIBDISCID_VERSION_STRING
    :annotation:
-.. autodata:: DEFAULT_DEVICE
-   :annotation:
 .. autodata:: FEATURES
    :annotation:
 .. autodata:: FEATURES_IMPLEMENTED
@@ -23,11 +21,14 @@ These functions are used to create a :class:`Disc` object.
 .. autofunction:: read
 .. autofunction:: put
 
+You can get the device that is used as a default with
+
+.. autofunction:: get_default_device
+
 Disc object
 -----------
 .. autoclass:: Disc
    :undoc-members:
-
 
    .. autoattribute:: id
    .. autoattribute:: freedb_id

@@ -8,14 +8,14 @@ The basic use case is::
  # this will load libdiscid
  import discid
 
- print("device: %s" % discid.DEFAULT_DEVICE)
+ print("device: %s" % discid.get_default_device())
  disc = discid.read()        # reads from default device
  print("id: %s" % disc.id)
  print("submission url:\n%s" % disc.submission_url)
 
 You can also set the device explicitely::
 
- device = discid.DEFAULT_DEVICE
+ device = discid.get_default_device()
  disc = discid.read(device)
  id = disc.id
 
