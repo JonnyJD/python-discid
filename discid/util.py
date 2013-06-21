@@ -50,7 +50,8 @@ def _sectors_to_seconds(sectors):
     """
     # note that `round(2.5) == 2` on Python 3
     # and math.floor doesn't return :obj:int on Python 2
-    return int(math.floor((sectors / SECTORS_PER_SECOND) + 0.5))
+    # additionally always `int / int =^= int` in Python 2
+    return int(math.floor((sectors / float(SECTORS_PER_SECOND)) + 0.5))
 
 
 # vim:set shiftwidth=4 smarttab expandtab:

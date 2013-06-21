@@ -94,11 +94,11 @@ class TestModule(unittest.TestCase):
         self.assertEqual(track_offsets, test_disc["offsets"])
         self.assertEqual(disc.sectors,
                          disc.tracks[-1].offset + disc.tracks[-1].sectors)
-        self.assertEqual(disc.seconds, math.floor((disc.sectors / 75) + 0.5))
+        self.assertEqual(disc.seconds, math.floor((disc.sectors / 75.0) + 0.5))
         self.assertEqual(type(disc.seconds), int)
         for track in disc.tracks:
             self.assertEqual(track.seconds,
-                             math.floor((track.sectors / 75) + 0.5))
+                             math.floor((track.sectors / 75.0) + 0.5))
             self.assertEqual(type(track.seconds), int)
 
 
