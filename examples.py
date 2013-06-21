@@ -13,8 +13,14 @@ def simple_example():
 
 
 def _length_str(seconds, sectors):
-    return "{min:>2.0f}:{sec:>02.0f} ({sectors:>6})".format(
-        min=(seconds // 60), sec=(seconds % 60), sectors=sectors)
+    hours = seconds // 3600
+    seconds = seconds % 3600
+    if hours:
+        return "{h}:{m:>02}:{s:>02} ({sectors:>6})".format(
+            h=hours, m=(seconds // 60), s=(seconds % 60), sectors=sectors)
+    else:
+        return "  {m:>2}:{s:>02} ({sectors:>6})".format(
+            m=(seconds // 60), s=(seconds % 60), sectors=sectors)
 
 def complex_example():
     disc = discid.read("/dev/cdrom", ["mcn", "isrc"])
@@ -27,7 +33,7 @@ def complex_example():
             num=track.number, offset=track.offset, len=length, isrc=track.isrc))
 
 if __name__ == "__main__":
-    simple_example()
-    #complex_example()
+    #simple_example()
+    complex_example()
 
 # vim:set shiftwidth=4 smarttab expandtab:

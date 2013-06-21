@@ -296,7 +296,7 @@ class Disc(object):
     @property
     def seconds(self):
         """Total length in seconds"""
-        return self.sectors // SECTORS_PER_SECOND
+        return round(self.sectors / SECTORS_PER_SECOND)
 
     @property
     def mcn(self):

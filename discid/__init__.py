@@ -33,7 +33,7 @@ from discid.deprecated import DiscId
 import discid.libdiscid
 import discid.disc
 
-__version__ = "0.5.0"
+__version__ = "0.5.0-dev"
 
 
 # these contants are defined here so sphinx can catch the "docstrings"
