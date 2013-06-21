@@ -21,7 +21,7 @@
 from ctypes import c_int, c_void_p, c_char_p, c_uint
 
 from discid.libdiscid import _LIB, FEATURES
-from discid.util import _encode, _decode, SECTORS_PER_SECOND
+from discid.util import _encode, _decode, _sectors_to_seconds
 from discid.track import Track
 
 
@@ -296,7 +296,7 @@ class Disc(object):
     @property
     def seconds(self):
         """Total length in seconds"""
-        return round(self.sectors / SECTORS_PER_SECOND)
+        return _sectors_to_seconds(self.sectors)
 
     @property
     def mcn(self):

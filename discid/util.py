@@ -18,6 +18,8 @@
 """utility functions
 """
 
+import math
+
 SECTORS_PER_SECOND = 75
 
 def _encode(string):
@@ -40,6 +42,15 @@ def _decode(byte_string):
     else:
         # probably mocked for sphinx
         return None
+
+def _sectors_to_seconds(sectors):
+    """Round sectors to seconds like done on MusicBrainz Server
+
+    The result is forced to :obj:int to make formatted output easier.
+    """
+    # note that `round(2.5) == 2` on Python 3
+    # and math.floor doesn't return :obj:int on Python 2
+    return int(math.floor((sectors / SECTORS_PER_SECOND) + 0.5))
 
 
 # vim:set shiftwidth=4 smarttab expandtab:

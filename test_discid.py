@@ -3,6 +3,7 @@
 # This test is free. You can redistribute and/or modify it at will.
 
 import sys
+import math
 import unittest
 
 import discid
@@ -93,11 +94,12 @@ class TestModule(unittest.TestCase):
         self.assertEqual(track_offsets, test_disc["offsets"])
         self.assertEqual(disc.sectors,
                          disc.tracks[-1].offset + disc.tracks[-1].sectors)
-        self.assertEqual(disc.seconds,
-                         disc.sectors // discid.util.SECTORS_PER_SECOND)
+        self.assertEqual(disc.seconds, math.floor((disc.sectors / 75) + 0.5))
+        self.assertEqual(type(disc.seconds), int)
         for track in disc.tracks:
             self.assertEqual(track.seconds,
-                             track.sectors // discid.util.SECTORS_PER_SECOND)
+                             math.floor((track.sectors / 75) + 0.5))
+            self.assertEqual(type(track.seconds), int)
 
 
 class TestClass(unittest.TestCase):
