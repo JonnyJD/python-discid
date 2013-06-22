@@ -120,8 +120,9 @@ def _get_version_string():
 
 _LIB.discid_get_default_device.argtypes = ()
 _LIB.discid_get_default_device.restype = c_char_p
-def _get_default_device():
-    """Get the default device for the platform
+def get_default_device():
+    """The default device to use for :func:`read` on this platform
+    given as a :obj:`unicode` or :obj:`str <python:str>` object.
     """
     device = _LIB.discid_get_default_device()
     return _decode(device)
@@ -163,8 +164,6 @@ def _get_features():
     return features
 
 LIBDISCID_VERSION_STRING = _get_version_string()
-
-DEFAULT_DEVICE = _get_default_device()
 
 FEATURES = _get_features()
 
