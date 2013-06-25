@@ -17,6 +17,8 @@ This module is a close binding that offloads all relevant data
 storage and calculation to Libdiscid. On the other hand it gives a
 pythonic API and uses objects and exceptions.
 
+The official API documentation can be found at `readthedocs.org`_
+
 For more information on Libdiscid see `libdiscid`_.
 
 For more information about the calculation of these disc ids see `Disc
@@ -44,6 +46,7 @@ Bugs
 ~~~~
 You can submit tickets at `GitHub`_.
 
+.. _readthedocs.org: https://python-discid.readthedocs.org/
 .. _libdiscid: http://musicbrainz.org/doc/libdiscid
 .. _Disc ID Calculation: http://musicbrainz.org/doc/Disc_ID_Calculation
 .. _GitHub: https://github.com/JonnyJD/python-discid
