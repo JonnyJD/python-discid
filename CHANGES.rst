@@ -1,9 +1,15 @@
 Changelog
 =========
 
+Changes in 1.0.0 (2013-06-25):
+------------------------------
+ * :issue:`30` :data:`DEFAULT_DEVICE` is now :func:`get_default_device()`
+ * :issue:`32` :attr:`Disc.submission_url` doesn't point to a redirect now
+ * :fix: seconds are now rounded the same as on MB server (0.5->up)
+
+
 Changes in 0.5.0 (2013-04-27):
 ------------------------------
-
  * feature: :issue:`10` add :attr:`Disc.mcn` and :attr:`Track.isrc`
  * feature: add :data:`LIBDISCID_VERSION_STRING`
  * feature: :issue:`28` add :attr:`Disc.seconds`, :attr:`Track.seconds`
@@ -21,7 +27,6 @@ Changes in 0.5.0 (2013-04-27):
 
 Changes in 0.4.0 (2013-04-09):
 ------------------------------
-
  * feature: added :data:`FEATURES_IMPLEMENTED`, :attr:`DiscId.track_lengths`,
    :attr:`DiscId.webservice_url` and :attr:`DiscId.freedb_id`
  * feature :issue:`18`: disc access test suite
@@ -29,7 +34,6 @@ Changes in 0.4.0 (2013-04-09):
 
 Changes in 0.3.0 (2013-03-11):
 ------------------------------
-
  * feature :issue:`20`: add :data:`FEATURES` list
  * feature: :func:`DiscId.put`, :attr:`DiscId.track_offsets`,
    :attr:`DiscId.sectors`, :attr:`DiscId.first_track_num`,
@@ -41,12 +45,10 @@ Changes in 0.3.0 (2013-03-11):
 
 Changes in 0.2.1 (2013-01-30):
 ------------------------------
-
  * fix :issue:`9`: test fails on Python 3.2 because of unicode literals
 
 Changes in 0.2.0 (2013-01-30):
 ------------------------------
-
  * API change from :func:`DiscId.get_id` to :attr:`DiscId.id`
  * added :data:`DEFAULT_DEVICE` as a module constant
  * added :attr:`DiscId.submission_url`
@@ -56,5 +58,4 @@ Changes in 0.2.0 (2013-01-30):
 
 Changes in 0.1.0 (2013-01-12):
 ------------------------------
-
  * initial version with :func:`DiscId.read` and :func:`DiscId.get_id`

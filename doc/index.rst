@@ -1,9 +1,6 @@
 python-discid |current|
 =======================
 
-.. note::
-   This is hopefully the last beta release, but small API changes might occur.
-
 **python-discid** is a Python binding
 of :musicbrainz:`libdiscid` by MusicBrainz.
 

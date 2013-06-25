@@ -54,7 +54,7 @@ setup(name="discid",
         packages = ["discid"],
         cmdclass = {"test": Test},
         classifiers=[
-            "Development Status :: 4 - Beta",
+            "Development Status :: 5 - Production/Stable",
             "Intended Audience :: Developers",
             "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
             "Operating System :: OS Independent",
