@@ -29,6 +29,7 @@ and will raise :exc:`OSError` when libdiscid is not found.
 
 from discid.disc import read, put, Disc, DiscError, TOCError
 from discid.track import Track
+from discid.libdiscid import get_default_device
 from discid.deprecated import DiscId
 import discid.libdiscid
 import discid.disc
@@ -41,11 +42,6 @@ __version__ = "0.5.0-dev"
 LIBDISCID_VERSION_STRING = discid.libdiscid.LIBDISCID_VERSION_STRING
 """The version string of the loaded libdiscid in the form `libdiscid x.y.z`.
 For old versions the string is `libdiscid < 0.4.0`.
-"""
-
-DEFAULT_DEVICE = discid.libdiscid.DEFAULT_DEVICE
-"""The default device to use for :func:`read` on this platform
-given as a :obj:`unicode` or :obj:`str <python:str>` object.
 """
 
 FEATURES = discid.libdiscid.FEATURES

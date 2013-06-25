@@ -38,7 +38,8 @@ def read(device=None, features=[]):
     That string can be either of:
     :obj:`str <python:str>`, :obj:`unicode` or :obj:`bytes`.
     However, it should in no case contain non-ASCII characters.
-    If no device is given, the :data:`DEFAULT_DEVICE` is used.
+    If no device is given, a default, also given by :func:`get_default_device`
+    is used.
 
     You can optionally add a subset of the features in
     :data:`FEATURES` or the whole list to read more than just the TOC.

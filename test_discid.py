@@ -51,7 +51,7 @@ class TestModule(unittest.TestCase):
         self.assertTrue(version_string is not None, "No version string given")
 
     def test_default_device(self):
-        device = discid.DEFAULT_DEVICE
+        device = discid.get_default_device()
         self.assertTrue(device is not None, "No default device given")
 
     def test_features(self):
@@ -131,7 +131,7 @@ class TestDisc(unittest.TestCase):
 
     def test_default_device(self):
         # Can't be empty, in contrast to the test in TestModule
-        device = discid.DEFAULT_DEVICE
+        device = discid.get_default_device()
         self.assertTrue(device, "No default device given")
 
     def test_features(self):
