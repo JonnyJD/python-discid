@@ -274,7 +274,14 @@ class Disc(object):
         as a new MusicBrainz :musicbrainz:`Disc ID`.
         This is a :obj:`unicode` or :obj:`str <python:str>` object.
         """
-        return self._get_submission_url()
+        url = self._get_submission_url()
+        if url is None:
+            return None
+        else:
+            # update submission url, which saves a couple of redirects
+            url = url.replace("//mm.", "//")
+            url = url.replace("/bare/cdlookup.html", "/cdtoc/attach")
+            return url
 
     @property
     def first_track_num(self):
