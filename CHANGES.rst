@@ -5,8 +5,7 @@ Changes in 1.0.0 (2013-06-25):
 ------------------------------
  * :issue:`30` :data:`DEFAULT_DEVICE` is now :func:`get_default_device()`
  * :issue:`32` :attr:`Disc.submission_url` doesn't point to a redirect now
- * :fix: seconds are now rounded the same as on MB server (0.5->up)
-
+ * fix: seconds are now rounded the same as on MB server (0.5->up)
 
 Changes in 0.5.0 (2013-04-27):
 ------------------------------
