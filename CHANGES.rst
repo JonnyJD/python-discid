@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Changes in 1.0.1 (2013-06-26):
+------------------------------
+ * fix: :issue:`30` bring back :data:`DEFAULT_DEVICE` as deprecated
+
 Changes in 1.0.0 (2013-06-25):
 ------------------------------
  * :issue:`30` :data:`DEFAULT_DEVICE` is now :func:`get_default_device()`
