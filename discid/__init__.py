@@ -30,11 +30,11 @@ and will raise :exc:`OSError` when libdiscid is not found.
 from discid.disc import read, put, Disc, DiscError, TOCError
 from discid.track import Track
 from discid.libdiscid import get_default_device
-from discid.deprecated import DiscId
+from discid.deprecated import DiscId, DEFAULT_DEVICE
 import discid.libdiscid
 import discid.disc
 
-__version__ = "1.0.0"
+__version__ = "1.0.0-dev"
 
 
 # these contants are defined here so sphinx can catch the "docstrings"
