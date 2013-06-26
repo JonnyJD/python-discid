@@ -18,13 +18,21 @@
 """Deprecated functions and classes
 """
 
-from warnings import warn, simplefilter
+from warnings import warn, warn_explicit, simplefilter
 
 from discid.disc import Disc
+from discid.libdiscid import get_default_device
 
 # turn on DeprecationWarnings for DiscId below
 simplefilter(action="once", category=DeprecationWarning)
 
+def _default_device_constant():
+    warn_explicit("DEFAULT_DEVICE is deprecated.\n"
+         "Use get_default_device() instead",
+         DeprecationWarning, None, 0)
+    return get_default_device()
+
+DEFAULT_DEVICE = _default_device_constant()
 
 class DiscId(Disc):
     """Deprecated class, use :func:`read` or :func:`put` or :class:`Disc`.
