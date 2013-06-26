@@ -3,7 +3,7 @@ Changelog
 
 Changes in 1.0.1 (2013-06-26):
 ------------------------------
- * fix: :issue:`30` bring back :data:`DEFAULT_DEVICE` as deprecated
+ * fix: :issue:`34` bring back :data:`DEFAULT_DEVICE` as deprecated
 
 Changes in 1.0.0 (2013-06-25):
 ------------------------------
