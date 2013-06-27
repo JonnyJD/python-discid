@@ -24,7 +24,7 @@ Contents
 
    install
    usage
-   discid
+   api
    CHANGES
 
 Related Tools
