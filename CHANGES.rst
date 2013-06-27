@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Changes in 1.0.2 (2013-06-27):
+------------------------------
+ * revert code to version 1.0.0 (see :issue:`35`)
+ * fix: :issue:`35` deprecation warning for DEFAULT_DEVICE shows always
+ * renamed a doc page, no links should break
+
 Changes in 1.0.1 (2013-06-26):
 ------------------------------
  * fix: :issue:`34` bring back :data:`DEFAULT_DEVICE` as deprecated
