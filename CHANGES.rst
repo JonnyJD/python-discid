@@ -5,7 +5,7 @@ Changes in 1.0.2 (2013-06-27):
 ------------------------------
  * revert code to version 1.0.0 (see :issue:`35`)
  * fix: :issue:`35` deprecation warning for DEFAULT_DEVICE shows always
- * renamed a doc page, no links should break
+ * renamed a api documentation page, a redirect was created
 
 Changes in 1.0.1 (2013-06-26):
 ------------------------------
