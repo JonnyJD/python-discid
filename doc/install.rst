@@ -29,8 +29,10 @@ These packages are known:
    `SuSE Python 3 <http://software.opensuse.org/package/python3-discid>`_
    )
  * Ubuntu:
-   `PPA <https://launchpad.net/~jonnyjd/+archive/python-discid>`_
-   ( both )
+   PPA (
+   `musicbrainz-stable <https://launchpad.net/~musicbrainz-developers/+archive/stable>`_
+   and `musicbrainz-daily <https://launchpad.net/~musicbrainz-developers/+archive/daily>`_
+   )
 
 Your package manager will also handle the *libdiscid* dependency automatically.
 
