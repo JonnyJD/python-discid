@@ -217,21 +217,30 @@ class Disc(object):
     def _get_first_track_num(self):
         """Gets the first track number
         """
-        return _LIB.discid_get_first_track_num(self._handle)
+        if self._success:
+            return _LIB.discid_get_first_track_num(self._handle)
+        else:
+            return None
 
     _LIB.discid_get_last_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_last_track_num.restype = c_int
     def _get_last_track_num(self):
         """Gets the last track number
         """
-        return _LIB.discid_get_last_track_num(self._handle)
+        if self._success:
+            return _LIB.discid_get_last_track_num(self._handle)
+        else:
+            return None
 
     _LIB.discid_get_sectors.argtypes = (c_void_p, )
     _LIB.discid_get_sectors.restype = c_int
     def _get_sectors(self):
         """Gets the total number of sectors on the disc
         """
-        return _LIB.discid_get_sectors(self._handle)
+        if self._success:
+            return _LIB.discid_get_sectors(self._handle)
+        else:
+            return None
 
     try:
         _LIB.discid_get_mcn.argtypes = (c_void_p, )
