@@ -42,12 +42,18 @@ class Track(object):
     _LIB.discid_get_track_offset.argtypes = (c_void_p, c_int)
     _LIB.discid_get_track_offset.restype = c_int
     def _get_track_offset(self):
-        return _LIB.discid_get_track_offset(self._disc._handle, self.number)
+        if self._disc._success:
+            return _LIB.discid_get_track_offset(self._disc._handle, self.number)
+        else:
+            return None
 
     _LIB.discid_get_track_length.argtypes = (c_void_p, c_int)
     _LIB.discid_get_track_length.restype = c_int
     def _get_track_length(self):
-        return _LIB.discid_get_track_length(self._disc._handle, self.number)
+        if self._disc._success:
+            return _LIB.discid_get_track_length(self._disc._handle, self.number)
+        else:
+            return None
 
     try:
         _LIB.discid_get_track_isrc.argtypes = (c_void_p, c_int)
