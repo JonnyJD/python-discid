@@ -313,7 +313,10 @@ class Disc(object):
     @property
     def seconds(self):
         """Total length in seconds"""
-        return _sectors_to_seconds(self.sectors)
+        if self.sectors is None:
+            return None
+        else:
+            return _sectors_to_seconds(self.sectors)
 
     @property
     def mcn(self):
