@@ -18,6 +18,7 @@
 """Disc class
 """
 
+import re
 from ctypes import c_int, c_void_p, c_char_p, c_uint
 
 from discid.libdiscid import _LIB, FEATURES
@@ -319,9 +320,21 @@ class Disc(object):
         This is a :obj:`unicode` or :obj:`str <python:str>` object
         and enables fuzzy searching when the actual Disc ID is not found.
 
+        Note that this is the unencoded value, which still contains spaces.
+
         .. seealso:: `MusicBrainz Web Service <http://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#discid>`_
         """
-        return self._get_toc_string()
+        toc_string = self._get_toc_string()
+        if toc_string is None:
+            # probably an old version of libdiscid (< 0.6.0)
+            # gather toc string from submission_url
+            match = re.search("toc=([0-9+]+)", self.submission_url)
+            if match is None:
+                raise ValueError("can't get toc string from submission url")
+            else:
+                return match.group(1).replace("+", " ")
+        else:
+            return toc_string
 
     @property
     def first_track_num(self):

@@ -100,6 +100,9 @@ class TestModule(unittest.TestCase):
             self.assertEqual(track.seconds,
                              math.floor((track.sectors / 75.0) + 0.5))
             self.assertEqual(type(track.seconds), int)
+        toc_string = ["1", disc.last_track_num, disc.sectors] + track_offsets
+        toc_string = " ".join(map(str, toc_string))
+        self.assertEqual(disc.toc_string, toc_string)
 
 
 class TestClass(unittest.TestCase):
