@@ -104,10 +104,8 @@ class Disc(object):
         assert self._handle.value is not None
 
     def __str__(self):
-        if self._success:
-            return self.id
-        else:
-            return ""
+        assert self._success
+        return self.id
 
     _LIB.discid_get_error_msg.argtypes = (c_void_p, )
     _LIB.discid_get_error_msg.restype = c_char_p
@@ -183,22 +181,18 @@ class Disc(object):
     def _get_id(self):
         """Gets the current MusicBrainz disc ID
         """
-        if self._success:
-            result = _LIB.discid_get_id(self._handle)
-            return _decode(result)
-        else:
-            return None
+        assert self._success
+        result = _LIB.discid_get_id(self._handle)
+        return _decode(result)
 
     _LIB.discid_get_freedb_id.argtypes = (c_void_p, )
     _LIB.discid_get_freedb_id.restype = c_char_p
     def _get_freedb_id(self):
         """Gets the current FreeDB disc ID
         """
-        if self._success:
-            result = _LIB.discid_get_freedb_id(self._handle)
-            return _decode(result)
-        else:
-            return None
+        assert self._success
+        result = _LIB.discid_get_freedb_id(self._handle)
+        return _decode(result)
 
     _LIB.discid_get_submission_url.argtypes = (c_void_p, )
     _LIB.discid_get_submission_url.restype = c_char_p
@@ -206,41 +200,33 @@ class Disc(object):
         """Give an URL to submit the current TOC
         as a new Disc ID to MusicBrainz.
         """
-        if self._success:
-            result = _LIB.discid_get_submission_url(self._handle)
-            return _decode(result)
-        else:
-            return None
+        assert self._success
+        result = _LIB.discid_get_submission_url(self._handle)
+        return _decode(result)
 
     _LIB.discid_get_first_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_first_track_num.restype = c_int
     def _get_first_track_num(self):
         """Gets the first track number
         """
-        if self._success:
-            return _LIB.discid_get_first_track_num(self._handle)
-        else:
-            return None
+        assert self._success
+        return _LIB.discid_get_first_track_num(self._handle)
 
     _LIB.discid_get_last_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_last_track_num.restype = c_int
     def _get_last_track_num(self):
         """Gets the last track number
         """
-        if self._success:
-            return _LIB.discid_get_last_track_num(self._handle)
-        else:
-            return None
+        assert self._success
+        return _LIB.discid_get_last_track_num(self._handle)
 
     _LIB.discid_get_sectors.argtypes = (c_void_p, )
     _LIB.discid_get_sectors.restype = c_int
     def _get_sectors(self):
         """Gets the total number of sectors on the disc
         """
-        if self._success:
-            return _LIB.discid_get_sectors(self._handle)
-        else:
-            return None
+        assert self._success
+        return _LIB.discid_get_sectors(self._handle)
 
     try:
         _LIB.discid_get_mcn.argtypes = (c_void_p, )
@@ -250,7 +236,8 @@ class Disc(object):
     def _get_mcn(self):
         """Gets the current Media Catalogue Number (MCN/UPC/EAN)
         """
-        if self._success and "mcn" in self._requested_features:
+        assert self._success
+        if "mcn" in self._requested_features:
             try:
                 result = _LIB.discid_get_mcn(self._handle)
             except AttributeError:
@@ -333,9 +320,9 @@ class Disc(object):
         """A list of :class:`Track` objects for this Disc.
         """
         tracks = []
-        if self._success:
-            for number in range(self.first_track_num, self.last_track_num + 1):
-                tracks.append(Track(self, number))
+        assert self._success
+        for number in range(self.first_track_num, self.last_track_num + 1):
+            tracks.append(Track(self, number))
         return tracks
 
 
