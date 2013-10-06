@@ -116,6 +116,7 @@ class TestClass(unittest.TestCase):
         self.assertTrue(self.disc.id is None)
         self.assertTrue(self.disc.freedb_id is None)
         self.assertTrue(self.disc.submission_url is None)
+        self.assertTrue(self.disc.toc_string is None)
         self.assertTrue(self.disc.mcn is None)
         self.assertFalse(self.disc.first_track_num)
         self.assertFalse(self.disc.last_track_num)
@@ -147,6 +148,7 @@ class TestDisc(unittest.TestCase):
         self.assertEqual(len(disc.id), 28, "Invalid Disc ID")
         self.assertEqual(len(disc.freedb_id), 8, "Invalid FreeDB Disc ID")
         self.assertTrue(disc.submission_url, "Invalid submission url")
+        self.assertTrue(disc.toc_string, "Invalid toc string")
         self.assertEqual(disc.last_track_num, len(disc.tracks),
                         "Wrong amount of tracks")
         self.assertEqual(disc.sectors,
@@ -168,6 +170,7 @@ class TestDisc(unittest.TestCase):
         disc_id = disc.id
         freedb_id = disc.freedb_id
         submission_url = disc.submission_url
+        toc_string = disc.toc_string
         first = disc.first_track_num
         last = disc.last_track_num
         sectors = disc.sectors
@@ -180,6 +183,8 @@ class TestDisc(unittest.TestCase):
                          "different freedb id after put")
         self.assertEqual(disc.submission_url, submission_url,
                          "different submission_url after put")
+        self.assertEqual(disc.toc_string, toc_string,
+                         "different toc_string after put")
         self.assertEqual(disc.first_track_num, first,
                          "different first track after put")
         self.assertEqual(disc.last_track_num, last,
@@ -197,6 +202,7 @@ class TestDisc(unittest.TestCase):
         disc = discid.read(features=["mcn", "isrc"]) # read from default drive
         self.assertEqual(len(disc.id), 28, "Invalid Disc ID")
         self.assertTrue(disc.submission_url, "Invalid submission url")
+        self.assertTrue(disc.toc_string, "Invalid toc string")
 
         if "mcn" in discid.FEATURES:
             self.assertTrue(disc.mcn is not None)

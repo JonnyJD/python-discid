@@ -325,7 +325,7 @@ class Disc(object):
         .. seealso:: `MusicBrainz Web Service <http://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#discid>`_
         """
         toc_string = self._get_toc_string()
-        if toc_string is None:
+        if toc_string is None and self.submission_url:
             # probably an old version of libdiscid (< 0.6.0)
             # gather toc string from submission_url
             match = re.search("toc=([0-9+]+)", self.submission_url)
