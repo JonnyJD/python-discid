@@ -102,29 +102,6 @@ class TestModule(unittest.TestCase):
             self.assertEqual(type(track.seconds), int)
 
 
-class TestClass(unittest.TestCase):
-
-    def setUp(self):
-        self.disc = discid.Disc()
-        self.assertTrue(self.disc, "No Disc object created")
-
-    def test_emptyness(self):
-        # all should be empty and don't give exceptions
-        self.assertTrue(self.disc.id is None)
-        self.assertTrue(self.disc.freedb_id is None)
-        self.assertTrue(self.disc.submission_url is None)
-        self.assertTrue(self.disc.mcn is None)
-        self.assertFalse(self.disc.first_track_num)
-        self.assertFalse(self.disc.last_track_num)
-        self.assertFalse(self.disc.sectors)
-        self.assertFalse(self.disc.length)
-        self.assertFalse(self.disc.seconds)
-        self.assertFalse(self.disc.tracks)
-
-    def tearDown(self):
-        self.disc._free()
-
-
 class TestDisc(unittest.TestCase):
     """Test reading the disc currently in the drive
     """
