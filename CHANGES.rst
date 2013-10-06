@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Changes in 1.0.3 (2013-10-06):
+------------------------------
+ * fix: :issue:`37` test_emptyness: Assertion disc->success failed
+
 Changes in 1.0.2 (2013-06-27):
 ------------------------------
  * revert code to version 1.0.0 (see :issue:`35`)
