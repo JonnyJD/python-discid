@@ -18,6 +18,7 @@
 """Disc class
 """
 
+import re
 from ctypes import c_int, c_void_p, c_char_p, c_uint
 
 from discid.libdiscid import _LIB, FEATURES
@@ -204,6 +205,23 @@ class Disc(object):
         result = _LIB.discid_get_submission_url(self._handle)
         return _decode(result)
 
+    try:
+        _LIB.discid_get_toc_string.argtypes = (c_void_p, )
+        _LIB.discid_get_toc_string.restype = c_char_p
+    except AttributeError:
+        pass
+    def _get_toc_string(self):
+        """The TOC suitable as value of the `toc parameter`
+        when accessing the MusicBrainz Web Service.
+        """
+        assert self._success
+        try:
+            result = _LIB.discid_get_toc_string(self._handle)
+        except AttributeError:
+            return None
+        else:
+            return _decode(result)
+
     _LIB.discid_get_first_track_num.argtypes = (c_void_p, )
     _LIB.discid_get_first_track_num.restype = c_int
     def _get_first_track_num(self):
@@ -278,6 +296,30 @@ class Disc(object):
             url = url.replace("//mm.", "//")
             url = url.replace("/bare/cdlookup.html", "/cdtoc/attach")
             return url
+
+    @property
+    def toc_string(self):
+        """The TOC suitable as value of the `toc parameter`
+        when accessing the MusicBrainz Web Service.
+
+        This is a :obj:`unicode` or :obj:`str <python:str>` object
+        and enables fuzzy searching when the actual Disc ID is not found.
+
+        Note that this is the unencoded value, which still contains spaces.
+
+        .. seealso:: `MusicBrainz Web Service <http://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#discid>`_
+        """
+        toc_string = self._get_toc_string()
+        if toc_string is None and self.submission_url:
+            # probably an old version of libdiscid (< 0.6.0)
+            # gather toc string from submission_url
+            match = re.search("toc=([0-9+]+)", self.submission_url)
+            if match is None:
+                raise ValueError("can't get toc string from submission url")
+            else:
+                return match.group(1).replace("+", " ")
+        else:
+            return toc_string
 
     @property
     def first_track_num(self):
