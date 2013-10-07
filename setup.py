@@ -31,7 +31,7 @@ class Test(Command):
                 self.names = []
         else:
             self.names = ["test_discid.TestModulePrivate",
-                          "test_discid.TestModule", "test_discid.TestClass"]
+                          "test_discid.TestModule"]
 
     def run(self):
         suite = unittest.defaultTestLoader.loadTestsFromNames(self.names)
