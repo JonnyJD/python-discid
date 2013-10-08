@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes in 1.1.0 (unreleased):
+------------------------------
+ * feature :issue:`36` add :attr:`Disc.toc_string`
+ * :issue:`38` remove :class:`DiscId` (deprecated since 0.5.0)
+
 Changes in 1.0.3 (2013-10-06):
 ------------------------------
  * fix: :issue:`37` test_emptyness: Assertion disc->success failed
