@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Changes in 1.1.0 (unreleased):
+Changes in 1.1.0 (2013-10-09):
 ------------------------------
  * feature :issue:`36` add :attr:`Disc.toc_string`
  * :issue:`38` remove :class:`DiscId` (deprecated since 0.5.0)
