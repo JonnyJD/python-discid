@@ -34,6 +34,9 @@ Disc object
    .. autoattribute:: freedb_id
    .. autoattribute:: submission_url
    .. autoattribute:: toc_string
+
+      .. versionadded:: 1.1
+
    .. autoattribute:: first_track_num
    .. autoattribute:: last_track_num
    .. autoattribute:: sectors
