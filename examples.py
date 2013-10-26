@@ -23,7 +23,8 @@ def _length_str(seconds, sectors):
             m=(seconds // 60), s=(seconds % 60), sectors=sectors)
 
 def complex_example():
-    disc = discid.read("/dev/cdrom", ["mcn", "isrc"])
+    device_name = discid.get_default_device()
+    disc = discid.read(device_name, ["mcn", "isrc"])
     print("id:\t%s" % disc.id)
     print("MCN:\t%s" % disc.mcn)
     print("length:\t%s" % _length_str(disc.seconds, disc.sectors))

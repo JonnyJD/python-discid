@@ -31,7 +31,7 @@ Usage
     # this will load Libdiscid
     import discid
 
-    disc = discid.read("/dev/cdrom")
+    disc = discid.read()  # use default device
     print "id: %s" % disc.id  # Python 2
     print("id: %s" % disc.id) # Python 3
 
