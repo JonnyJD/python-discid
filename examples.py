@@ -25,6 +25,7 @@ def _length_str(seconds, sectors):
 def complex_example():
     device_name = discid.get_default_device()
     disc = discid.read(device_name, ["mcn", "isrc"])
+    print("device:\t%s" % device_name)
     print("id:\t%s" % disc.id)
     print("MCN:\t%s" % disc.mcn)
     print("length:\t%s" % _length_str(disc.seconds, disc.sectors))
