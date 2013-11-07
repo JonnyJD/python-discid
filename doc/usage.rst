@@ -68,7 +68,7 @@ An example for the TOC
 
 Fetching Metadata
 -----------------
-You can use `python-musicbrainz-ngs`_ to fetch metadata for your disc.
+You can use `python-musicbrainzngs`_ to fetch metadata for your disc.
 The relevant function is :func:`musicbrainzngs.get_releases_by_discid`::
 
  import discid
@@ -97,4 +97,4 @@ See :mod:`musicbrainzngs` for details.
 .. note:: Please submit your disc ID with :attr:`Disc.submission_url`
    when it isn't found at the MusicBrainz server.
 
-.. _python-musicbrainz-ngs: https://readthedocs.org/docs/python-musicbrainz-ngs/
+.. _python-musicbrainzngs: https://python-musicbrainzngs.readthedocs.org/

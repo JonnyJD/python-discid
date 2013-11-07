@@ -56,7 +56,7 @@ intersphinx_mapping = {
   'python': ('http://python.readthedocs.org/en/latest/', None),
   'python2': ('http://python.readthedocs.org/en/v2.7.2/', None),
   'musicbrainzngs':
-    ('http://python-musicbrainz-ngs.readthedocs.org/en/latest/', None),
+    ('http://python-musicbrainzngs.readthedocs.org/en/latest/', None),
 }
 
 rst_prolog = """
