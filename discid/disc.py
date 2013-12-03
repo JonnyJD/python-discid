@@ -26,7 +26,7 @@ from discid.util import _encode, _decode, _sectors_to_seconds
 from discid.track import Track
 
 
-# our implemented of libdiscid's enum discid_feature
+# our implementation of libdiscid's enum discid_feature
 _FEATURE_MAPPING = {"read": 1 << 0, "mcn": 1 << 1, "isrc": 1 << 2}
 
 
