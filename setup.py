@@ -42,11 +42,13 @@ class Test(Command):
         else:
             sys.exit(len(result.failures) + len(result.errors))
 
+with open("README.rst") as readme:
+    long_description = readme.read()
 
 setup(name="discid",
         version=__version__,
         description="Python binding of Libdiscid",
-        long_description=open("README.rst").read(),
+        long_description=long_description,
         author="Johannes Dewender",
         author_email="brainz@JonnyJD.net",
         url="https://python-discid.readthedocs.org/",
