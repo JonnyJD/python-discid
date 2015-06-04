@@ -26,7 +26,7 @@ ID Calculation`_.
 
 Usage
 ~~~~~
-::
+.. code:: python
 
     # this will load Libdiscid
     import discid
