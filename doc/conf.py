@@ -21,8 +21,7 @@ needs_sphinx = "1.0"
 
 extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.coverage',
-    'sphinx.ext.extlinks', 'sphinx.ext.intersphinx',
-    'ext.data_doc'
+    'sphinx.ext.extlinks', 'sphinx.ext.intersphinx'
 ]
 source_suffix = '.rst'
 master_doc = 'index'
