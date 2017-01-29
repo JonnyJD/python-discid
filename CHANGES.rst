@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes in 1.1.1 (2017-01-29):
+------------------------------
+ * workaround :issue:`43` for py2app problems
+ * :issue:`41` improve windows example
+
 Changes in 1.1.0 (2013-10-09):
 ------------------------------
  * feature :issue:`36` add :attr:`Disc.toc_string`
