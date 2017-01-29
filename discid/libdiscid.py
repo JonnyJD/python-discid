@@ -40,6 +40,12 @@ def _find_library(name, version=0):
 
     lib_file = None
 
+    # This seems to be necessary in a bundle/dmg
+    if sys.platform == "darwin":
+        lib_name = '../Frameworks/lib%s.%d.dylib' % (name, version)
+        if os.path.isfile(lib_name):
+            lib_file = lib_name
+
     # force prefer current folder
     # for linux/UNIX-like and Windows
     if sys.platform in ["darwin", "cygwin"]:
