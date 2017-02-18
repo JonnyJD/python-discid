@@ -368,6 +368,24 @@ class Disc(object):
         return tracks
 
 
+    @property
+    def cddb_query_string(self):
+        """A CDDB query string suitable for querying CDDB servers.
+
+        This is a :obj:`unicode` or :obj:`str <python:str>` object
+        and enables generating queries to CDDB servers.
+
+        .. seealso:: `CDDB Server Protocol <http://ftp.freedb.org/pub/freedb/latest/CDDBPROTO>`_
+        """
+        cddb_query_string = "%s %s %s %s" % (
+            self.freedb_id,
+            self.last_track_num,
+            " ".join([str(track.offset) for track in self.tracks]),
+            self.seconds,
+        )
+        return cddb_query_string
+
+
     _LIB.discid_free.argtypes = (c_void_p, )
     _LIB.discid_free.restype = None
     def _free(self):
