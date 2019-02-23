@@ -45,7 +45,7 @@ with open("README.rst") as readme:
     long_description = readme.read()
 
 setup(name="discid",
-        version="1.1.1",
+        version="1.2.0",
         description="Python binding of Libdiscid",
         long_description=long_description,
         author="Johannes Dewender",

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes in 1.2.0 (2019-02-23):
+------------------------------
+ * improve install with pip
+ * add Makefile
+
 Changes in 1.1.1 (2017-01-29):
 ------------------------------
  * workaround :issue:`43` for py2app problems
