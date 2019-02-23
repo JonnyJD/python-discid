@@ -3,7 +3,6 @@
 import sys
 import unittest
 from distutils.core import setup, Command
-from discid import __version__
 
 
 class Test(Command):
@@ -46,7 +45,7 @@ with open("README.rst") as readme:
     long_description = readme.read()
 
 setup(name="discid",
-        version=__version__,
+        version="1.1.1",
         description="Python binding of Libdiscid",
         long_description=long_description,
         author="Johannes Dewender",
