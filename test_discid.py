@@ -103,6 +103,9 @@ class TestModule(unittest.TestCase):
         toc_string = ["1", disc.last_track_num, disc.sectors] + track_offsets
         toc_string = " ".join(map(str, toc_string))
         self.assertEqual(disc.toc_string, toc_string)
+        cddb_query_string = [disc.freedb_id, disc.last_track_num] + track_offsets + [disc.seconds]
+        cddb_query_string = " ".join(map(str, cddb_query_string))
+        self.assertEqual(disc.cddb_query_string, cddb_query_string)
 
 
 class TestDisc(unittest.TestCase):
@@ -152,6 +155,7 @@ class TestDisc(unittest.TestCase):
         sectors = disc.sectors
         track_sectors = [track.sectors for track in disc.tracks]
         track_offsets = [track.offset for track in disc.tracks]
+        cddb_query_string = disc.cddb_query_string
 
         disc = discid.put(first, last, sectors, track_offsets)
         self.assertEqual(disc.id, disc_id, "different id after put")
@@ -173,6 +177,8 @@ class TestDisc(unittest.TestCase):
         new_sectors = [track.sectors for track in disc.tracks]
         self.assertEqual(new_sectors, track_sectors,
                          "different lengths after put")
+        self.assertEqual(disc.cddb_query_string, cddb_query_string,
+                         "different cddb_query_string after put")
 
     def test_read_features(self):
         disc = discid.read(features=["mcn", "isrc"]) # read from default drive
