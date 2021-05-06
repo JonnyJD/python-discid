@@ -2,7 +2,7 @@
 
 import sys
 import unittest
-from distutils.core import setup, Command
+from setuptools import setup, Command
 
 
 class Test(Command):
